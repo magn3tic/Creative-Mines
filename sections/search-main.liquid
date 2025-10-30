@@ -1,0 +1,153 @@
+<section class="page-banner-area alt no-height">
+    <img src="//creativemines-trade.myshopify.com/cdn/shop/files/blog-banner.webp?v=1757864887" alt="Search results" class="bg">
+    <div class="banner-inner">
+      <div class="container-fluid">
+        <div class="row align-items-end">
+          <div class="col-lg-9">
+            <h1 class="banner-heading alt">
+              {% if search.performed %}
+                Search results for “{{ search.terms | escape }}”
+              {% else %}
+                Search results
+              {% endif %}
+            </h1>          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section 
+  id="search-main-{{ collection.id }}" 
+  class="search-main"
+>
+  {% if search.performed %}
+    {% paginate search.results by section.settings.limit %}
+      <div class="search-inner">
+        <div class="container">
+          {% if search.results_count == 0 %}
+            <p class="alert alert-warning my-6 text-center">
+              {{ 'general.search.search_page.no_results' | t: terms: search.terms }}
+            </p>
+          {% else %}
+            <div class="row">
+              {% for item in search.results %}
+                {% case item.object_type %}
+
+                  {% when 'product' %}
+                    {% assign product = item %}
+                    <div class="col-lg-4 col-sm-6">
+                      <div class="box style2">
+                        <div class="inner">
+                          <a href="{{ product.url }}">
+                            {% if product.featured_image %}
+                              <img 
+                                src="{{ product.featured_image | img_url: '800x' }}" 
+                                alt="{{ product.title | escape }}">
+                            {% else %}
+                              <img 
+                                src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/placeholder.png" 
+                                alt="{{ product.title | escape }}">
+                            {% endif %}
+                          </a>
+                        </div>
+
+                        <div class="text">
+                          <h3 class="title">
+                            <a href="{{ product.url }}">{{ product.title }}</a>
+                          </h3>
+
+                          {% if product.price_varies %}
+                            <p>{{ 'From ' | append: product.price_min | money }}</p>
+                          {% else %}
+                            <p>{{ product.price | money }}</p>
+                          {% endif %}
+
+                          {% if product.available %}
+                            <form method="post" action="/cart/add" class="add-to-cart-form" enctype="multipart/form-data">
+                              <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                              <button type="submit" class="cta-btn btn_default">Add to Cart</button>
+                            </form>
+                          {% else %}
+                            <p class="text-muted small">Sold Out</p>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+
+                  {% when 'article' %}
+                    <div class="col-lg-4 col-sm-6">
+                      <div class="box style2 blog-result">
+                        <div class="inner">
+                          <a href="{{ item.url }}">
+                            {% if item.image %}
+                              <img src="{{ item.image | img_url: '800x' }}" alt="{{ item.title | escape }}">
+                            {% else %}
+                              <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/placeholder.png" alt="{{ item.title | escape }}">
+                            {% endif %}
+                          </a>
+                        </div>
+                        <div class="text">
+                          <h3 class="title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
+                          <p class="small text-muted">{{ item.published_at | date: "%b %d, %Y" }}</p>
+                          {% if item.excerpt != blank %}
+                            <p>{{ item.excerpt | strip_html | truncatewords: 20 }}</p>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+
+                  {% when 'page' %}
+                    <div class="col-lg-4 col-sm-6">
+                      <div class="box style2 page-result">
+                        <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/placeholder.png" alt="{{ item.title | escape }}">
+
+                        <div class="text">
+                          <h3 class="title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
+                          {% if item.content != blank %}
+                            <p>{{ item.content | strip_html | truncatewords: 25 }}</p>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+
+                {% endcase %}
+              {% endfor %}
+            </div>
+
+            {% render 'pagination', paginate: paginate %}
+          {% endif %}
+        </div>
+      </div>
+    {% endpaginate %}
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Search",
+  "settings": [
+    { "type": "header", "content": "General" },
+    {
+      "type": "select",
+      "id": "header_title_font_size",
+      "label": "Title font-size",
+      "default": "h1",
+      "options": [
+        { "group": "Heading", "value": "h1", "label": "H1" },
+        { "group": "Heading", "value": "h2", "label": "H2" },
+        { "group": "Heading", "value": "h3", "label": "H3" },
+        { "group": "Heading", "value": "h4", "label": "H4" },
+        { "group": "Heading", "value": "h5", "label": "H5" },
+        { "group": "Heading", "value": "h6", "label": "H6" }
+      ]
+    },
+    { "type": "range", "id": "limit", "label": "Limit products", "min": 2, "max": 50, "default": 48, "step": 1 },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "pt", "label": "Top padding", "min": 0, "max": 20, "default": 9 },
+    { "type": "range", "id": "pb", "label": "Bottom padding", "min": 0, "max": 20, "default": 9 }
+  ],
+  "templates": ["search"],
+  "presets": [{ "name": "Search Results" }]
+}
+{% endschema %}

@@ -1,0 +1,88 @@
+<section class="content-area" data-aos="fade-up" id="{{ section.settings.anchor }}">
+  <div class="container large">
+    <div class="section-heading">
+      {% if section.settings.heading != blank %}
+        <h2 class="h4">{{ section.settings.heading }}</h2>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      {% for block in section.blocks %}
+        <div class="col-md-3 col-6">
+            <a href="{{ block.settings.link | default: 'javascript:;' }}" class="tech-download-box {% if section.settings.style == 'style2' %}style-2 {% elsif section.settings.style == 'style3' %}style-3{% endif %} text-center">
+
+            {% if block.settings.icon != blank %}
+              <img src="{{ block.settings.icon | img_url: '200x' }}" alt="{{ block.settings.title }}">
+            {% endif %}
+            <h4 class="heading">{{ block.settings.title }}</h4>
+            <span><img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/download-Bottom.svg" alt="Download"></span>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Resources",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Tech Downloads"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Choose Style",
+      "options": [
+        { "value": "style1", "label": "Style 1" },
+        { "value": "style2", "label": "Style 2" },
+        { "value": "style3", "label": "Style 3" }
+      ],
+      "default": "style1"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Anchor Link"
+    }     
+  ],
+  "blocks": [
+    {
+      "type": "download",
+      "name": "Resource",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Download Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Download Link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    {
+      "name": "Resources",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

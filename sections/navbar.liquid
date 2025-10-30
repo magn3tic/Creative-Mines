@@ -1,0 +1,792 @@
+<!-- Header Start -->
+{% if request.page_type == 'product' %}
+<header class="header-area alt">
+{% else %}
+<header class="header-area">
+{% endif %}
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-lg-5">
+                <div class="mainmenu">
+                     <ul>
+                        {% for block in section.blocks %}
+                          {% if forloop.index <= 5 %}
+                            {% case block.type %}
+                              {% when 'drop_menu' %}
+                                <li class="menu-item has-dropdown">
+                                  <a href="{{ block.settings.dm_menu_link | default: '#' }}">
+                                    {{ block.settings.dm_menu_title }}
+                                  </a>
+                                </li>
+                        
+                              {% when 'mega_menu' %}
+                                <li>
+                                  <a href="{{ block.settings.mm_menu_link | default: 'javascript:;' }}">
+                                    {{ block.settings.mm_menu_title }}
+                                  </a>
+                                  <div class="megamenu">
+                                    <div class="container-fluid">
+                                      <div class="row g-4">
+                                        {% for i in (1..5) %}
+                                          {% assign bg_key = "im_bg_" | append: i %}
+                                          {% assign heading_key = "im_heading_" | append: i %}
+                                          {% assign menu_key = "im_menu_" | append: i %}
+                                          
+                                          {% assign bg = block.settings[bg_key] %}
+                                          {% assign heading = block.settings[heading_key] %}
+                                          {% assign menu_id = block.settings[menu_key] %}
+                        
+                                          {% if bg != blank or heading != blank or menu_id != blank %}
+                                            <div class="col-lg-{% if i == 1 %}6{% elsif i == 2 or i == 3 %}3{% else %}5{% endif %}">
+                                              <div class="mg-menu {% if i <= 3 %}v1{% else %}v2{% endif %}">
+                                                <div class="image">
+                                                  {% if bg %}
+                                                    <img src="{{ bg | image_url }}" alt="image">
+                                                  {% endif %}
+                                                  {% if heading %}
+                                                    <span class="d-block mg-title">{{ heading }}</span>
+                                                  {% endif %}
+                                                </div>
+                                                <div class="mg-text">
+                                                  {% if i == 1 %}
+                                                    <div class="row">
+                                                      <div class="col-lg-6">
+                                                        {% if block.settings.imi_heading %}
+                                                          <span class="d-block mg-text-title">{{ block.settings.imi_heading }}</span>
+                                                        {% endif %}
+                                                        {% assign left_links = linklists[block.settings.sc_menu_links] %}
+                                                        <ul class="column-two">
+                                                          {% for link in left_links.links %}
+                                                            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                                                          {% endfor %}
+                                                        </ul>
+                                                      </div>
+                                                      <div class="col-lg-6">
+                                                        {% if block.settings.imi_heading_2 %}
+                                                          <span class="d-block mg-text-title">{{ block.settings.imi_heading_2 }}</span>
+                                                        {% endif %}
+                                                        {% assign right_links = linklists[block.settings.sc_menu_links2] %}
+                                                        <ul class="column-two">
+                                                          {% for link in right_links.links %}
+                                                            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                                                          {% endfor %}
+                                                        </ul>
+                                                      </div>
+                                                    </div>
+                                                  {% else %}
+                                                    {% assign menu_links = linklists[menu_id] %}
+                                                    {% if menu_links.links.size > 0 %}
+                                                      <ul>
+                                                        {% for link in menu_links.links %}
+                                                          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                                                        {% endfor %}
+                                                      </ul>
+                                                    {% endif %}
+                                                  {% endif %}
+                                                </div>
+                                              </div>
+                                            </div>
+                                          {% endif %}
+                                        {% endfor %}
+                        
+                                        {% assign cta_img = block.settings.im_cta %}
+                                        {% assign cta_heading = block.settings.im_cta_heading %}
+                                        {% assign cta_text = block.settings.im_cta_text %}
+                                        {% assign cta_link = block.settings.im_cta_link %}
+                                        
+                                        {% if cta_img or cta_heading or cta_text or cta_link %}
+                                          <div class="col-lg-2">
+                                            <a href="{{ cta_link | default: 'javascript:;' }}" class="mg-action">
+                                              {% if cta_img %}
+                                                <img src="{{ cta_img | image_url }}" alt="image">
+                                              {% endif %}
+                                              <div class="inner">
+                                                {% if cta_heading %}
+                                                  <span class="d-block title">{{ cta_heading }}</span>
+                                                {% endif %}
+                                                {% if cta_text %}
+                                                  <span>{{ cta_text }} <em class="fa-solid fa-arrow-right"></em></span>
+                                                {% endif %}
+                                              </div>
+                                            </a>
+                                          </div>
+                                        {% endif %}                                        
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                            {% endcase %}
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 col-4">
+                <a href="{{ routes.root_url }}" class="site-logo">
+
+                {% if request.page_type == 'product' %}
+                  {% if section.settings.logodark %}
+                    <img src="{{ section.settings.logodark | img_url:"75x63" }}" alt="Logo" class="lazyload">
+                  {% else %}
+                    <span>Creative Mines</span>
+                  {% endif %}  
+                {% else %}
+                  {% if section.settings.logo %}
+                    <img src="{{ section.settings.logo | img_url:"75x63" }}" alt="Logo" class="lazyload">
+                  {% else %}
+                    <span>Creative Mines</span>
+                  {% endif %}  
+                {% endif %}
+
+                </a>              
+            </div>
+            <div class="col-lg-5 col-8">
+                <div class="header-right">
+                    <div class="mainmenu">
+                        <ul>
+                          {% for block in section.blocks %}
+                            {% if forloop.index > 5 %}
+                              {% case block.type %}
+                    
+                                {% when 'drop_menu' %}
+                                  <li class="menu-item has-dropdown">
+                                    <a href="{{ block.settings.dm_menu_link | default: '#' }}">
+                                      {{ block.settings.dm_menu_title }}
+                                    </a>
+                                  </li>
+
+                                {% when 'mega_menu_v2' %}
+                                  <li>
+                                    <a href="{{ block.settings.dmm_menu_link | default: 'javascript:;' }}">
+                                      {{ block.settings.dmm_menu_title }}
+                                    </a>
+                                    <div class="megamenu">
+                                      <div class="container-fluid">
+                                        <div class="row g-4">
+
+                                          {% for i in (1..5) %}
+                                            {% assign img_key = 'dmm_img_' | append: i %}
+                                            {% assign heading_key = 'dmm_heading_' | append: i %}
+                                            {% assign link_key = 'dmm_link_' | append: i %}
+
+                                            {% assign img = block.settings[img_key] %}
+                                            {% assign heading = block.settings[heading_key] %}
+                                            {% assign link = block.settings[link_key] %}
+
+                                            {% if img != blank or heading != blank %}
+                                              <div class="col-20">
+                                                <a href="{{ link | default: 'javascript:;' }}" class="mg-action">
+                                                  {% if img != blank %}
+                                                    <img src="{{ img | img_url: '300x' }}" alt="{{ heading | escape }}">
+                                                  {% endif %}
+                                                  <div class="inner">
+                                                    <span class="d-block title">{{ heading }}</span>
+                                                  </div>
+                                                </a>
+                                              </div>
+                                            {% endif %}
+                                          {% endfor %}
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </li>
+
+                              {% endcase %}
+                            {% endif %}
+                          {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="header-actions">
+
+                        {% if request.page_type == 'product' %}
+                          <a class="search-toggle" href="javascript:;"><img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/search-dark.webp" alt="search"></a>
+  
+                          {% if shop.customer_accounts_enabled %}
+                              <a 
+                                class="{% if template.name == 'login' or template.name == 'account' %}active{% endif %}" 
+                                aria-current="{% if template.name == 'login' or template.name == 'account' %}page{% endif %}" 
+                                href="{{ routes.account_url }}"
+                                aria-label="{{ 'general.accessibility.account' | t }}">
+                                <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/user-dark.webp" alt="User">
+                              </a>
+                          {% endif %}  
+                        
+                          <a 
+                            class="shipment" 
+                            href="#offcanvas-cart" 
+                            data-bs-toggle="offcanvas" 
+                            aria-controls="offcanvas-cart" 
+                            aria-label="{{ 'general.accessibility.cart' | t }} {{ cart.item_count }}"
+                            role="button">
+                            <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/shipment-dark.webp" alt="Cart">
+                            {% render 'cart-count-badge' %}
+                          </a>
+                        {% else %}
+                          <a class="search-toggle" href="javascript:;"><img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/search-icon.webp" alt="search"></a>
+  
+                          {% if shop.customer_accounts_enabled %}
+                              <a 
+                                class="{% if template.name == 'login' or template.name == 'account' %}active{% endif %}" 
+                                aria-current="{% if template.name == 'login' or template.name == 'account' %}page{% endif %}" 
+                                href="{{ routes.account_url }}"
+                                aria-label="{{ 'general.accessibility.account' | t }}">
+                                <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/user-icon.webp" alt="User">
+                              </a>
+                          {% endif %}  
+                        
+                          <a 
+                            class="shipment" 
+                            href="#offcanvas-cart" 
+                            data-bs-toggle="offcanvas" 
+                            aria-controls="offcanvas-cart" 
+                            aria-label="{{ 'general.accessibility.cart' | t }} {{ cart.item_count }}"
+                            role="button">
+                            <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/shipment-icon.webp" alt="Cart">
+                            {% render 'cart-count-badge' %}
+                          </a>
+                        {% endif %}                      
+
+                        <div id="menu-toggle">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div class="mobile-menu">
+  <div id="menu">
+    <!-- Main Menu -->
+    <div class="menu-panel active" id="main-menu">
+      <ul>
+        {% for block in section.blocks %}
+          {% if forloop.index <= 4 %}
+            {% case block.type %}
+              {% when 'drop_menu' %}
+                <li>
+                  <a href="{{ block.settings.dm_menu_link | default: '#' }}">
+                    {{ block.settings.dm_menu_title }}
+                  </a>
+                </li>
+
+              {% when 'mega_menu' %}
+                <li>
+                  <a href="javascript:;" data-target="menu-{{ forloop.index }}">
+                    {{ block.settings.mm_menu_title }} <em class="fa-solid fa-chevron-right"></em>
+                  </a>
+                </li>
+            {% endcase %}
+          {% endif %}
+        {% endfor %}
+
+        {% for block in section.blocks %}
+          {% if forloop.index > 4 %}
+            {% case block.type %}
+  
+              {% when 'drop_menu' %}
+                <li>
+                  <a href="{{ block.settings.dm_menu_link | default: '#' }}">
+                    {{ block.settings.dm_menu_title }}
+                  </a>
+                </li>
+
+              {% when 'mega_menu_v2' %}
+                <li>
+                  <a href="javascript:;" data-target="menu-{{ forloop.index }}">
+                    {{ block.settings.dmm_menu_title }} <em class="fa-solid fa-chevron-right"></em>
+                  </a>
+                </li>                
+            {% endcase %}
+          {% endif %}
+        {% endfor %}        
+      </ul>
+    </div>
+
+    <!-- Mega Menu Subpanels -->
+    {% for block in section.blocks %}
+      {% if block.type == 'mega_menu' and forloop.index <= 10 %}
+        <div class="menu-panel level2" id="menu-{{ forloop.index }}">
+          <ul>
+            <li>
+              <a href="javascript:;" class="back-link" data-target="main-menu">
+                <em class="fa-solid fa-chevron-left"></em> Back
+              </a>
+            </li>
+
+            {% for i in (1..5) %}
+                {% assign bg_key = "im_bg_" | append: i %}
+                {% assign heading_key = "im_heading_" | append: i %}
+                {% assign menu_key = "im_menu_" | append: i %}
+                
+                {% assign bg = block.settings[bg_key] %}
+                {% assign heading = block.settings[heading_key] %}
+                {% assign menu_id = block.settings[menu_key] %}
+                {% assign menu_links = linklists[menu_id] %}
+
+                {% if heading or menu_links.links.size > 0 %}
+                  <li class="has-dropdown">
+                    <a href="javascript:;">
+                      {% if bg %}
+                        <img src="{{ bg | image_url }}" alt="">
+                      {% endif %}
+                      {{ heading }}
+                    </a>
+
+                    <div class="dropdown-content">
+                      {% if i == 1 %}
+                        <ul>
+                          <li>
+                            {% if block.settings.imi_heading %}
+                              <span class="d-block title">{{ block.settings.imi_heading }}</span>
+                            {% endif %}
+                            {% assign left_links = linklists[block.settings.sc_menu_links] %}
+                            {% if left_links.links.size > 0 %}
+                              <ul class="column-two">
+                                {% for link in left_links.links %}
+                                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                                {% endfor %}
+                              </ul>
+                            {% endif %}
+                          </li>
+                          <li>
+                            {% if block.settings.imi_heading_2 %}
+                              <span class="d-block title">{{ block.settings.imi_heading_2 }}</span>
+                            {% endif %}
+                            {% assign right_links = linklists[block.settings.sc_menu_links2] %}
+                            {% if right_links.links.size > 0 %}
+                              <ul class="column-two">
+                                {% for link in right_links.links %}
+                                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                                {% endfor %}
+                              </ul>
+                            {% endif %}
+                          </li>
+                        </ul>
+                      {% else %}
+                        {% if menu_links.links.size > 0 %}
+                          <ul>
+                            {% for link in menu_links.links %}
+                              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                            {% endfor %}
+                          </ul>
+                        {% endif %}
+                      {% endif %}
+                    </div>
+                  </li>
+                {% endif %}
+              {% endfor %}
+          </ul>
+
+          {% if block.settings.im_cta or block.settings.im_cta_heading or block.settings.im_cta_text %}
+            <a href="{{ block.settings.im_cta_link | default: 'javascript:;' }}" class="mg-action">
+              {% if block.settings.im_cta %}
+                <img src="{{ block.settings.im_cta | image_url }}" alt="cta">
+              {% endif %}
+              <div class="inner">
+                {% if block.settings.im_cta_heading %}
+                  <span class="d-block title">{{ block.settings.im_cta_heading }}</span>
+                {% endif %}
+                {% if block.settings.im_cta_text %}
+                  <span>{{ block.settings.im_cta_text }} <em class="fa-solid fa-arrow-right"></em></span>
+                {% endif %}
+              </div>
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    {% for block in section.blocks %}
+      {% if block.type == 'mega_menu_v2' and forloop.index <= 10 %}
+        <div class="menu-panel level2" id="menu-{{ forloop.index }}">
+          <ul>
+            <li>
+              <a href="javascript:;" class="back-link" data-target="main-menu">
+                <em class="fa-solid fa-chevron-left"></em> Back
+              </a>
+            </li>
+            <li>
+              {% for i in (1..5) %}
+                {% assign img_key = 'dmm_img_' | append: i %}
+                {% assign heading_key = 'dmm_heading_' | append: i %}
+                {% assign link_key = 'dmm_link_' | append: i %}
+
+                {% assign img = block.settings[img_key] %}
+                {% assign heading = block.settings[heading_key] %}
+                {% assign link = block.settings[link_key] %}
+
+                {% if heading != blank %}
+                  <a href="{{ link | default: 'javascript:;' }}">
+                    {% if img %}
+                      <img src="{{ img | image_url: width: 300 }}" alt="{{ heading | escape }}">
+                    {% endif %}
+                    {{ heading }}
+                  </a>
+                {% endif %}
+              {% endfor %}
+            </li>
+          </ul>
+
+          {% if block.settings.im_cta or block.settings.im_cta_heading or block.settings.im_cta_text %}
+            <a href="{{ block.settings.im_cta_link | default: 'javascript:;' }}" class="mg-action">
+              {% if block.settings.im_cta %}
+                <img src="{{ block.settings.im_cta | image_url: '300x' }}" alt="cta">
+              {% endif %}
+              <div class="inner">
+                {% if block.settings.im_cta_heading %}
+                  <span class="d-block title">{{ block.settings.im_cta_heading }}</span>
+                {% endif %}
+                {% if block.settings.im_cta_text %}
+                  <span>{{ block.settings.im_cta_text }} <em class="fa-solid fa-arrow-right"></em></span>
+                {% endif %}
+              </div>
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}    
+  </div>
+</div>
+
+    </div>
+</header>
+<div class="header-search">
+  <div class="container-fluid">
+    <div class="inner d-flex align-items-center">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="site-search">
+        <label for="search-f" class="visually-hidden">Search</label>
+        <input
+          id="search-f"
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="Search..."
+          autocomplete="off"
+          aria-label="Search site">
+        <!-- Optional filters: limit to products + better matching -->
+        <input type="hidden" name="type" value="product,article,page">
+        <input type="hidden" name="options[prefix]" value="last">
+        <button type="submit">
+          <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/search-dark.webp" alt="Search">
+        </button>
+      </form>
+      <button type="button" class="close-search">
+        <em class="fa-solid fa-xmark" aria-hidden="true"></em> <span>Close</span>
+      </button>
+    </div>
+  </div>
+</div>
+ 
+{% schema %}
+{
+  "name": "Header",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logodark",
+      "label": "Logo Dark"
+    }   
+  ],
+  "blocks": [
+    {
+      "type": "drop_menu",
+      "name": "Drop Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "dm_menu_title",
+          "label": "Menu Title"
+        },
+        {
+          "type": "url",
+          "id": "dm_menu_link",
+          "label": "Menu Link"
+        }
+      ]
+    },
+    {
+      "type": "mega_menu",
+      "name": "Mega Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "mm_menu_title",
+          "label": "Menu Title"
+        },
+        {
+          "type": "url",
+          "id": "mm_menu_link",
+          "label": "Menu Link"
+        },     
+        {
+          "type": "header",
+          "content": "Inner Menu 1"
+        },   
+        {
+          "type": "image_picker",
+          "id": "im_bg_1",
+          "label": "Background"
+        },        
+        {
+          "type": "text",
+          "id": "im_heading_1",
+          "label": "Main Heading"
+        },        
+        {
+          "type": "text",
+          "id": "imi_heading",
+          "label": "Heading Left"
+        },
+        {
+          "type": "link_list",
+          "id": "sc_menu_links",
+          "label": "Choose Menu - Left"
+        },  
+        {
+          "type": "text",
+          "id": "imi_heading_2",
+          "label": "Heading Right"
+        },
+        {
+          "type": "link_list",
+          "id": "sc_menu_links2",
+          "label": "Choose Menu - Right"
+        },
+        {
+          "type": "header",
+          "content": "Inner Menu 2"
+        },   
+        {
+          "type": "image_picker",
+          "id": "im_bg_2",
+          "label": "Background"
+        },        
+        {
+          "type": "text",
+          "id": "im_heading_2",
+          "label": "Heading"
+        },        
+        {
+          "type": "link_list",
+          "id": "im_menu_2",
+          "label": "Choose Menu - Left"
+        },          
+        {
+          "type": "header",
+          "content": "Inner Menu 3"
+        },   
+        {
+          "type": "image_picker",
+          "id": "im_bg_3",
+          "label": "Background"
+        },        
+        {
+          "type": "text",
+          "id": "im_heading_3",
+          "label": "Heading"
+        },        
+        {
+          "type": "link_list",
+          "id": "im_menu_3",
+          "label": "Choose Menu - Left"
+        },     
+        {
+          "type": "header",
+          "content": "Inner Menu 4"
+        },   
+        {
+          "type": "image_picker",
+          "id": "im_bg_4",
+          "label": "Background"
+        },        
+        {
+          "type": "text",
+          "id": "im_heading_4",
+          "label": "Heading"
+        },        
+        {
+          "type": "link_list",
+          "id": "im_menu_4",
+          "label": "Choose Menu - Left"
+        },     
+        {
+          "type": "header",
+          "content": "Inner Menu 5"
+        },   
+        {
+          "type": "image_picker",
+          "id": "im_bg_5",
+          "label": "Background"
+        },        
+        {
+          "type": "text",
+          "id": "im_heading_5",
+          "label": "Heading"
+        },        
+        {
+          "type": "link_list",
+          "id": "im_menu_5",
+          "label": "Choose Menu - Left"
+        },
+        {
+          "type": "header",
+          "content": "CTA"
+        },        
+        {
+          "type": "image_picker",
+          "id": "im_cta",
+          "label": "Background"
+        },   
+        {
+          "type": "text",
+          "id": "im_cta_heading",
+          "label": "Heading"
+        },        
+        {
+          "type": "text",
+          "id": "im_cta_text",
+          "label": "Link Text"
+        },         
+        {
+          "type": "url",
+          "id": "im_cta_link",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "mega_menu_v2",
+      "name": "Mega Menu / v2",
+      "settings": [
+        {
+          "type": "text",
+          "id": "dmm_menu_title",
+          "label": "Menu Title"
+        },
+        {
+          "type": "url",
+          "id": "dmm_menu_link",
+          "label": "Menu Link"
+        },
+        {
+          "type": "header",
+          "content": "Block 1"
+        },           
+        {
+          "type": "image_picker",
+          "id": "dmm_img_1",
+          "label": "Background"
+        },        
+        {
+          "type": "text",
+          "id": "dmm_heading_1",
+          "label": "Heading"
+        },
+        {
+          "type": "url",
+          "id": "dmm_link_1",
+          "label": "Link"
+        },               
+        {
+          "type": "header",
+          "content": "Block 2"
+        },           
+        {
+          "type": "image_picker",
+          "id": "dmm_img_2",
+          "label": "Background"
+        },        
+        {
+          "type": "text",
+          "id": "dmm_heading_2",
+          "label": "Heading"
+        },      
+        {
+          "type": "url",
+          "id": "dmm_link_2",
+          "label": "Link"
+        },              
+        {
+          "type": "header",
+          "content": "Block 3"
+        },           
+        {
+          "type": "image_picker",
+          "id": "dmm_img_3",
+          "label": "Background"
+        },        
+        {
+          "type": "text",
+          "id": "dmm_heading_3",
+          "label": "Heading"
+        },          
+        {
+          "type": "url",
+          "id": "dmm_link_3",
+          "label": "Link"
+        },          
+        {
+          "type": "header",
+          "content": "Block 4"
+        },           
+        {
+          "type": "image_picker",
+          "id": "dmm_img_4",
+          "label": "Background"
+        },        
+        {
+          "type": "text",
+          "id": "dmm_heading_4",
+          "label": "Heading"
+        },         
+        {
+          "type": "url",
+          "id": "dmm_link_4",
+          "label": "Link"
+        },           
+        {
+          "type": "header",
+          "content": "Block 5"
+        },           
+        {
+          "type": "image_picker",
+          "id": "dmm_img_5",
+          "label": "Background"
+        },        
+        {
+          "type": "text",
+          "id": "dmm_heading_5",
+          "label": "Heading"
+        },
+        {
+          "type": "url",
+          "id": "dmm_link_5",
+          "label": "Link"
+        }                                             
+      ]
+    }    
+  ],
+  "max_blocks": 15,  
+  "presets": [
+    {
+      "name": "Header",
+      "category": "Header",
+      "blocks": [
+        {
+          "type": "drop_menu"
+        },
+        {
+          "type": "mega_menu"
+        }
+      ]      
+    }
+  ]
+}
+{% endschema %}

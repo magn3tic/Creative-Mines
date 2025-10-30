@@ -1,0 +1,5 @@
+{% if cart.item_count > 0 %}
+  <span class="cart-count-badge badge badge-circle" data-count="{{ cart.item_count }}">
+    {{ cart.item_count }}
+  </span>
+{% endif %}

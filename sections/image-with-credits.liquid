@@ -1,0 +1,179 @@
+<!-- Content Start -->
+<div class="scroll-pin-image-area desktop d-none d-md-block">
+  <div class="inner">
+    {% if section.settings.image != blank %}
+      <img src="{{ section.settings.image | img_url: 'master' }}" alt="image">
+    {% endif %}
+
+    {% for block in section.blocks %}
+      {% if block.type == 'tooltip' %}
+        <div class="trigger-tooltip" style="left: {{ block.settings.pos_x }}%; top: {{ block.settings.pos_y }}%;">
+          <div class="trigger-pin">
+            <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/plus-minus.webp" alt="icon">
+          </div>
+          <div class="trigger-content">
+            {{ block.settings.tooltipcontent }}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    {% if section.settings.architect != blank or section.settings.builder != blank or section.settings.interior != blank or section.settings.engineer != blank or section.settings.design_studio != blank or section.settings.project != blank %}
+      <div class="photo-credit">
+        <div class="pc-wrapper">
+          <ul>
+            {% if section.settings.architect != blank %}
+              <li>Architect – {{ section.settings.architect }}</li>
+            {% endif %}
+            {% if section.settings.builder != blank %}
+              <li>Builder – {{ section.settings.builder }}</li>
+            {% endif %}
+            {% if section.settings.interior != blank %}
+              <li>Interior Design – {{ section.settings.interior }}</li>
+            {% endif %}
+            {% if section.settings.engineer != blank %}
+              <li>Structural Engineers – {{ section.settings.engineer }}</li>
+            {% endif %}
+          </ul>
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+          <p>
+            {% if section.settings.design_studio != blank %}
+              <span><strong>Design Studio:</strong> {{ section.settings.design_studio }}</span>
+            {% endif %}
+            {% if section.settings.project != blank %}
+              <span><strong>Project:</strong> {{ section.settings.project }}</span>
+            {% endif %}
+          </p>
+          <em class="fa-solid fa-chevron-up"></em>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="scroll-pin-image-area d-md-none">
+  <div class="inner">
+    {% if section.settings.image != blank %}
+      <img src="{{ section.settings.image | img_url: 'master' }}" alt="image">
+    {% endif %}
+
+    {% if section.settings.architect != blank or section.settings.builder != blank or section.settings.interior != blank or section.settings.engineer != blank or section.settings.design_studio != blank or section.settings.project != blank %}
+      <div class="photo-credit">
+        <div class="pc-wrapper">
+          <ul>
+            {% if section.settings.architect != blank %}
+              <li>Architect – {{ section.settings.architect }}</li>
+            {% endif %}
+            {% if section.settings.builder != blank %}
+              <li>Builder – {{ section.settings.builder }}</li>
+            {% endif %}
+            {% if section.settings.interior != blank %}
+              <li>Interior Design – {{ section.settings.interior }}</li>
+            {% endif %}
+            {% if section.settings.engineer != blank %}
+              <li>Structural Engineers – {{ section.settings.engineer }}</li>
+            {% endif %}
+          </ul>
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+          <p>
+            {% if section.settings.design_studio != blank %}
+              <span><strong>Design Studio:</strong> {{ section.settings.design_studio }}</span>
+            {% endif %}
+            {% if section.settings.project != blank %}
+              <span><strong>Project:</strong> {{ section.settings.project }}</span>
+            {% endif %}
+          </p>
+          <em class="fa-solid fa-chevron-up"></em>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+<br>
+<br>
+<br>
+<!-- Content End -->
+
+{% schema %}
+{
+  "name": "Image with Credits",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Main Image"
+    },
+    {
+      "type": "text",
+      "id": "architect",
+      "label": "Architect"
+    },
+    {
+      "type": "text",
+      "id": "builder",
+      "label": "Builder"
+    },
+    {
+      "type": "text",
+      "id": "interior",
+      "label": "Interior Designer"
+    },
+    {
+      "type": "text",
+      "id": "engineer",
+      "label": "Structural Engineer"
+    },
+    {
+      "type": "text",
+      "id": "design_studio",
+      "label": "Design Studio"
+    },
+    {
+      "type": "text",
+      "id": "project",
+      "label": "Project"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tooltip",
+      "name": "Tooltip Pin",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "tooltipcontent",
+          "label": "Content"
+        },
+        {
+          "type": "range",
+          "id": "pos_x",
+          "label": "Position X (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "pos_y",
+          "label": "Position Y (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50
+        }
+      ]
+    }
+  ],  
+  "presets": [
+    {
+      "name": "Image with Credits",
+      "category": "Media",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,170 @@
+<section class="content-area featured-projects">
+  <div class="container-fluid">
+
+    <!-- Top Filters & Sort -->
+    <div class="featured-project-top">
+      <div class="row align-items-center">
+        <div class="col-lg-9 col-sm-8">
+          {% comment %} Auto-generate filters from project block tags {% endcomment %}
+          {% assign all_tags = '' %}
+          {% for block in section.blocks %}
+            {% if block.settings.tags != blank %}
+              {% assign block_tags = block.settings.tags | split: ',' %}
+              {% for tag in block_tags %}
+                {% assign tag_trimmed = tag | strip %}
+                {% unless all_tags contains tag_trimmed %}
+                  {% assign all_tags = all_tags | append: tag_trimmed | append: ',' %}
+                {% endunless %}
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+          {% assign filter_tags = all_tags | split: ',' | uniq %}
+
+          {% if filter_tags.size > 1 %}
+          <div class="featured-project-btn">
+            <h2 class="h4">Filter By:</h2>
+            <div class="featured-project-menu">
+              <ul>
+                <li><a href="javascript:;" data-filter="all" class="active">All</a></li>
+                {% for tag in filter_tags %}
+                  {% unless tag == '' %}
+                    <li><a href="javascript:;" data-filter="{{ tag | handleize }}">{{ tag }}</a></li>
+                  {% endunless %}
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="col-lg-3 col-sm-4">
+          <div class="featured-project-filter text-end">
+            <label for="casetype">Sort By:</label>
+            <select id="casetype">
+              <option value="newest">Newest</option>
+              <option value="common">Common</option>
+              <option value="popular">Popular</option>
+              <option value="most-popular">Most Popular</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Grid -->
+    <div class="featured-project-inner">
+      <div class="row project-grid">
+        {% for block in section.blocks %}
+          {% assign tags = block.settings.tags | split: ',' %}
+          <div class="col-lg-4 col-sm-6 project-item 
+            {% for tag in tags %}
+              {{ tag | strip | handleize }}
+            {% endfor %}">
+            
+            <a href="{{ block.settings.link }}" class="single-featured-box">
+              <div class="content-image">
+                {% if block.settings.image != blank %}
+                  <img src="{{ block.settings.image | img_url: '800x' }}" alt="{{ block.settings.title | escape }}">
+                {% endif %}
+              </div>
+              <div class="content-text">
+                {% if block.settings.title != blank %}
+                  <h3 class="heading">{{ block.settings.title }}</h3>
+                {% endif %}
+                {% if block.settings.description != blank %}
+                  <p>{{ block.settings.description }}</p>
+                {% endif %}
+                <ul>
+                  {% if block.settings.architect != blank %}<li><span>Architect - {{ block.settings.architect }}</span></li>{% endif %}
+                  {% if block.settings.builder != blank %}<li><span>Builder - {{ block.settings.builder }}</span></li>{% endif %}
+                  {% if block.settings.interior != blank %}<li><span>Interior Design - {{ block.settings.interior }}</span></li>{% endif %}
+                  {% if block.settings.structural != blank %}<li><span>Structural Engineers - {{ block.settings.structural }}</span></li>{% endif %}
+                  {% if block.settings.photography != blank %}<li><span>Photography - {{ block.settings.photography }}</span></li>{% endif %}
+                </ul>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Load More -->
+      <div class="blog-all-action text-center">
+        <a href="javascript:;" class="cta-btn btn_default load-more-projects">Load More</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Projects Listing",
+  "blocks": [
+    {
+      "type": "project",
+      "name": "Project",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Project Image" },
+        { "type": "text", "id": "title", "label": "Project Title" },
+        { "type": "textarea", "id": "description", "label": "Short Description" },
+        { "type": "text", "id": "architect", "label": "Architect" },
+        { "type": "text", "id": "builder", "label": "Builder" },
+        { "type": "text", "id": "interior", "label": "Interior Design" },
+        { "type": "text", "id": "structural", "label": "Structural Engineers" },
+        { "type": "text", "id": "photography", "label": "Photography" },
+        { "type": "text", "id": "tags", "label": "Tags (comma separated)" },
+        { "type": "url", "id": "link", "label": "Project Link" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Featured Projects Listing" }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  const items = document.querySelectorAll('.project-item');
+  const loadMoreBtn = document.querySelector('.load-more-projects');
+  const filterLinks = document.querySelectorAll('.featured-project-menu a');
+
+  let visibleCount = 6;
+  const increment = 6;
+
+  items.forEach((item, i) => { item.style.display = (i < visibleCount) ? 'block' : 'none'; });
+
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', function() {
+      visibleCount += increment;
+      items.forEach((item, i) => { item.style.display = (i < visibleCount) ? 'block' : 'none'; });
+      if (visibleCount >= items.length) loadMoreBtn.style.display = 'none';
+    });
+  }
+
+  if (filterLinks.length > 0) {
+    filterLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const filter = link.dataset.filter;
+        filterLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+
+        let filteredItems = [];
+        items.forEach(item => {
+          if (filter === 'all' || item.classList.contains(filter)) {
+            filteredItems.push(item);
+          }
+        });
+
+        filteredItems.forEach((item, i) => { item.style.display = (i < visibleCount) ? 'block' : 'none'; });
+        items.forEach(item => { if (!filteredItems.includes(item)) item.style.display = 'none'; });
+
+        loadMoreBtn.style.display = (filteredItems.length > visibleCount) ? 'inline-block' : 'none';
+
+        visibleCount = 9;
+      });
+    });
+  }
+});
+{% endjavascript %}

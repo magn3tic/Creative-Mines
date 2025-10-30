@@ -1,0 +1,54 @@
+<!-- Icon Teaser Section -->
+<section class="content-area icon-teaser-area style2">
+  <div class="container-fluid">
+    {% if section.settings.heading != blank %}
+      <h2 class="h3 heading text-center">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="row">
+      {% for block in section.blocks %}
+        <div class="col-lg-3 col-sm-6">
+          <div class="icon-teaser style2">
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | img_url: '400x' }}" alt="{{ block.settings.title | escape }}">
+            {% endif %}
+            {% if block.settings.title != blank %}
+              <h3 class="h4">{{ block.settings.title }}</h3>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <p class="text">{{ block.settings.text }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Icon Teaser",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Why Creative Mines?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon_teaser",
+      "name": "Icon Teaser",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Icon Image" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Description" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Icon Teaser" }
+  ]
+}
+{% endschema %}

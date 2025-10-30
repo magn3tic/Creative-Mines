@@ -1,0 +1,125 @@
+<section class="page-banner-area alt no-height">
+  {% if article.image %}
+    <img 
+      src="{{ article.image | img_url: '2000x' }}" 
+      alt="{{ article.title }}" 
+      class="bg">
+  {% endif %}
+  <div class="banner-inner">
+    <div class="container-fluid">
+      <div class="banner-text blog-banner">
+        <h1 class="banner-heading alt">{{ article.title }}</h1>
+        <span class="date">{{ article.published_at | date: "%B %d, %Y" }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-area pt-0">
+  <div class="container">
+    <div class="blog-details-inner">
+      <div class="content-text">
+        {{ article.content }}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-area dark_bg">
+  <div class="container-fluid">
+    <h2 class="h3 text_white">
+      {{ section.settings.related_heading }}
+    </h2>
+
+    <div class="three-column-slider">
+      {% assign limit = section.settings.related_limit | default: 3 %}
+      {% assign shown = 0 %}
+
+      {%- comment -%}
+        First loop: try to show up to `limit` related posts (excluding current).
+      {%- endcomment -%}
+      {% for other in blog.articles %}
+        {% if other.id != article.id and shown < limit %}
+          <div class="slide">
+            <a href="{{ other.url }}" class="single-blog-box">
+              {% if other.image %}
+                <div class="content-image">
+                  <img src="{{ other.image | img_url: '800x' }}" alt="{{ other.title }}">
+                </div>
+              {% endif %}
+              <div class="content-text">
+                <h3 class="heading text_white">{{ other.title }}</h3>
+                <span class="date">{{ other.published_at | date: "%B %d, %Y" }}</span>
+                <p>{{ other.excerpt_or_content | strip_html | truncate: 150 }}</p>
+              </div>
+            </a>
+          </div>
+          {% assign shown = shown | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+
+      {%- comment -%}
+        If not enough shown, pull random filler posts
+      {%- endcomment -%}
+      {% if shown < limit %}
+        {% assign fillers = blog.articles | sample: limit %}
+        {% for filler in fillers %}
+          {% if filler.id != article.id and shown < limit %}
+            <div class="slide">
+              <a href="{{ filler.url }}" class="single-blog-box">
+                {% if filler.image %}
+                  <div class="content-image">
+                    <img src="{{ filler.image | img_url: '800x' }}" alt="{{ filler.title }}">
+                  </div>
+                {% endif %}
+                <div class="content-text">
+                  <h3 class="heading text_white">{{ filler.title }}</h3>
+                  <span class="date">{{ filler.published_at | date: "%B %d, %Y" }}</span>
+                  <p>{{ filler.excerpt_or_content | strip_html | truncate: 150 }}</p>
+                </div>
+              </a>
+            </div>
+            {% assign shown = shown | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <div class="section-action text-center mt-lg-5 mt-4">
+      <a href="{{ blog.url }}" class="cta-btn btn_default">
+        {{ section.settings.view_all_text }}
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Article Main",
+  "settings": [
+    {
+      "type": "text",
+      "id": "related_heading",
+      "label": "Related posts heading",
+      "default": "Additional Posts"
+    },
+    {
+      "type": "number",
+      "id": "related_limit",
+      "label": "Number of related posts",
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View all button text",
+      "default": "View All"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article Main"
+    }
+  ]
+}
+{% endschema %}

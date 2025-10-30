@@ -1,0 +1,89 @@
+<!-- Commercial Representative Map Section -->
+<section class="content-area bg_dark-green">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-5">
+        <div class="content-text text-white location-heading">
+          {% if section.settings.heading != blank %}
+            <h2 class="h3 heading text-white">{{ section.settings.heading }}</h2>
+          {% endif %}
+          {% if section.settings.subheading != blank %}
+            <p>{{ section.settings.subheading }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="col-lg-7">
+        <div class="commercial-location-box">
+          {% if section.settings.map_image != blank %}
+            <img src="{{ section.settings.map_image | img_url: 'master' }}" alt="{{ section.settings.heading | escape }}">
+          {% endif %}
+
+          {% for block in section.blocks %}
+            <div class="trigger-tooltip {{ block.settings.position_class }}">
+                <div class="trigger-pin">
+                    <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/plus-minus.webp" alt="icon">
+                </div>
+              <div class="trigger-content">
+                {% if block.settings.name != blank %}
+                  <span class="title">{{ block.settings.name }}</span>
+                {% endif %}
+                <ul>
+                  {% if block.settings.email != blank %}
+                    <li>
+                      <a class="emailCopy" href="mailto:{{ block.settings.email }}">{{ block.settings.email }}</a>
+                    </li>
+                  {% endif %}
+                   <li><a href="javascript:;" class="clone"><img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/clone.webp"></a></li>
+                </ul>
+                {% if block.settings.phone != blank %}
+                  <p>{{ block.settings.phone }}</p>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Commercial Map",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Connect with a Territory Commercial Representative"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Find each representative by territory"
+    },
+    {
+      "type": "image_picker",
+      "id": "map_image",
+      "label": "Map Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "representative",
+      "name": "Representative Pin",
+      "settings": [
+        { "type": "text", "id": "position_class", "label": "Position Class (e.g. location-post1)" },
+        { "type": "text", "id": "name", "label": "Representative Name" },
+        { "type": "text", "id": "email", "label": "Email" },
+        { "type": "text", "id": "phone", "label": "Phone Number" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Commercial Map" }
+  ]
+}
+{% endschema %}

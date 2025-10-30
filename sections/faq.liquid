@@ -1,0 +1,190 @@
+<section class="content-area" data-aos="fade-up">
+  <div class="container ">
+    <div class="row">
+      <div class="col-md-4 col-sm-5">
+        <div>
+          {% if section.settings.heading != blank %}
+            <h2 class="h4">{{ section.settings.heading }}</h2>
+          {% endif %}
+          
+          {% assign all_categories = section.blocks | map: 'settings' | map: 'category' | uniq | sort %}
+
+          {% if section.settings.show_dropdown and all_categories.size > 0 %}
+            <!-- Mobile Dropdown -->
+            <div class="faq_filter d-md-none">
+              <select id="faqCategoryFilter">
+                <option value="All">All Topics</option>
+                {% for cat in all_categories %}
+                  <option value="{{ cat | escape }}">
+                    {% case cat %}
+                      {% when "option1" %}Design Options
+                      {% when "option2" %}Installation & Application
+                      {% when "option3" %}Technical Specifications
+                      {% when "option4" %}Product Details
+                      {% when "option5" %}Product Performance
+                      {% when "option6" %}Customization & Design Support
+                      {% when "option7" %}Environmental Benefits
+                      {% when "option8" %}How to Order
+                      {% when "option9" %}Pricing
+                      {% when "option10" %}Care & Maintenance
+                      {% else %}{{ cat }}
+                    {% endcase %}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Desktop Tabs -->
+            <div class="faq-category-tab d-none d-md-block">
+              <ul id="faqCategoryTabs">
+                <li><a href="javascript:;" data-category="All" class="active">All Topics</a></li>
+                {% for cat in all_categories %}
+                  <li>
+                    <a href="javascript:;" data-category="{{ cat | escape }}">
+                      {% case cat %}
+                        {% when "option1" %}Design Options
+                        {% when "option2" %}Installation & Application
+                        {% when "option3" %}Technical Specifications
+                        {% when "option4" %}Product Details
+                        {% when "option5" %}Product Performance
+                        {% when "option6" %}Customization & Design Support
+                        {% when "option7" %}Environmental Benefits
+                        {% when "option8" %}How to Order
+                        {% when "option9" %}Pricing
+                        {% when "option10" %}Care & Maintenance
+                        {% else %}{{ cat }}
+                      {% endcase %}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          
+        </div>
+      </div>
+
+      <div class="col-md-8 col-sm-7">
+        <div class="pr-accordion ps-lg-5" id="accordionExample">
+          {% for block in section.blocks %}
+            {% assign uid = block.id %}
+            <div class="accordion-item" data-category="{{ block.settings.category }}">
+              <div class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ uid }}" aria-expanded="false" aria-controls="{{ uid }}">
+                  {{ block.settings.question }}
+                  <em class="fa-solid fa-chevron-down"></em>
+                </button>
+              </div>
+              <div id="{{ uid }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <div class="short-content">
+                    {{ block.settings.answer }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const filter = document.getElementById("faqCategoryFilter");
+    const tabs = document.querySelectorAll("#faqCategoryTabs a");
+    const items = document.querySelectorAll(".accordion-item");
+
+    function filterFaq(selected) {
+      items.forEach(item => {
+        const category = item.getAttribute("data-category");
+        item.style.display = (selected === "All" || selected === category) ? "block" : "none";
+      });
+    }
+
+    if (filter) {
+      filter.addEventListener("change", function () {
+        filterFaq(this.value);
+        tabs.forEach(tab => tab.classList.remove("active"));
+        document.querySelector(`#faqCategoryTabs a[data-category="${this.value}"]`)?.classList.add("active");
+      });
+    }
+
+    if (tabs.length) {
+      tabs.forEach(tab => {
+        tab.addEventListener("click", function () {
+          tabs.forEach(t => t.classList.remove("active"));
+          this.classList.add("active");
+          filterFaq(this.dataset.category);
+          if (filter) filter.value = this.dataset.category;
+        });
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently asked questions"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dropdown",
+      "label": "Show Category Dropdown",
+      "default": true
+    }    
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Category",
+          "options": [
+            { "value": "option1", "label": "Design Options" },
+            { "value": "option2", "label": "Installation & Application" },
+            { "value": "option3", "label": "Technical Specifications" },
+            { "value": "option4", "label": "Product Details" },
+            { "value": "option5", "label": "Product Performance" },
+            { "value": "option6", "label": "Customization & Design Support" },
+            { "value": "option7", "label": "Environmental Benefits" },
+            { "value": "option8", "label": "How to Order" },
+            { "value": "option9", "label": "Pricing" },
+            { "value": "option10", "label": "Care & Maintenance" }
+          ]
+        }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        
+      ]
+    }
+  ]
+}
+{% endschema %}

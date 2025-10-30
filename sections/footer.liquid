@@ -1,0 +1,270 @@
+<footer class="footer-area">
+  <div class="container-fluid">
+    <div class="row align-items-center justify-content-between">
+      <div class="col-lg-3">
+        <div class="footer-left">
+          <div class="footer-logo">
+            {% if section.settings.footer_logo %}
+              <a href="{{ routes.root_url }}">
+                <img src="{{ section.settings.footer_logo | image_url }}" alt="footer logo">
+              </a>
+            {% endif %}
+          </div>
+          {% for block in section.blocks %}
+            {% if block.type == 'social_links' %}
+              <ul class="footer-social">
+                {% if block.settings.social_instagram %}<li><a href="{{ block.settings.social_instagram }}"><img src="{{ 'instagram.webp' | asset_url }}" alt="icon"></a></li>{% endif %}
+                {% if block.settings.social_facebook %}<li><a href="{{ block.settings.social_facebook }}"><img src="{{ 'facebook.webp' | asset_url }}" alt="icon"></a></li>{% endif %}
+                {% if block.settings.social_youtube %}<li><a href="{{ block.settings.social_youtube }}"><img src="{{ 'youtube.webp' | asset_url }}" alt="icon"></a></li>{% endif %}
+                {% if block.settings.social_pinterest %}<li><a href="{{ block.settings.social_pinterest }}"><img src="{{ 'pinterest.webp' | asset_url }}" alt="icon"></a></li>{% endif %}
+                {% if block.settings.social_linkedin %}<li><a href="{{ block.settings.social_linkedin }}"><img src="{{ 'linkedin.webp' | asset_url }}" alt="icon"></a></li>{% endif %}
+                {% if block.settings.social_extra %}<li><a href="{{ block.settings.social_extra }}"><img src="{{ 'extra.webp' | asset_url }}" alt="icon"></a></li>{% endif %}
+              </ul>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="footer-right">
+          <div class="row justify-content-between">
+            <div class="col-lg-6 col-sm-6">
+              <div class="row">
+                <div class="col-6">
+                  <div class="footer-links">
+                    {% if section.settings.resources_heading != blank %}
+                        <span class="d-block footer_title">{{ section.settings.resources_heading }}</span>
+                    {% endif %}
+                 
+                    <ul>
+                      {% for link in linklists[section.settings.resources_menu].links %}
+                        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="footer-links">
+                    {% if section.settings.connect_heading != blank %}
+                        <span class="d-block footer_title">{{ section.settings.connect_heading }}</span>
+                    {% endif %}                    
+                    <ul>
+                      {% for link in linklists[section.settings.connect_menu].links %}
+                        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-5 col-sm-6">
+              {% for block in section.blocks %}
+                {% if block.type == 'newsletter' %}
+                  <div class="footer-newsletter">
+                    {% if block.settings.newsletter_heading != blank %}
+                      <span class="d-block footer_title">{{ block.settings.newsletter_heading }}</span>
+                    {% endif %}
+                    {% if block.settings.newsletter_text != blank %}
+                      <p>{{ block.settings.newsletter_text }}</p>
+                    {% endif %}
+                    
+                    {% form 'customer', class: 'newsletter-form' %}
+                      <input type="hidden" name="contact[tags]" value="newsletter">
+                      
+                      {{ form.errors | default_errors }}
+                      
+                      {% if form.posted_successfully? %}
+                        <p class="alert alert-success">
+                          {{ 'general.newsletter.confirmation_text' | t }}
+                        </p>
+                      {% endif %}
+                    
+                      <label for="newsletter-email" hidden>Email</label>
+                      <input 
+                        type="email" 
+                        name="contact[email]" 
+                        placeholder="Email Address" 
+                        id="newsletter-email" 
+                        required>
+                        
+                      <input type="submit" value="Join">
+                    {% endform %}
+                  
+                    {% if block.settings.payment_image %}
+                      <div class="footer-payments">
+                        <img src="{{ block.settings.payment_image | image_url }}" alt="Payments">
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <div class="row align-items-center justify-content-between">
+              <div class="col-lg-6">
+                <div class="left">
+                  {% for link in linklists[section.settings.policy_links].links %}
+                    <a href="{{ link.url }}">{{ link.title }}</a>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-lg-5">
+                <div class="right">
+                  <div class="row align-items-center">
+                    <div class="col-lg-6">
+                      <a href="tel:{{ section.settings.phone_number | replace: '(', '' | replace: ')', '' | replace: ' ', '' | replace: '-', '' }}">{{ section.settings.phone_number }}</a>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="text-lg-end text-center">
+                        {% for block in section.blocks %}
+                          {% if block.type == 'copyright' %}
+                            <p>{{ block.settings.copyright_text }}</p>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "limit": 1,
+  "tag": "footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "footer_logo",
+      "label": "Footer Logo"
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Phone Number",
+      "default": "(800) 453-7040"
+    },
+    {
+      "type": "header",
+      "content": "Resources Menu"
+    },    
+    {
+      "type": "text",
+      "id": "resources_heading",
+      "label": "Heading"
+    },
+    {
+      "type": "link_list",
+      "id": "resources_menu",
+      "label": "Choose Menu"
+    },
+    {
+      "type": "header",
+      "content": "Connect Menu"
+    },    
+    {
+      "type": "text",
+      "id": "connect_heading",
+      "label": "Heading"
+    },    
+    {
+      "type": "link_list",
+      "id": "connect_menu",
+      "label": "Choose Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "policy_links",
+      "label": "Policy Links"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "newsletter_heading",
+          "label": "Newsletter Heading",
+          "default": "Join our trade community"
+        },
+        {
+          "type": "textarea",
+          "id": "newsletter_text",
+          "label": "Newsletter Description",
+          "default": "Be the first to know about new product releases, promotions, and project features"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment_image",
+          "label": "Payment Icons Image"
+        }
+      ]
+    },
+    {
+      "type": "social_links",
+      "name": "Social Links",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "url",
+          "id": "social_instagram",
+          "label": "Instagram URL"
+        },
+        {
+          "type": "url",
+          "id": "social_facebook",
+          "label": "Facebook URL"
+        },
+        {
+          "type": "url",
+          "id": "social_youtube",
+          "label": "YouTube URL"
+        },
+        {
+          "type": "url",
+          "id": "social_pinterest",
+          "label": "Pinterest URL"
+        },
+        {
+          "type": "url",
+          "id": "social_linkedin",
+          "label": "LinkedIn URL"
+        },
+        {
+          "type": "url",
+          "id": "social_extra",
+          "label": "Extra Icon URL"
+        }
+      ]
+    },
+    {
+      "type": "copyright",
+      "name": "Copyright",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "copyright_text",
+          "label": "Copyright Text",
+          "default": "©2025 Creative Mines, LLC."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer"
+    }
+  ]
+}
+{% endschema %}

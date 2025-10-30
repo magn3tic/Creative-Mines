@@ -1,0 +1,261 @@
+<section class="content-area bg_white">
+  <div class="container-fluid">
+    <div class="content-text">
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.subheading }}</p>
+    </div>
+
+    <div class="trade-form-inner">
+      <form id="b2b-signup-form" class="trade-signup-form">
+        <div class="row">
+          <!-- Column 1 -->
+          <div class="col-lg-5">
+            <div class="trade-form style1">
+              <ul class="row">
+                <li class="col-lg-6 col-sm-6">
+                  <label for="first_name">FIRST NAME</label>
+                  <input type="text" name="customer[first_name]" id="first_name" required>
+                </li>
+                <li class="col-lg-6 col-sm-6">
+                  <label for="last_name">LAST NAME</label>
+                  <input type="text" name="customer[last_name]" id="last_name" required>
+                </li>
+                <li class="col-lg-6 col-sm-6">
+                  <label for="company">COMPANY NAME</label>
+                  <input type="text" name="customer[note][company]" id="company" required>
+                </li>
+                <li class="col-lg-6 col-sm-6">
+                  <label for="tax_id">TAX ID</label>
+                  <input type="text" name="customer[note][tax_id]" id="tax_id" required>
+                </li>
+                <li class="col-lg-6 col-sm-6">
+                  <label for="email">EMAIL</label>
+                  <input type="email" name="customer[email]" id="email" required>
+                </li>
+                <li class="col-lg-6 col-sm-6">
+                  <label for="job_title">JOB TITLE</label>
+                  <input type="text" name="customer[note][job_title]" id="job_title" required>
+                </li>
+                <li class="col-lg-6 col-sm-6">
+                  <label for="phone">PHONE NUMBER*</label>
+                  <input type="tel" name="customer[phone]" placeholder="+18004537040" id="phone" required>
+                </li>
+                <li class="col-lg-6 col-sm-6">
+                  <label for="trade_type">WHAT’S YOUR TRADE*</label>
+                  <select name="customer[note][trade_type]" id="trade_type" required>
+                    <option value="">Select</option>
+                    <option value="Architect">Architect</option>
+                    <option value="Interior Designer">Interior Designer</option>
+                    <option value="Builder/Developer">Builder/Developer</option>
+                    <option value="Contractor">Contractor</option>
+                    <option value="Installer">Installer</option>
+                  </select>
+                </li>
+                <li class="col-lg-6 col-sm-6">
+                  <label for="website">WEBSITE</label>
+                  <input type="text" name="customer[website]" id="website" required>
+                </li>
+                <li class="col-lg-6 col-sm-6">
+                  <label for="insta">INSTAGRAM</label>
+                  <input type="text" name="customer[insta]" id="insta" required>
+                </li>                
+              </ul>
+            </div>
+          </div>
+
+          <!-- Column 2 -->
+          <div class="col-lg-4">
+            <div class="trade-form style2">
+              <ul class="row">
+                <li class="col-lg-12 col-sm-6">
+                  <label for="address1">STREET ADDRESS</label>
+                  <input type="text" name="customer[addresses][0][address1]" id="address1">
+                </li>
+                <li class="col-lg-12 col-sm-6">
+                  <label for="address1">STREET ADDRESS 2</label>
+                  <input type="text" name="customer[addresses][0][address2]" id="address2">
+                </li>                
+                <li class="col-lg-12 col-sm-6">
+                  <label for="city">CITY</label>
+                  <input type="text" name="customer[addresses][0][city]" id="city">
+                </li>
+                <li class="col-lg-12 col-sm-6">
+                  <label for="country">COUNTRY</label>
+                  <input type="text" name="customer[addresses][0][country]" id="country">
+                </li>
+                <li class="col-lg-8 col-sm-6 margin">
+                  <label for="province">STATE</label>
+                  <input type="text" name="customer[addresses][0][province]" id="province">
+                </li>
+                <li class="col-lg-4 col-sm-6">
+                  <label for="zip">ZIP</label>
+                  <input type="text" name="customer[addresses][0][zip]" id="zip">
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Column 3 -->
+          <div class="col-lg-3">
+            <div class="trade-form style3">
+              <ul class="row">
+                <li class="col-lg-12 col-sm-6 password-wrapper">
+                  <label for="einlicense">UPLOAD EIN/BUSINESS LICENSE</label>
+                  <input id="einlicense" type="file" name="customer[license]" required>
+                </li>                
+                <li class="col-lg-12 col-sm-6 password-wrapper">
+                  <label for="password">PASSWORD</label>
+                  <div class="password-container">
+                    <input id="password" type="password" name="customer[password]" required>
+                    <span toggle="#password" class="toggle-password">
+                      <i class="fa-solid fa-eye-slash"></i>
+                    </span>
+                  </div>
+                </li>
+                <li class="col-lg-12 col-sm-6">
+                  <label for="tax_exempt">TAX EXEMPT</label>
+                  <select name="customer[note][tax_exempt]" id="tax_exempt">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit + Consents -->
+        <div class="trade-form-action">
+          <div class="trade-form-btn text-sm-end text-sm-start">
+            <button type="submit" class="cta-btn btn_default">Submit</button>
+            <div class="concent cl-action">
+              <input type="checkbox" name="customer[accepts_marketing]" id="newsletter">
+              <label for="newsletter">Subscribe to our newsletter</label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.querySelector(".toggle-password");
+  const icon = toggle.querySelector("i");
+  const passwordField = document.querySelector(toggle.getAttribute("toggle"));
+
+  toggle.addEventListener("click", () => {
+    const isHidden = passwordField.getAttribute("type") === "password";
+    passwordField.setAttribute("type", isHidden ? "text" : "password");
+    icon.classList.toggle("fa-eye");
+    icon.classList.toggle("fa-eye-slash");
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("b2b-signup-form");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    const payload = {
+      // Basic info
+      first_name: data["customer[first_name]"] || "",
+      last_name: data["customer[last_name]"] || "",
+      email: data["customer[email]"] || "",
+      password: data["customer[password]"] || "",
+      phone: data["customer[phone]"] || "",
+
+      // Company info
+      company: data["customer[note][company]"] || "",
+      tax_id: data["customer[note][tax_id]"] || "",
+      job_title: data["customer[note][job_title]"] || "",
+      trade_type: data["customer[note][trade_type]"] || "",
+      tax_exempt: data["customer[note][tax_exempt]"] || "",
+
+      // Web presence
+      website: data["customer[website]"] || "",
+      instagram: data["customer[insta]"] || "",
+
+      // Address info
+      address1: data["customer[addresses][0][address1]"] || "",
+      address2: data["customer[addresses][0][address2]"] || "",
+      city: data["customer[addresses][0][city]"] || "",
+      province: data["customer[addresses][0][province]"] || "",
+      country: data["customer[addresses][0][country]"] || "",
+      zip: data["customer[addresses][0][zip]"] || "",
+
+      // Marketing + files
+      accepts_marketing: data["customer[accepts_marketing]"] ? "Yes" : "No",
+      license_filename: form.querySelector("#einlicense")?.files[0]?.name || "",
+    };
+
+    // Optional: log to verify before sending
+    console.log("Submitting payload:", payload);
+
+    const btn = form.querySelector("button[type='submit']");
+    btn.disabled = true;
+    btn.textContent = "Submitting...";
+
+    try {
+      const res = await fetch("https://b2b-api.dkumar-18studios.workers.dev", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const json = await res.json();
+
+      if (res.ok && json.message === "Processed") {
+        form.style.display = "none";
+
+        const successBox = document.createElement("div");
+        successBox.className = "alert alert-success shadow p-4 rounded text-center mt-4";
+        successBox.innerHTML = `
+          <p class="mb-0">Thank you! Your application has been submitted for approval.</p>
+        `;
+        form.parentNode.appendChild(successBox);
+      } else {
+        alert("⚠️ Submission failed. Please try again or contact support.");
+        console.log(json);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("❌ Network error — please try again.");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Submit";
+    }
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Trade Program Form",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Form Heading",
+      "default": "Join the Creative Mines Trade Program"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Form Subheading",
+      "default": "Enjoy exclusive trade pricing, complimentary samples, and personalized support—all designed to help you bring your boldest visions to life."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trade Program Form"
+    }
+  ]
+}
+{% endschema %}

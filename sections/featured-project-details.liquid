@@ -1,0 +1,167 @@
+<!-- Featured Project Details Section -->
+<section class="page-banner-area commercial-project p-0">
+  <div class="commercial-page-banner">
+    {% for block in section.blocks %}
+      {% if block.type == 'banner' %}
+        <div>
+          <div class="commercial-banner-img">
+            {% if block.settings.video != blank %}
+              <video autoplay playsinline muted loop poster="{{ block.settings.poster | img_url: 'master' }}">
+                <source src="{{ block.settings.video }}" type="video/mp4">
+              </video>
+            {% elsif block.settings.image != blank %}
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.alt_text | escape }}">
+            {% endif %}
+            <div class="commercial-banner-text">
+              <div class="container-fluid">
+                <div class="row align-items-end">
+                  <div class="col-sm-5 order-sm-1 order-2">
+                    {% if block.settings.heading != blank %}
+                      <h2 class="banner-heading alt text-white">{{ block.settings.heading }}</h2>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="slider-nav-action">
+    <div class="commercial-page-banner-nav">
+      {% for block in section.blocks %}
+        {% if block.type == 'banner' and block.settings.image != blank %}
+          <div class="slide">
+            <div class="thumb-box">
+              <img src="{{ block.settings.image | img_url: '200x' }}" alt="{{ block.settings.alt_text | escape }}">
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Content Start -->
+<section class="content-area">
+  {% if section.settings.bcrumb_title != blank and section.settings.bcrumb_title != blank %}
+  <div class="container-fluid">
+        <div class="bcrumb">
+          <a href="{{ section.settings.bcrumb_title }}"><svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.62695 11.0469L0.602422 6.02187C0.569766 5.98927 0.543861 5.95054 0.526185 5.90791C0.50851 5.86528 0.499412 5.81959 0.499412 5.77344C0.499412 5.72729 0.50851 5.68159 0.526185 5.63896C0.543861 5.59633 0.569766 5.55761 0.602422 5.525L5.62695 0.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg> {{ section.settings.bcrumb_title }}</a>
+        </div>
+  </div>
+  {% endif %}
+
+  <div class="container">
+    <div class="content-text featured-project-details-text">
+      {% if section.settings.project_name != blank %}
+        <h2 class="heading">{{ section.settings.project_name }}</h2>
+      {% endif %}
+      
+      {% if section.settings.description != blank %}
+        <p>{{ section.settings.description }}</p>
+      {% endif %}
+
+      <div class="featured-project-info">
+        {% if section.settings.firm != blank %}
+          <div class="featured-project-info-box">
+            <span>FIRM</span>
+            <p>{{ section.settings.firm }}</p>
+          </div>
+        {% endif %}
+        {% if section.settings.installer != blank %}
+          <div class="featured-project-info-box">
+            <span>INSTALLER</span>
+            <p>{{ section.settings.installer }}</p>
+          </div>
+        {% endif %}
+        {% if section.settings.location != blank %}
+          <div class="featured-project-info-box">
+            <span>LOCATION</span>
+            <p>{{ section.settings.location }}</p>
+          </div>
+        {% endif %}
+      </div>
+
+      {% if section.settings.product_title != blank and section.settings.product_link != blank %}
+        <div class="featured-product-info">
+          <span>PRODUCT</span>
+          <a href="{{ section.settings.product_link }}">{{ section.settings.product_title }}</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+<!-- Content End -->
+
+{% schema %}
+{
+  "name": "Featured Project Details",
+  "settings": [
+   {
+      "type": "text",
+      "id": "bcrumb_title",
+      "label": "Breadcrumb Title"
+    },
+    {
+      "type": "url",
+      "id": "bcrumb_link",
+      "label": "Breadcrumb Link"
+    },    
+    {
+      "type": "text",
+      "id": "project_name",
+      "label": "Project Name",
+      "default": "Project Name"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Project Description"
+    },
+    {
+      "type": "text",
+      "id": "firm",
+      "label": "Firm"
+    },
+    {
+      "type": "text",
+      "id": "installer",
+      "label": "Installer"
+    },
+    {
+      "type": "text",
+      "id": "location",
+      "label": "Location"
+    },
+    {
+      "type": "text",
+      "id": "product_title",
+      "label": "Product Title"
+    },
+    {
+      "type": "url",
+      "id": "product_link",
+      "label": "Product Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner Slide",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Banner Image" },
+        { "type": "text", "id": "video", "label": "Video URL (.mp4)" },
+        { "type": "image_picker", "id": "poster", "label": "Video Poster (optional)" },
+        { "type": "text", "id": "alt_text", "label": "Alt Text" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Commercial Projects" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Featured Project Details" }
+  ]
+}
+{% endschema %}

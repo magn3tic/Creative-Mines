@@ -1,0 +1,125 @@
+<section class="content-area">
+  <div class="container">
+    <div class="row gx-lg-5 align-items-lg-center">
+      <div class="col-sm-6">
+        <div class="content-text">
+          {% if section.settings.heading != blank %}
+            <h2 class="h3">{{ section.settings.heading }}</h2>
+          {% endif %}
+          {% if section.settings.text != blank %}
+            <p>{{ section.settings.text }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="mt-calculator alt">
+          <span class="d-block title">Materials Calculator:</span>
+          <form>
+            <ul class="row gx-lg-2">
+              <li class="col-lg-6">
+                <label for="pr">Product</label>
+                <div class="mt-fields">
+                  <select id="pr">
+                    <option disabled selected>Select Product</option>
+                    {% for product in collections.all.products %}
+                      <option value="{{ product.handle }}">{{ product.title }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </li>
+              <li class="col-lg-6">
+                <label for="pr2">Color</label>
+                <div class="mt-fields">
+                  <select id="pr2">
+                    <option disabled selected>Select Color</option>
+                  </select>
+                </div>
+              </li>
+              <li class="col-lg-5">
+                <label for="sf">Square Ft. Needed</label>
+                <div class="mt-fields">
+                  <input id="sf" type="number" placeholder="200">
+                  <span class="pos_label">SF</span>
+                </div>
+              </li>
+              <li class="col-lg-5">
+                <label for="lf">Linear Ft. Needed</label>
+                <div class="mt-fields">
+                  <input id="lf" type="number" placeholder="24">
+                  <span class="pos_label">LF</span>
+                </div>
+              </li>
+              <li class="col-lg-2">
+                <label for="overage">Overage</label>
+                <div class="mt-fields">
+                  <select id="overage">
+                    <option>10%</option>
+                    <option>15%</option>
+                    <option>25%</option>
+                    <option>45%</option>
+                    <option>75%</option>
+                  </select>
+                </div>
+              </li>
+            </ul>
+            <button type="submit" class="cta-btn btn_default">Calculate</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const productSelect = document.getElementById('pr');
+    const colorSelect = document.getElementById('pr2');
+
+    productSelect.addEventListener('change', function () {
+      const handle = this.value;
+      const url = `/products/${handle}.js`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(product => {
+          colorSelect.innerHTML = '<option disabled selected>Select Color</option>';
+          product.variants.forEach(variant => {
+            const option = document.createElement('option');
+            option.value = variant.title;
+            option.textContent = variant.title;
+            colorSelect.appendChild(option);
+          });
+        })
+        .catch(error => {
+          console.error('Error loading product variants:', error);
+        });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Material Calculator",
+  "tag": "section",
+  "class": "content-area",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "How Much Product Do You Need?"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Intro Text",
+      "default": "Lorem ipsum dolor sit amet consectetur..."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Material Calculator",
+    }
+  ]
+}
+{% endschema %}

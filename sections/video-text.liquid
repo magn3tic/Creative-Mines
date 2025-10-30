@@ -1,0 +1,137 @@
+<section class="content-area {% if section.settings.style == 'style2' %}{% else %}green-shape-bg{% endif %}">
+  <div class="container-fluid">
+    <div class="story-video-box">
+      {% if section.settings.video_image != blank %}
+        <img src="{{ section.settings.video_image | img_url: 'master' }}" alt="video thumbnail">
+      {% endif %}
+      {% if section.settings.video_url != blank %}
+        <a href="{{ section.settings.video_url }}" data-lity>
+          <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/play-icon.webp" alt="Play">
+        </a>
+      {% endif %}
+    </div>
+
+    {% if section.settings.style == 'style1' %}
+    <div class="row align-items-md-center">
+      <div class="col-sm-6">
+        <div class="content-text text_white text-center pe-md-5">
+          {% if section.settings.heading != blank %}
+            <h2>{{ section.settings.heading }}</h2>
+          {% endif %}
+          {% if section.settings.text != blank %}
+            <p>{{ section.settings.text }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="icon-teaser-holder white-border">
+          {% for block in section.blocks %}
+            <div class="icon-teaser-item white-border" data-aos="fade-up" data-aos-delay="{{ forloop.index0 | times: 200 }}">
+              <div class="row align-items-center">
+                <div class="col-lg-4">
+                  <div class="left d-flex align-items-center">
+                    {% if block.settings.icon != blank %}
+                      <img src="{{ block.settings.icon | img_url: '100x' }}" alt="{{ block.settings.title }}">
+                    {% endif %}
+                    <span class="d-block title white">{{ block.settings.title }}</span>
+                  </div>
+                </div>
+                <div class="col-lg-8">
+                  <div class="right">
+                    <h3 class="heading h3 text_white">{{ block.settings.value }}</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% else %}
+      <div class="row">
+        <div class="col-md-7 col-xxl-5 mx-auto">
+          <div class="content-text text-center" data-aos="fade">
+            {% if section.settings.heading != blank %}
+              <h2>{{ section.settings.heading }}</h2>
+            {% endif %}
+            {% if section.settings.text != blank %}
+              <p>{{ section.settings.text }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}    
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Video/Text",
+  "settings": [
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Select Style",
+      "default": "style1",
+      "options": [
+        { "value": "style1", "label": "Style 1" },
+        { "value": "style2", "label": "Style 2" }
+      ]
+    },    
+    {
+      "type": "image_picker",
+      "id": "video_image",
+      "label": "Video Thumbnail"
+    },
+    {
+      "type": "url",
+      "id": "video_url",
+      "label": "Video URL"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Advancing Masonry Through Innovation"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "At Creative Mines, every material decision is intentional, driven by performance and design integrity."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon_item",
+      "name": "Icon Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Compressive Strength"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "3,800 PSI"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video/Text",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

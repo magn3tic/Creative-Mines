@@ -1,0 +1,105 @@
+<section class="h-tab-area{% if section.settings.sstyle == 'right' %} dark-shape-bg{% endif %} {% if section.settings.sstyle == 'center' %} alt{% endif %} {% if section.settings.sstyle == 'xtra' %} pt-0 mt-0 dark-shape-bg{% endif %}">
+  <div class="container smalls">
+    <div class="accordion-wrapper">
+      <ul class="accordion">
+        {% for block in section.blocks %}
+          <li class="tabs{% if forloop.first %} is-active{% endif %}">
+            <div class="tab-header">
+              {% if block.settings.icon != blank %}
+                <img src="{{ block.settings.icon | img_url: 'small' }}" alt="{{ block.settings.title | escape }}">
+              {% endif %}
+              {% if block.settings.title != blank %}
+                <div>{{ block.settings.title }}</div>
+              {% endif %}
+            </div>
+            <div class="tab-content">
+              <div class="tab-content-wrapper">
+                {% if block.settings.icon != blank %}
+                  <img src="{{ block.settings.icon | img_url: 'small' }}" alt="{{ block.settings.title | escape }}">
+                {% endif %}
+                {% if block.settings.title != blank %}
+                  <h3 class="heading">{{ block.settings.title }}</h3>
+                {% endif %}
+                {% if block.settings.description != blank %}
+                  <p>{{ block.settings.description }}</p>
+                {% endif %}
+              </div>
+              {% if block.settings.link_text != blank and block.settings.link_url != blank %}
+                <div class="action">
+                  <a href="{{ block.settings.link_url }}">
+                    {{ block.settings.link_text }}
+                    <em class="fa-solid fa-arrow-right"></em>
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Tabbed Accordion",
+  "tag": "section",
+  "settings": [
+      {
+        "type": "select",
+        "id": "sstyle",
+        "label": "Choose Style",
+        "default": "left",
+        "options": [
+          {"value": "left", "label": "Style One"},
+          {"value": "center", "label": "Style Two"},
+          {"value": "right", "label": "Style Three"},
+          {"value": "xtra", "label": "Style Four"}
+        ]
+      }    
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Tab Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Tab Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Tab content description here."
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "View Catalog"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tabbed Accordion",
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

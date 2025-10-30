@@ -1,0 +1,37 @@
+<section class="list-collections">
+  <div class="container">
+    <div class="row">
+      {% for collection in collections %}
+        <div class="col-lg-4 col-sm-6">
+          <div class="box style2">
+            <div class="inner">
+              <a href="{{ collection.url }}">
+                {% assign collection_image = collection.image %}
+                {% if collection_image == blank and collection.products_count > 0 %}
+                  {% assign collection_image = collection.products.first.featured_image %}
+                {% endif %}
+
+                {% if collection_image %}
+                  <img 
+                    src="{{ collection_image | img_url: '800x' }}" 
+                    alt="{{ collection.title | escape }}">
+                {% endif %}
+              </a>
+            </div>
+
+            <div class="text">
+              <h3 class="title">{{ collection.title }}</h3>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collections List",
+  "settings": []
+}
+{% endschema %}

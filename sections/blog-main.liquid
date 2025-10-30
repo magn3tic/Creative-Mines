@@ -1,0 +1,178 @@
+{% comment %}
+  Blog Main Section
+  - Banner image from blog metafield: custom.banner_image
+  - Tag menu from blog.tags
+  - 9 articles initially, then load more with button
+{% endcomment %}
+
+<section class="page-banner-area alt no-height">
+  {% if blog.metafields.custom.banner_image %}
+    <img 
+      src="{{ blog.metafields.custom.banner_image | img_url: '2000x' }}" 
+      alt="{{ blog.title }}" 
+      class="bg">
+  {% endif %}
+  <div class="banner-inner">
+    <div class="container-fluid">
+      <div class="row align-items-end">
+        <div class="col-lg-9">
+          <h1 class="banner-heading alt">
+            {% if current_tags and current_tags.size > 0 %}
+              {{ current_tags | join: ', ' }}
+            {% else %}
+              {{ blog.title }}
+            {% endif %}
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-area">
+  <div class="container-fluid">
+
+    <!-- Top Filter -->
+    <div class="blog-top-action">
+      <div class="row align-items-center">
+        <div class="col-lg-9 col-sm-8">
+          <div class="blog-action-btn">
+            <h2 class="h4">Filter By:</h2>
+            <div class="blog-mobile-menu">
+              <ul>
+                {% for tag in blog.all_tags %}
+                  <li>
+                    <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-4">
+          <div class="blog-action-filter text-end">
+            <label for="sort-articles">Sort By:</label>
+            <select id="sort-articles">
+              <option value="date">Newest</option>
+              <option value="title">Title</option>
+              <option value="popular">Most Popular</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blog Articles -->
+    <div class="blog-inner">
+      <div class="row" id="blog-articles">
+        {% paginate blog.articles by 50 %} 
+          {% for article in blog.articles %}
+            <div class="col-lg-4 col-sm-6 blog-item hidden-article{% if forloop.index <= 9 %} visible{% endif %}"
+              data-date="{{ article.published_at | date: '%s' }}" 
+              data-title="{{ article.title | escape }}">
+            <a href="{{ article.url }}" class="single-blog-box">
+              {% if article.image %}
+                <div class="content-image">
+                  <img src="{{ article.image | img_url: '800x' }}" alt="{{ article.title }}">
+                </div>
+              {% endif %}
+              <div class="content-text">
+                <h3 class="heading">{{ article.title }}</h3>
+                <span class="date">{{ article.published_at | date: "%B %d, %Y" }}</span>
+                <p>{{ article.excerpt_or_content | strip_html | truncate: 160 }}</p>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        {% endpaginate %}
+      </div>
+
+      <!-- Load More -->
+      <div class="blog-all-action text-center">
+        <a href="javascript:;" id="load-more" class="cta-btn btn_default">Load More</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const container   = document.getElementById('blog-articles');
+  const articles    = Array.from(container.querySelectorAll('.blog-item'));
+  const loadMoreBtn = document.getElementById('load-more');
+  const sortSelect  = document.getElementById('sort-articles');
+  let visibleCount  = 6;
+
+  // Show/hide items
+  function updateVisibility() {
+    const items = container.querySelectorAll('.blog-item');
+    items.forEach((item, index) => {
+      if (index < visibleCount) {
+        item.classList.add('visible');
+      } else {
+        item.classList.remove('visible');
+      }
+    });
+
+    if (visibleCount >= items.length) {
+      loadMoreBtn.style.display = 'none';
+    } else {
+      loadMoreBtn.style.display = 'inline-block';
+    }
+  }
+
+  // Load more
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', function() {
+      visibleCount += 6;
+      updateVisibility();
+    });
+  }
+
+  // Sort (unchanged from before)
+  function sortArticles(criteria) {
+    const items = Array.from(container.querySelectorAll('.blog-item'));
+    items.sort((a, b) => {
+      if (criteria === 'date') {
+        return parseInt(b.dataset.date) - parseInt(a.dataset.date);
+      }
+      if (criteria === 'title') {
+        return a.dataset.title.localeCompare(b.dataset.title);
+      }
+      if (criteria === 'popular') {
+        return 0;
+      }
+    });
+    items.forEach(item => container.appendChild(item));
+    visibleCount = 6;
+    updateVisibility();
+  }
+
+  if (sortSelect) {
+    sortSelect.addEventListener('change', function() {
+      sortArticles(this.value);
+    });
+  }
+
+  updateVisibility();
+});
+</script>
+
+
+{% schema %}
+{
+  "name": "Blog Main",
+  "settings": [
+    {
+      "type": "header",
+      "content": "This section is tied to the Blog template"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Main"
+    }
+  ]
+}
+{% endschema %}

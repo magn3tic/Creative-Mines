@@ -1,0 +1,269 @@
+{% for block in section.blocks %}
+  {% if block.type == 'style_1' %}
+  <section class="content-area">
+    <div class="container-fluid">        
+    <div class="cta-inner" data-aos="fade-up">
+      {% if block.settings.background_image != blank %}
+        <img src="{{ block.settings.background_image | img_url: 'master' }}" alt="cta banner" class="bg_img">
+      {% endif %}
+      <div class="row">
+        <div class="col-md-6 col-lg-4">
+          <div class="cta-text">
+            {% if block.settings.logo != blank %}
+              <img src="{{ block.settings.logo | img_url: 'master' }}" alt="logo" class="cta-logo">
+            {% endif %}
+            {% if block.settings.heading != blank %}
+              <h2 class="heading">{{ block.settings.heading }}</h2>
+            {% endif %}
+            {% if block.settings.button_text != blank and block.settings.button_link != blank %}
+                <a href="{{ block.settings.button_link }}" class="cta-btn btn_default">
+                  {% assign button_text_downcase = block.settings.button_text | downcase %}
+                  {% if button_text_downcase contains 'download' %}
+                    <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/download.webp" alt="Download">
+                  {% endif %}
+                  {{ block.settings.button_text }}
+                </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+  {% elsif block.type == 'style_2' %}
+
+  {% if block.settings.image_position == 'right' %}
+    <section class="content-area dark-shape-bg">
+  {% else %}
+    <section class="content-area py-0 n_top_290">
+  {% endif %}    
+    <div class="container-fluid">
+    <div class="cta-inner-v2" data-aos="fade-up">
+      {% if block.settings.background_image != blank %}
+        <img src="{{ block.settings.background_image | img_url: 'master' }}" alt="cta banner" class="bg_img">
+      {% endif %}
+      <div class="row">
+        <div class="col-lg-6 mx-auto">
+          <div class="cta-text text-center">
+            {% if block.settings.heading != blank %}
+              <h2 class="h1 text_white">{{ block.settings.heading }}</h2>
+            {% endif %}
+            {% if block.settings.description != blank %}
+              <p>{{ block.settings.description }}</p>
+            {% endif %}
+            {% if block.settings.button_text != blank and block.settings.button_link != blank %}
+              <a href="{{ block.settings.button_link }}" class="cta-btn btn_default">
+                {{ block.settings.button_text }}
+                <em class="fa-solid fa-arrow-right"></em>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  {% elsif block.type == 'style_3' %}
+  <section class="content-area py-0">
+    <div class="container-fluid">
+      <div class="cta-inner-v2 alt" data-aos="fade-up">
+        {% if block.settings.bg_image != blank %}
+          <img src="{{ block.settings.bg_image | image_url: width: 1500 }}" alt="cta banner" class="bg_img">
+        {% endif %}
+  
+        <div class="row gx-lg-5 align-items-lg-center">
+          <div class="col-lg-6">
+            <div class="cta-text pe-lg-5">
+              {% if block.settings.heading != blank %}
+                <h2 class="h1 text_white">{{ block.settings.heading }}</h2>
+              {% endif %}
+              {% if block.settings.text != blank %}
+                <p>{{ block.settings.text }}</p>
+              {% endif %}
+            </div>
+          </div>
+  
+          <div class="col-lg-6">
+            <div class="cta-form">
+              {% form 'create_customer' %}
+                {% if form.errors %}
+                  <div class="form-errors text-danger">
+                    {{ form.errors | default_errors }}
+                  </div>
+                {% endif %}
+  
+                {% if form.posted_successfully? %}
+                  <p class="alert alert-success">Thank you! Your submission has been received.</p>
+                {% else %}
+                  <ul class="row">
+                    <li class="col-sm-6">
+                      <label for="f_name">First Name</label>
+                      <input type="text" id="f_name" name="customer[first_name]" required>
+                    </li>
+                    <li class="col-sm-6">
+                      <label for="l_name">Last Name</label>
+                      <input type="text" id="l_name" name="customer[last_name]" required>
+                    </li>
+                    <li class="col-sm-6">
+                      <label for="cName">Company Name</label>
+                      <input type="text" id="cName" name="customer[note][Company Name]">
+                    </li>
+                    <li class="col-sm-6">
+                      <label for="tax">Tax ID</label>
+                      <input type="text" id="tax" name="customer[note][Tax ID]">
+                    </li>
+                    <li class="col-sm-6">
+                      <label for="cemail">Email</label>
+                      <input type="email" id="cemail" name="customer[email]" required>
+                    </li>
+                    <li class="col-sm-6">
+                      <label for="j_title">Job Title</label>
+                      <input type="text" id="j_title" name="customer[note][Job Title]">
+                    </li>
+                    <li class="col-sm-6">
+                      <label for="phn">Phone Number</label>
+                      <input type="text" id="phn" name="customer[note][Phone]">
+                    </li>
+                    <li class="col-sm-6">
+                      <label for="tr">What's Your Trade</label>
+                      <input type="text" id="tr" name="customer[note][Trade]">
+                    </li>
+                    <li class="col-sm-6">
+                      <label for="web">Website</label>
+                      <input type="text" id="web" name="customer[note][Website]">
+                    </li>
+                    <li class="col-sm-6">
+                      <label for="insta">Instagram</label>
+                      <input type="text" id="insta" name="customer[note][Instagram]">
+                    </li>
+                  </ul>
+                  <div class="text-end">
+                    <button type="submit" class="cta-btn btn_default">Submit</button>
+                  </div>
+                {% endif %}
+              {% endform %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  {% endif %}
+{% endfor %}
+
+{% schema %}
+{
+  "name": "CTA",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "style_1",
+      "name": "Style 1",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "View Product & Inspiration"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Download Design Brochure"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    },
+    {
+      "type": "style_2",
+      "name": "Style 2",
+      "settings": [
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Choose Style",
+          "default": "left",
+          "options": [
+            {"value": "left", "label": "Style One"},
+            {"value": "right", "label": "Style Two"}
+          ]
+        },        
+        {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Order Free Sample"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Don’t settle for less; become a believer. Order a sample..."
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "View Samples"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    },
+    {
+      "type": "style_3",
+      "name": "Style 3",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "bg_image",
+          "label": "Background Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description"
+        }
+      ]
+    }    
+  ],
+  "presets": [
+    {
+      "name": "CTA",
+      "blocks": [
+      ]
+    }
+  ]
+}
+{% endschema %}

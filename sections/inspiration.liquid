@@ -1,0 +1,260 @@
+<section class="page-banner-area alt no-height">
+  {% if section.settings.image != blank %}
+    <img 
+      src="{{ section.settings.image | img_url: '2000x' }}" 
+      alt="{{ section.settings.heading | escape }}" 
+      class="bg">
+  {% endif %}
+  <div class="banner-inner">
+    <div class="container-fluid">
+      <div class="row align-items-end">
+        <div class="col-lg-9">
+          {% if section.settings.heading != blank %}
+            <h1 class="banner-heading alt">{{ section.settings.heading }}</h1>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-area">
+  <div class="container-fluid">
+    <!-- Filter Menu -->
+    <div class="blog-top-action">
+      <div class="row align-items-center">
+        <div class="col-lg-12">
+          <div class="blog-action-btn alt">
+            <h2 class="h4">Filter By:</h2>
+            <div class="blog-mobile-menu">
+              <ul id="inspiration-filters">
+                <li><a href="javascript:;" data-filter="all" class="active">All</a></li>
+                {% assign all_tags = "" %}
+                {% for block in section.blocks %}
+                  {% assign tags = block.settings.tags | split: ',' %}
+                  {% for tag in tags %}
+                    {% assign safe_tag = tag 
+                      | downcase 
+                      | strip 
+                      | replace: ' ', '-' 
+                      | replace: '&', 'and' 
+                      | replace: '/', '-' 
+                      | replace: ',', '' 
+                      | replace: '_', '-' %}
+                    {% unless all_tags contains safe_tag %}
+                      <li>
+                        <a href="javascript:;" data-filter="{{ safe_tag }}">{{ tag | strip }}</a>
+                      </li>
+                      {% assign all_tags = all_tags | append: safe_tag | append: ',' %}
+                    {% endunless %}
+                  {% endfor %}
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inspiration Grid -->
+  <div class="container">
+    <div id="portfolio">
+      {% for block in section.blocks %}
+        {% assign tags = block.settings.tags | split: ',' %}
+        {% assign safe_tags = '' %}
+
+        {% for tag in tags %}
+          {% assign safe_tag = tag 
+            | downcase 
+            | strip 
+            | replace: ' ', '-' 
+            | replace: '&', 'and' 
+            | replace: '/', '-' 
+            | replace: ',', '' 
+            | replace: '_', '-' %}
+          {% assign safe_tags = safe_tags | append: safe_tag | append: ' ' %}
+        {% endfor %}
+
+        <div class="tile {{ safe_tags }}">
+          <div class="inspiration-box js-open-popup" data-target="pop{{ forloop.index }}">
+            <img src="{{ block.settings.image | img_url: '800x' }}" alt="">
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+<!-- Popups (moved outside the row) -->
+{% for block in section.blocks %}
+  {% assign product = all_products[block.settings.product] %}
+  <div class="c_popup js-custom-popup" data-popup="pop{{ forloop.index }}">
+    <div class="inner js-custom-popup-holder">
+      <div class="close js-close-popup">x Close</div>
+      <div class="inner-body">
+        <div class="row">
+          <div class="col-lg-8 col-sm-7">
+            <div class="leftside">
+              <img src="{{ block.settings.imagepop | img_url: 'master' }}" alt="">
+
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-5">
+            <div class="rightside">
+              <h2 class="title">{{ product.title }}</h2>
+              <p>{{ product.description | strip_html | truncate: 160 }}</p>
+
+              <div class="pr-single-meta">
+                  <p> <span>Color: Wildflower</span></p>
+                  <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/popup-color.webp" alt="">
+              </div>
+              <div class="cs-prices">
+                  <div class="price-item">
+                      <span class="d-block">Price Per Square Ft.</span>
+                      <span class="d-block price"><del>$24.85</del> $17.85</span>
+                  </div>
+                  <div class="price-item">
+                      <span class="d-block">Price Per Linear Ft.</span>
+                      <span class="d-block price"><del>$16.28</del> $12.28</span>
+                  </div>
+              </div>
+
+              <div class="cs-prices d-none">
+                {% if product.compare_at_price > product.price %}
+                  <div class="price-item">
+                    <span class="d-block">Price</span>
+                    <span class="d-block price"><del>{{ product.compare_at_price | money }}</del> {{ product.price | money }}</span>
+                  </div>
+                {% else %}
+                  <div class="price-item">
+                    <span class="d-block">Price</span>
+                    <span class="d-block price">{{ product.price | money }}</span>
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="cs-actions">
+                <div class="left">
+                  <a href="{{ product.url }}" class="cta-btn btn_default">Order A Free Sample</a>
+                  <a href="{{ product.url }}" class="cta-btn btn_default_border">Shop the Look</a>
+                </div>
+              </div>
+
+              {% if section.settings.ctalink %}
+              <a href="{{ section.settings.ctalink }}" class="mg-action">
+                  {% if section.settings.ctaimage %}
+                  <img src="{{ section.settings.ctaimage | img_url: '800x' }}" alt="{{ section.settings.ctaheading }}">
+                  {% endif %}                                    
+                  <div class="inner">
+                      {% if section.settings.ctaheading %}
+                      <span class="d-block title">{{ section.settings.ctaheading }}</span>
+                      {% endif %}                                        
+                  </div>
+              </a>
+              {% endif %}                 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+<script>
+jQuery(document).ready(function($) {
+  const $tiles = $('#portfolio .tile');
+
+  $('#inspiration-filters a').on('click', function(e) {
+    e.preventDefault();
+    const filterValue = $(this).data('filter').toLowerCase();
+
+    $('#inspiration-filters a').removeClass('active');
+    $(this).addClass('active');
+
+    if (filterValue === 'all') {
+      $tiles.removeClass('hide');
+    } else {
+      $tiles.each(function() {
+        const $tile = $(this);
+        if ($tile.hasClass(filterValue)) {
+          $tile.removeClass('hide');
+        } else {
+          $tile.addClass('hide');
+        }
+      });
+    }
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Inspiration Gallery",
+  "settings": [{
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Inspiration"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "ctaheading",
+      "label": "Heading",
+      "default": "Want to Start A Project?"
+    },
+    {
+      "type": "image_picker",
+      "id": "ctaimage",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "ctalink",
+      "label": "Link"
+    } 
+  ],
+  "blocks": [
+    {
+      "type": "inspiration_item",
+      "name": "Inspiration Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Thumb Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "imagepop",
+          "label": "Popup Image"
+        },        
+        {
+          "type": "text",
+          "id": "tags",
+          "label": "Tags (comma separated)"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Inspiration Gallery",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

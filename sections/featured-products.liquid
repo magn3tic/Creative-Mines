@@ -1,0 +1,80 @@
+{% if collection and collection.products_count > 1 %}
+
+<!-- Content Start -->
+<section class="content-area">
+  <div class="container">
+    {% if section.settings.header_title != blank %}
+      <h2 class="h3 section-heading mb-0">{{ section.settings.header_title }}</h2>
+    {% endif %}
+
+    <div class="three-column-slider">
+      {% assign number_of_products = 3 %}
+      {% assign number_of_products_to_fetch = number_of_products | plus: 1 %}
+      
+      {% if collection == null or collection.handle == 'frontpage' or collection.handle == 'all' %}
+        {% assign found_a_collection = false %}
+        {% for c in product.collections %}
+          {% if found_a_collection == false and c.handle != 'frontpage' and c.handle != 'all' and c.all_products_count > 1 %}
+            {% assign found_a_collection = true %}
+            {% assign collection = c %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      
+      {% if collection and collection.products_count > 1 %}
+          {% assign current_product = product %}
+          {% assign current_product_found = false %}
+          {% for product in collection.products limit: number_of_products_to_fetch %}
+            {% if product.handle == current_product.handle %}
+              {% assign current_product_found = true %}
+            {% else %}
+              {% unless current_product_found == false and forloop.last %}
+                <div class="slide">          
+                  <a href="{{ product.url }}" class="box style2">
+                    <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title | escape }}">
+                    <div class="text">
+                      <h3 class="title">{{ product.title }}</h3>
+                      {% assign color_count = 0 %}
+                      {% for option in product.options_with_values %}
+                      {% if option.name == 'Color' %}
+                        {% assign color_count = option.values.size %}
+                      {% endif %}
+                      {% endfor %}
+                      {% if color_count > 0 %}
+                        <p>{{ color_count }} Color{% if color_count > 1 %}s{% endif %}</p>
+                      {% endif %}
+                    </div>
+                  </a>
+                </div>
+              {% endunless %}
+            {% endif %}
+          {% endfor %}
+      {% endif %}      
+    </div>
+  </div>
+</section>
+<!-- Content End -->
+{% endif %}
+
+{% schema %}
+{
+  "name": "Featured products",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "header_title",
+      "label": "Title",
+      "default": "Featured Products"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "presets": [
+    {
+      "name": "Featured products"
+    }
+  ]
+}
+{% endschema %}

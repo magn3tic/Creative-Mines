@@ -1,0 +1,112 @@
+<section class="content-area">
+  <div class="container-fluid">
+    {% if section.settings.heading != blank %}
+      <h2 class="h3 section-heading mb-0">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="row">
+      {% for block in section.blocks %}
+        {% assign product = all_products[block.settings.product] %}
+        {% if product %}
+          <div class="col-md-4 col-sm-6">
+            <div class="box style2">
+              <div class="inner">
+                {% if block.settings.color_name != blank %}
+                  <a href="javascript:;" class="color-diff">
+                    <span>Color:</span> {{ block.settings.color_name }}
+                  </a>
+                {% endif %}
+
+                <!-- Product Media Slider -->
+                <div class="sample-box-slider">
+                  {% for media in product.media %}
+                    <div class="slide">
+                      {% if media.media_type == 'image' %}
+                        <img src="{{ media | img_url: '800x' }}" alt="{{ product.title }}">
+                      {% elsif media.media_type == 'video' %}
+                        {{ media | video_tag: autoplay: true, loop: true, muted: true, playsinline: true }}
+                      {% endif %}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="text">
+                <h3 class="title">
+                  {% if block.settings.custom_heading != blank %}
+                    {{ block.settings.custom_heading }}
+                  {% else %}
+                    {{ product.title }}
+                  {% endif %}
+                </h3>                
+                <p>{{ product.options_with_values.first.values.size }} Colors</p>
+
+                <a href="{{ product.url }}" class="cta-btn btn_default">
+                  {{ block.settings.sample_label }}
+                </a>
+                <a href="{{ product.url }}" class="cta-btn btn_default_border">
+                  {{ block.settings.details_label }}
+                </a>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Samples",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Heading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_box",
+      "name": "Product Box",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Product"
+        },
+        {
+          "type": "text",
+          "id": "color_name",
+          "label": "Color Name (optional)"
+        },
+        {
+          "type": "text",
+          "id": "custom_heading",
+          "label": "Custom Heading (overrides product title)"
+        },        
+        {
+          "type": "text",
+          "id": "sample_label",
+          "label": "Sample Button Label",
+          "default": "Order Sample"
+        },
+        {
+          "type": "text",
+          "id": "details_label",
+          "label": "Details Button Label",
+          "default": "Product Details"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Samples",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

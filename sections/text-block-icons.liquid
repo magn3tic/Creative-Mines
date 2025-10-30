@@ -1,0 +1,102 @@
+<section class="content-area">
+  <div class="container-fluid">
+    <div class="row align-items-md-center">
+      <div class="col-sm-6">
+        <div class="content-text text-center pe-md-5" data-aos="fade-right">
+          {% if section.settings.heading != blank %}
+            <h2>{{ section.settings.heading | newline_to_br }}</h2>
+          {% endif %}
+          {% if section.settings.description != blank %}
+            {{ section.settings.description }}
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="icon-teaser-holder">
+          {% for block in section.blocks %}
+            <div class="icon-teaser-item" data-aos="fade-up" data-aos-delay="{{ forloop.index0 | times: 200 }}">
+              <div class="row align-items-center">
+                <div class="col-lg-3">
+                  <div class="left d-flex align-items-center">
+                    {% if block.settings.icon != blank %}
+                      <img src="{{ block.settings.icon | img_url: 'medium' }}" alt="{{ block.settings.label | escape }}">
+                    {% endif %}
+                    {% if block.settings.label != blank %}
+                      <span class="d-block title">{{ block.settings.label }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="col-lg-9">
+                  <div class="right">
+                    {% if block.settings.title != blank %}
+                      <h3 class="heading h4">{{ block.settings.title }}</h3>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Text with Icons",
+  "tag": "section",
+  "class": "content-area",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "This is Material with Soul.<br> Built for Visionaries."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_item",
+      "name": "List",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon Image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Icon Label",
+          "default": "Aesthetics"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Inspired by Nature"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Text with Icons",
+      "category": "Text Blocks",
+      "blocks": [
+        { "type": "feature_item" },
+        { "type": "feature_item" },
+        { "type": "feature_item" }
+      ]
+    }
+  ]
+}
+{% endschema %}

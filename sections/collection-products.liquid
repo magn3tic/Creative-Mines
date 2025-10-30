@@ -1,0 +1,218 @@
+<section class="content-area">
+  <div class="container-fluid">
+    {% if section.settings.heading != blank %}
+      <h2 class="h3 section-heading mb-0">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="row">
+      {% if section.settings.collection != blank %}
+        {% assign current_collection = section.settings.collection %}
+      {% else %}
+        {% assign current_collection = collection %}
+      {% endif %}
+      
+      {% assign products = current_collection.products %}
+      {% assign collection_name = current_collection.title | downcase %}
+
+      {% if collection_name == 'samples' %}
+        {% for product in products %}
+          {% assign color_option = '' %}
+          {% assign color_count = 0 %}
+          {% for option in product.options_with_values %}
+            {% if option.name == 'Color' %}
+              {% assign color_option = option %}
+              {% assign color_count = option.values.size %}
+            {% endif %}
+          {% endfor %}
+
+          <div class="col-md-4 col-sm-6">
+            <div class="box style2">
+              <div class="inner">
+
+                {% assign sample_variant = '' %}
+                {% for variant in product.variants %}
+                  {% if variant.title contains 'Sample' or variant.title contains 'sample' %}
+                    {% assign sample_variant = variant %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+
+                {% if sample_variant != '' %}
+                  <div class="color-diff">
+                    <span>Color:</span> 
+                    <span class="color-name">{{ sample_variant.option1 }}</span>
+                  </div>
+                {% endif %}
+                
+                <div class="sample-box-slider" id="slider-{{ product.id }}">
+                  {% assign seen_images = '' %}
+                  {% for variant in product.variants %}
+                    {% if variant.title contains 'Sample' or variant.title contains 'sample' %}
+                      {% if variant.featured_image %}
+                        {% unless seen_images contains variant.featured_image.src %}
+                          <div class="slide"
+                              data-variant-id="{{ variant.id }}"
+                              data-variant-color="{{ variant.option1 | escape }}"
+                              data-is-sample="true">
+                            <img 
+                              src="{{ variant.featured_image | img_url: '800x' }}" 
+                              alt="{{ variant.title | escape }}">
+                          </div>
+                          {% assign seen_images = seen_images | append: variant.featured_image.src | append: ',' %}
+                        {% endunless %}
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+
+                {%- comment -%} Expose variant data to JS {%- endcomment -%}
+                <script type="application/json" id="variant-data-{{ product.id }}">
+                {
+                  {% for variant in product.variants %}
+                    {% assign is_sample = false %}
+                    {% if variant.title contains 'Sample' or variant.title contains 'sample' %}
+                      {% assign is_sample = true %}
+                    {% endif %}
+                    "{{ variant.id }}": {
+                      "id": {{ variant.id }},
+                      "title": "{{ variant.title | escape }}",
+                      "color": "{{ variant.option1 | escape }}",
+                      "is_sample": {{ is_sample }},
+                      "image": "{{ variant.featured_image.src | default: product.featured_image.src }}",
+                      "image_id": {{ variant.featured_image.id | default: 'null' }}
+                    }{% unless forloop.last %},{% endunless %}
+                  {% endfor %}
+                }
+                </script>
+              </div>
+
+              <div class="text">
+                <h3 class="title">{{ product.title }}</h3>
+                {% if color_count > 0 %}
+                  <p>{{ color_count }} Color{% if color_count > 1 %}s{% endif %}</p>
+                {% endif %}
+                
+                  <a href="{{ product.url }}" class="cta-btn btn_default">
+                    Order Sample
+                  </a>
+
+                <a href="{{ product.url }}" class="cta-btn btn_default_border">
+                  Product Details
+                </a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      
+      {% else %}
+        {% comment %}================ DEFAULT COLLECTION STRUCTURE ================ {% endcomment %}
+        {% for product in products %}
+          {% assign color_count = 0 %}
+          {% for option in product.options_with_values %}
+            {% if option.name == 'Color' %}
+              {% assign color_count = option.values.size %}
+            {% endif %}
+          {% endfor %}
+      
+          <div class="col-sm-4">
+            <a href="{{ product.url }}" class="box style2">
+              <img src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.title | escape }}">
+              <div class="text">
+                <h3 class="title">{{ product.title }}</h3>
+                {% if color_count > 0 %}
+                  <p>{{ color_count }} Color{% if color_count > 1 %}s{% endif %}</p>
+                {% endif %}
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.sample-box-slider').forEach(sliderEl => {
+    const $slider = $(sliderEl);
+    const box = sliderEl.closest('.box');
+    const orderBtn = box.querySelector('.cta-btn.btn_default'); 
+    const detailsBtn = box.querySelector('.cta-btn.btn_default_border'); 
+    const colorDiff = box.querySelector('.color-diff span:last-child');
+
+    function updateFromCurrentSlide() {
+      const currentSlide = sliderEl.querySelector('.slick-current');
+      if (!currentSlide) return;
+
+      const variantId = currentSlide.dataset.variantId;
+      const color = currentSlide.dataset.variantColor;
+      const isSample = currentSlide.dataset.isSample === 'true';
+
+      let targetVariantId = variantId;
+
+      if (!isSample) {
+        const sampleSlide = sliderEl.querySelector(
+          `.slide[data-variant-color="${color}"][data-is-sample="true"]`
+        );
+        if (sampleSlide) {
+          targetVariantId = sampleSlide.dataset.variantId;
+        } else {
+          targetVariantId = null;
+        }
+      }
+
+      if (orderBtn) {
+        if (variantId) {
+          orderBtn.href = `/cart/add?id=${variantId}&quantity=1`;
+          orderBtn.classList.remove('disabled');
+        } else {
+          orderBtn.href = '#';
+          orderBtn.classList.add('disabled');
+        }
+      }
+
+      if (detailsBtn && variantId) {
+        const baseUrl = detailsBtn.href.split('?')[0];
+        detailsBtn.href = `${baseUrl}?variant=${variantId}`;
+      }
+
+      if (colorDiff && color) {
+        colorDiff.textContent = color;
+      }
+    }
+
+    $slider.on('init', function() {
+      updateFromCurrentSlide();
+    });
+
+    $slider.on('afterChange', function() {
+      updateFromCurrentSlide();
+    });
+    
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Collection Products",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Products"
+    }
+  ]
+}
+{% endschema %}

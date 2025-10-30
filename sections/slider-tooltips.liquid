@@ -1,0 +1,102 @@
+<!-- Product Slider with Tooltips -->
+<section class="product-slider-area py-0">
+  <div class="product-slider">
+    {% for slide in section.blocks %}
+      {% if slide.type == 'slide' %}
+        <div class="slide">
+          <div class="pr-slider-image">
+            {% if slide.settings.image != blank %}
+              <img src="{{ slide.settings.image | img_url: 'master' }}" alt="Slide {{ forloop.index }}">
+            {% endif %}
+
+            {% if slide.settings.tooltip1_content != blank %}
+              <div class="trigger-tooltip" style="left: {{ slide.settings.tooltip1_pos_x }}%; top: {{ slide.settings.tooltip1_pos_y }}%;">
+                <div class="trigger-pin">
+                  <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/plus-minus.webp" alt="icon">
+                </div>
+                <div class="trigger-content">
+                  {{ slide.settings.tooltip1_content }}
+                </div>
+              </div>
+            {% endif %}
+
+            {% if slide.settings.tooltip2_content != blank %}
+              <div class="trigger-tooltip" style="left: {{ slide.settings.tooltip2_pos_x }}%; top: {{ slide.settings.tooltip2_pos_y }}%;">
+                <div class="trigger-pin">
+                  <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/plus-minus.webp" alt="icon">
+                </div>
+                <div class="trigger-content">
+                  {{ slide.settings.tooltip2_content }}
+                </div>
+              </div>
+            {% endif %}
+
+            {% if slide.settings.tooltip3_content != blank %}
+              <div class="trigger-tooltip" style="left: {{ slide.settings.tooltip3_pos_x }}%; top: {{ slide.settings.tooltip3_pos_y }}%;">
+                <div class="trigger-pin">
+                  <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/plus-minus.webp" alt="icon">
+                </div>
+                <div class="trigger-content">
+                  {{ slide.settings.tooltip3_content }}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- Slider Controls -->
+  <div class="pr-slider-action">
+    <div class="pr-slider-progress-holder">
+      <div class="slider-progress"><span></span></div>
+    </div>
+    <div class="pr-slider-arrows">
+      <div class="pr-slider-prev-arrow"><em class="fa-solid fa-chevron-left"></em></div>
+      <div class="pr-slider-next-arrow"><em class="fa-solid fa-chevron-right"></em></div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Slider with Tooltips",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Slide Image"
+        },
+
+        { "type": "header", "content": "Tooltip 1" },
+        { "type": "richtext", "id": "tooltip1_content", "label": "Tooltip 1 Content" },
+        { "type": "range", "id": "tooltip1_pos_x", "label": "Tooltip 1 X (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "range", "id": "tooltip1_pos_y", "label": "Tooltip 1 Y (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+
+        { "type": "header", "content": "Tooltip 2" },
+        { "type": "richtext", "id": "tooltip2_content", "label": "Tooltip 2 Content" },
+        { "type": "range", "id": "tooltip2_pos_x", "label": "Tooltip 2 X (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "range", "id": "tooltip2_pos_y", "label": "Tooltip 2 Y (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+
+        { "type": "header", "content": "Tooltip 3" },
+        { "type": "richtext", "id": "tooltip3_content", "label": "Tooltip 3 Content" },
+        { "type": "range", "id": "tooltip3_pos_x", "label": "Tooltip 3 X (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "range", "id": "tooltip3_pos_y", "label": "Tooltip 3 Y (%)", "min": 0, "max": 100, "step": 1, "default": 50 }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slider with Tooltips",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}
