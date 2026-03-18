@@ -1,0 +1,800 @@
+{% comment %}
+---------------------------------------------------------------
+  DEALER LOCATOR SECTION
+  - Up to 50 blocks
+  - Each block contains 4 locations
+  - Auto-builds state dropdown from block data
+---------------------------------------------------------------
+{% endcomment %}
+
+<section id="dealer-locator" class="dealer-locator">
+  <div class="container">
+
+    <div class="head text-center">
+    {% if section.settings.heading != blank %}
+      <h2>{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    {% if section.settings.description != blank %}
+      <p>{{ section.settings.description }}</p>
+    {% endif %}
+    </div>
+
+    <!-- FILTERS -->
+    <div class="dl-filters">
+      <div class="filter-row">
+        <input type="text" id="addressInput" placeholder="Enter Address or ZIP">
+        <span>OR</span>
+        <select id="stateSelect">
+          <option value="none">None</option>
+
+            {% assign collected_states = "" %}
+            {% for block in section.blocks %}
+            {% for i in (1..4) %}
+
+                {% assign state_key = "location_" | append: i | append: "_state" %}
+                {% assign st = block.settings[state_key] %}
+
+                {% if st != blank %}
+                {% unless collected_states contains st %}
+                    <option value="{{ st }}">{{ st }}</option>
+                    {% assign collected_states = collected_states | append: st | append: "," %}
+                {% endunless %}
+                {% endif %}
+
+            {% endfor %}
+            {% endfor %}
+        </select>
+
+        <select id="radiusSelect">
+          <option value="5">5 Miles</option>
+          <option value="10">10 Miles</option>
+          <option value="25">25 Miles</option>
+          <option value="50">50 Miles</option>
+          <option value="100">100 Miles</option>
+          <option value="150">150 Miles</option>
+          <option value="200" selected>200 Miles</option>
+        </select>
+
+        <select id="unitSelect">
+        <option value="miles" selected>Miles</option>
+        <option value="km">Kilometers</option>
+        </select>
+
+        <button id="searchBtn" class="dl-search-btn">Search</button>
+      </div>
+    </div>
+
+    <!-- MAP -->
+    <div id="map"></div>
+
+    <!-- Result Count -->
+    <div id="resultCount"></div>
+
+    <!-- LOCATIONS LIST -->
+    <div class="locations-list">
+
+        {% assign counter = 0 %}
+
+        {% for block in section.blocks %}
+        {% for i in (1..4) %}
+
+            {% assign title_key = "location_" | append: i | append: "_title" %}
+            {% assign desc_key = "location_" | append: i | append: "_desc" %}
+            {% assign addr_key = "location_" | append: i | append: "_address" %}
+            {% assign phone_key = "location_" | append: i | append: "_phone" %}
+            {% assign lat_key = "location_" | append: i | append: "_lat" %}
+            {% assign lng_key = "location_" | append: i | append: "_lng" %}
+            {% assign state_key = "location_" | append: i | append: "_state" %}
+
+            {% assign title = block.settings[title_key] %}
+            {% if title != blank %}
+
+            {% assign counter = counter | plus: 1 %}
+
+            <div class="location-item"
+                data-lat="{{ block.settings[lat_key] }}"
+                data-lng="{{ block.settings[lng_key] }}"
+                data-state="{{ block.settings[state_key] }}">
+                <div>
+                    <h3 class="loc-title" data-title="{{ title }}">{{ title }}</h3>
+                    <span class="distance" style="display:none;"></span>
+
+                    {% if block.settings[desc_key] != blank %}
+                    <p>{{ block.settings[desc_key] }}</p>
+                    {% endif %}
+
+                    {% if block.settings[addr_key] != blank %}
+                    <p>{{ block.settings[addr_key] }}</p>
+                    {% endif %}
+
+                    {% if block.settings[phone_key] != blank %}
+                    <a href="tel:{{ block.settings[phone_key] }}">{{ block.settings[phone_key] }}</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% endif %}
+        {% endfor %}
+        {% endfor %}
+
+    </div>
+
+  </div>
+</section>
+
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key={{ section.settings.api_key }}&libraries=geometry&callback=initMap">
+</script>
+
+<script>
+let map;
+let markers = [];
+let allItems = [];
+let currentVisibleItems = [];
+let hasSearched = false;
+
+const perPage = 9;
+let currentPage = 1;
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 39.5, lng: -98.35 }, 
+        zoom: 4
+    });
+    infoWindow = new google.maps.InfoWindow();
+
+    loadMarkers();
+    hideEverythingOnLoad();
+}
+
+function hideEverythingOnLoad() {
+    document.querySelectorAll(".location-item").forEach(i => i.style.display = "none");
+    document.getElementById("map").style.display = "none";
+}
+
+function loadMarkers() {
+    document.querySelectorAll(".location-item").forEach(item => {
+        const lat = parseFloat(item.dataset.lat);
+        const lng = parseFloat(item.dataset.lng);
+
+        const marker = new google.maps.Marker({
+            position: { lat, lng },
+            map,
+            visible: false
+        });
+
+        let title = item.querySelector("h3") ? item.querySelector("h3").innerText : "";
+        title = title.replace(/^\s*\d+\s*[\.\-\)]?\s*/, "");
+
+        let address = "";
+        const paragraphs = item.querySelectorAll("p");
+        if (paragraphs.length > 0) {
+            address = paragraphs[paragraphs.length - 1].innerText; // Last <p> = address line
+        }
+
+        marker.addListener("click", () => {
+            infoWindow.setContent(`
+                <div style="font-size:14px; line-height:1.4;">
+                    <strong style="font-family:Canela; font-size: 17px;">${title}</strong><br>
+                    ${address}
+                </div>
+            `);
+            infoWindow.open(map, marker);
+        });
+
+        markers.push(marker);
+        allItems.push(item);
+    });
+}
+
+function showOnlyMarkersFor(items) {
+    markers.forEach(m => m.setVisible(false));
+
+    items.forEach(item => {
+        const index = allItems.indexOf(item);
+        if (index > -1) markers[index].setVisible(true);
+    });
+
+    document.getElementById("map").style.display = "block";
+}
+
+function applyPagination() {
+    document.querySelectorAll(".location-item").forEach(i => i.style.display = "none");
+
+    const total = currentVisibleItems.length;
+    const resultCount = document.getElementById("resultCount");
+
+    if (total === 0) {
+        resultCount.innerText = "No results found";
+        removePagination();
+        document.getElementById("map").style.display = "none";
+        return;
+    }
+
+    const totalPages = Math.ceil(total / perPage);
+    const start = (currentPage - 1) * perPage;
+    const itemsToShow = currentVisibleItems.slice(start, start + perPage);
+
+    itemsToShow.forEach(i => i.style.display = "block");
+    itemsToShow.forEach((item, index) => {
+        const titleEl = item.querySelector(".loc-title");
+
+        if (titleEl) {
+            const number = start + index + 1;
+            const title = titleEl.dataset.title;     
+            titleEl.innerText = number + ". " + title;
+        }
+    });    
+    itemsToShow.forEach(item => {
+        const distSpan = item.querySelector(".distance");
+
+        if (hasSearched && item.dataset.distance) {
+            distSpan.innerText = item.dataset.distance + " miles";
+            distSpan.style.display = "block";
+        } else {
+            distSpan.style.display = "none";
+        }
+    });
+
+    resultCount.innerText = `Showing ${itemsToShow.length} of ${total} locations`;
+
+    showOnlyMarkersFor(itemsToShow);
+
+    buildPagination(totalPages);
+}
+
+function buildPagination(totalPages) {
+    removePagination();
+
+    const wrapper = document.createElement("div");
+    wrapper.id = "pagination";
+    wrapper.className = "pagination";
+
+    for (let i = 1; i <= totalPages; i++) {
+        const span = document.createElement("span");
+        span.className = "page-num" + (i === currentPage ? " active" : "");
+        span.dataset.page = i;
+        span.innerText = i;
+
+        span.onclick = () => {
+            currentPage = i;
+            applyPagination();
+        };
+
+        wrapper.appendChild(span);
+    }
+
+    document.querySelector(".locations-list").appendChild(wrapper);
+}
+
+function removePagination() {
+    const old = document.getElementById("pagination");
+    if (old) old.remove();
+}
+
+function sortByDistance(arr) {
+    return arr.sort((a, b) => {
+        const da = parseFloat(a.dataset.distance || 999999);
+        const db = parseFloat(b.dataset.distance || 999999);
+        return da - db;
+    });
+}
+
+function showResults(arr) {
+    hasSearched = true;
+
+    arr.sort((a, b) => {
+        let da = parseFloat(a.dataset.distance || 999999);
+        let db = parseFloat(b.dataset.distance || 999999);
+        return da - db;
+    });
+
+    currentVisibleItems = arr;
+    currentPage = 1;
+
+    const listContainer = document.querySelector(".locations-list");
+
+    listContainer.querySelectorAll(".location-item").forEach(i => i.remove());
+
+    arr.forEach(item => listContainer.appendChild(item));
+
+    applyPagination();
+}
+
+function calculateDistancesFrom(center) {
+    allItems.forEach((item, i) => {
+        const markerPos = markers[i].getPosition();
+        const distMeters = google.maps.geometry.spherical.computeDistanceBetween(center, markerPos);
+
+        item.dataset.distance = (distMeters / 1609.34).toFixed(1); // miles
+    });
+}
+
+function filterRadius(center, radiusMeters) {
+    let filtered = [];
+
+    allItems.forEach((item, i) => {
+        const dist = google.maps.geometry.spherical.computeDistanceBetween(
+            center,
+            markers[i].getPosition()
+        );
+
+        const miles = (dist / 1609.34).toFixed(1);
+        item.dataset.distance = miles;
+
+        if (dist <= radiusMeters) filtered.push(item);
+    });
+
+    filtered.sort((a, b) => parseFloat(a.dataset.distance) - parseFloat(b.dataset.distance));
+
+    showResults(filtered);
+}
+
+document.getElementById("searchBtn").addEventListener("click", function () {
+    hasSearched = true;
+
+    const address = document.getElementById("addressInput").value.trim();
+    const state = document.getElementById("stateSelect").value;
+    const radius = parseFloat(document.getElementById("radiusSelect").value);
+    const unit = document.getElementById("unitSelect").value;
+
+    let radiusMeters = radius * 1609.34;
+
+    if (unit === "km") {
+        radiusMeters = radius * 1000;
+    }
+
+    if (!address && (state === "none" || state === "choose")) {
+
+        showResults(allItems);
+        return;
+    }
+
+if (!address && state !== "none" && state !== "choose") {
+
+    let filtered = [];
+    const bounds = new google.maps.LatLngBounds();
+
+    allItems.forEach((item, i) => {
+        if (item.dataset.state === state) {
+            item.dataset.distance = "0";
+            filtered.push(item);
+
+            const markerPos = markers[i].getPosition();
+            bounds.extend(markerPos);
+        }
+    });
+
+    if (!filtered.length) {
+        showResults([]);
+        return;
+    }
+
+    // Sort alphabetically
+    filtered.sort((a, b) =>
+        a.querySelector("h3").innerText.localeCompare(
+            b.querySelector("h3").innerText
+        )
+    );
+
+    showResults(filtered);
+
+    // 🔥 THIS IS THE IMPORTANT PART
+    map.fitBounds(bounds);
+
+    // Optional zoom cap (prevents over-zoom)
+    const listener = google.maps.event.addListenerOnce(map, "bounds_changed", function () {
+        if (map.getZoom() > 7) map.setZoom(7);
+    });
+
+    return;
+}
+const geocoder = new google.maps.Geocoder();
+
+geocoder.geocode({ address: address }, (res, stat) => {
+    if (stat !== "OK" || !res || res.length === 0) {
+        alert("Location not found");
+        showResults([]);
+        return;
+    }
+
+    const center = res[0].geometry.location;
+
+    // Calculate distances from this location
+    calculateDistancesFrom(center);
+
+    map.setCenter(center);
+    map.setZoom(9);
+
+    filterRadius(center, radiusMeters);
+});
+
+});
+</script>
+
+{% schema %}
+{
+  "name": "Locations",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "api_key",
+      "label": "Google Maps API Key"
+    }
+  ],
+
+  "blocks": [
+    {
+      "type": "location_block",
+      "name": "Locations",
+      "settings": [
+
+        /* ---------------------- */
+        /* LOCATION 1             */
+        /* ---------------------- */
+        {
+          "type": "header",
+          "content": "Location 1"
+        },
+        { "type": "text", "id": "location_1_title", "label": "Title" },
+        { "type": "textarea", "id": "location_1_desc", "label": "Description" },
+        { "type": "text", "id": "location_1_address", "label": "Address" },
+        { "type": "text", "id": "location_1_phone", "label": "Phone" },
+        {
+          "type": "select",
+          "id": "location_1_state",
+          "label": "State",
+          "options": [
+            { "value": "", "label": "None" },
+            { "value": "Alabama", "label": "Alabama" },
+            { "value": "Alaska", "label": "Alaska" },
+            { "value": "Alberta", "label": "Alberta" },
+            { "value": "Arizona", "label": "Arizona" },
+            { "value": "Arkansas", "label": "Arkansas" },
+            { "value": "British Columbia", "label": "British Columbia" },
+            { "value": "California", "label": "California" },
+            { "value": "Colorado", "label": "Colorado" },
+            { "value": "Connecticut", "label": "Connecticut" },
+            { "value": "Delaware", "label": "Delaware" },
+            { "value": "District of Columbia", "label": "District of Columbia" },
+            { "value": "Florida", "label": "Florida" },
+            { "value": "Georgia", "label": "Georgia" },
+            { "value": "Hawaii", "label": "Hawaii" },
+            { "value": "Idaho", "label": "Idaho" },
+            { "value": "Illinois", "label": "Illinois" },
+            { "value": "Indiana", "label": "Indiana" },
+            { "value": "Iowa", "label": "Iowa" },
+            { "value": "Kansas", "label": "Kansas" },
+            { "value": "Kentucky", "label": "Kentucky" },
+            { "value": "Louisiana", "label": "Louisiana" },
+            { "value": "Maine", "label": "Maine" },
+            { "value": "Manitoba", "label": "Manitoba" },
+            { "value": "Maryland", "label": "Maryland" },
+            { "value": "Massachusetts", "label": "Massachusetts" },
+            { "value": "Michigan", "label": "Michigan" },
+            { "value": "Minnesota", "label": "Minnesota" },
+            { "value": "Mississippi", "label": "Mississippi" },
+            { "value": "Missouri", "label": "Missouri" },
+            { "value": "Montana", "label": "Montana" },
+            { "value": "Nebraska", "label": "Nebraska" },
+            { "value": "Nevada", "label": "Nevada" },
+            { "value": "New Brunswick", "label": "New Brunswick" },
+            { "value": "New Hampshire", "label": "New Hampshire" },
+            { "value": "New Jersey", "label": "New Jersey" },
+            { "value": "New Mexico", "label": "New Mexico" },
+            { "value": "New York", "label": "New York" },
+            { "value": "Newfoundland and Labrador", "label": "Newfoundland and Labrador" },
+            { "value": "North Carolina", "label": "North Carolina" },
+            { "value": "North Dakota", "label": "North Dakota" },
+            { "value": "Northwest Territories", "label": "Northwest Territories" },
+            { "value": "Nova Scotia", "label": "Nova Scotia" },
+            { "value": "Nunavut", "label": "Nunavut" },
+            { "value": "Ohio", "label": "Ohio" },
+            { "value": "Oklahoma", "label": "Oklahoma" },
+            { "value": "Ontario", "label": "Ontario" },
+            { "value": "Oregon", "label": "Oregon" },
+            { "value": "Pennsylvania", "label": "Pennsylvania" },
+            { "value": "Prince Edward Island", "label": "Prince Edward Island" },
+            { "value": "Quebec", "label": "Quebec" },
+            { "value": "Rhode Island", "label": "Rhode Island" },
+            { "value": "Saskatchewan", "label": "Saskatchewan" },
+            { "value": "South Carolina", "label": "South Carolina" },
+            { "value": "South Dakota", "label": "South Dakota" },
+            { "value": "Tennessee", "label": "Tennessee" },
+            { "value": "Texas", "label": "Texas" },
+            { "value": "Utah", "label": "Utah" },
+            { "value": "Vermont", "label": "Vermont" },
+            { "value": "Virginia", "label": "Virginia" },
+            { "value": "Washington", "label": "Washington" },
+            { "value": "West Virginia", "label": "West Virginia" },
+            { "value": "Wisconsin", "label": "Wisconsin" },
+            { "value": "Wyoming", "label": "Wyoming" },
+            { "value": "Yukon", "label": "Yukon" }
+          ]
+        },
+        { "type": "text", "id": "location_1_lat", "label": "Latitude" },
+        { "type": "text", "id": "location_1_lng", "label": "Longitude" },
+
+        /* ---------------------- */
+        /* LOCATION 2             */
+        /* ---------------------- */
+        {
+          "type": "header",
+          "content": "Location 2"
+        },
+        { "type": "text", "id": "location_2_title", "label": "Title" },
+        { "type": "textarea", "id": "location_2_desc", "label": "Description" },
+        { "type": "text", "id": "location_2_address", "label": "Address" },
+        { "type": "text", "id": "location_2_phone", "label": "Phone" },
+        {
+          "type": "select",
+          "id": "location_2_state",
+          "label": "State",
+          "options": [
+            { "value": "", "label": "None" },
+            { "value": "Alabama", "label": "Alabama" },
+            { "value": "Alaska", "label": "Alaska" },
+            { "value": "Alberta", "label": "Alberta" },
+            { "value": "Arizona", "label": "Arizona" },
+            { "value": "Arkansas", "label": "Arkansas" },
+            { "value": "British Columbia", "label": "British Columbia" },
+            { "value": "California", "label": "California" },
+            { "value": "Colorado", "label": "Colorado" },
+            { "value": "Connecticut", "label": "Connecticut" },
+            { "value": "Delaware", "label": "Delaware" },
+            { "value": "District of Columbia", "label": "District of Columbia" },
+            { "value": "Florida", "label": "Florida" },
+            { "value": "Georgia", "label": "Georgia" },
+            { "value": "Hawaii", "label": "Hawaii" },
+            { "value": "Idaho", "label": "Idaho" },
+            { "value": "Illinois", "label": "Illinois" },
+            { "value": "Indiana", "label": "Indiana" },
+            { "value": "Iowa", "label": "Iowa" },
+            { "value": "Kansas", "label": "Kansas" },
+            { "value": "Kentucky", "label": "Kentucky" },
+            { "value": "Louisiana", "label": "Louisiana" },
+            { "value": "Maine", "label": "Maine" },
+            { "value": "Manitoba", "label": "Manitoba" },
+            { "value": "Maryland", "label": "Maryland" },
+            { "value": "Massachusetts", "label": "Massachusetts" },
+            { "value": "Michigan", "label": "Michigan" },
+            { "value": "Minnesota", "label": "Minnesota" },
+            { "value": "Mississippi", "label": "Mississippi" },
+            { "value": "Missouri", "label": "Missouri" },
+            { "value": "Montana", "label": "Montana" },
+            { "value": "Nebraska", "label": "Nebraska" },
+            { "value": "Nevada", "label": "Nevada" },
+            { "value": "New Brunswick", "label": "New Brunswick" },
+            { "value": "New Hampshire", "label": "New Hampshire" },
+            { "value": "New Jersey", "label": "New Jersey" },
+            { "value": "New Mexico", "label": "New Mexico" },
+            { "value": "New York", "label": "New York" },
+            { "value": "Newfoundland and Labrador", "label": "Newfoundland and Labrador" },
+            { "value": "North Carolina", "label": "North Carolina" },
+            { "value": "North Dakota", "label": "North Dakota" },
+            { "value": "Northwest Territories", "label": "Northwest Territories" },
+            { "value": "Nova Scotia", "label": "Nova Scotia" },
+            { "value": "Nunavut", "label": "Nunavut" },
+            { "value": "Ohio", "label": "Ohio" },
+            { "value": "Oklahoma", "label": "Oklahoma" },
+            { "value": "Ontario", "label": "Ontario" },
+            { "value": "Oregon", "label": "Oregon" },
+            { "value": "Pennsylvania", "label": "Pennsylvania" },
+            { "value": "Prince Edward Island", "label": "Prince Edward Island" },
+            { "value": "Quebec", "label": "Quebec" },
+            { "value": "Rhode Island", "label": "Rhode Island" },
+            { "value": "Saskatchewan", "label": "Saskatchewan" },
+            { "value": "South Carolina", "label": "South Carolina" },
+            { "value": "South Dakota", "label": "South Dakota" },
+            { "value": "Tennessee", "label": "Tennessee" },
+            { "value": "Texas", "label": "Texas" },
+            { "value": "Utah", "label": "Utah" },
+            { "value": "Vermont", "label": "Vermont" },
+            { "value": "Virginia", "label": "Virginia" },
+            { "value": "Washington", "label": "Washington" },
+            { "value": "West Virginia", "label": "West Virginia" },
+            { "value": "Wisconsin", "label": "Wisconsin" },
+            { "value": "Wyoming", "label": "Wyoming" },
+            { "value": "Yukon", "label": "Yukon" }
+          ]
+        },       
+        { "type": "text", "id": "location_2_lat", "label": "Latitude" },
+        { "type": "text", "id": "location_2_lng", "label": "Longitude" },
+
+        /* ---------------------- */
+        /* LOCATION 3             */
+        /* ---------------------- */
+        {
+          "type": "header",
+          "content": "Location 3"
+        },
+        { "type": "text", "id": "location_3_title", "label": "Title" },
+        { "type": "textarea", "id": "location_3_desc", "label": "Description" },
+        { "type": "text", "id": "location_3_address", "label": "Address" },
+        { "type": "text", "id": "location_3_phone", "label": "Phone" },
+        {
+          "type": "select",
+          "id": "location_3_state",
+          "label": "State",
+          "options": [
+            { "value": "", "label": "None" },
+            { "value": "Alabama", "label": "Alabama" },
+            { "value": "Alaska", "label": "Alaska" },
+            { "value": "Alberta", "label": "Alberta" },
+            { "value": "Arizona", "label": "Arizona" },
+            { "value": "Arkansas", "label": "Arkansas" },
+            { "value": "British Columbia", "label": "British Columbia" },
+            { "value": "California", "label": "California" },
+            { "value": "Colorado", "label": "Colorado" },
+            { "value": "Connecticut", "label": "Connecticut" },
+            { "value": "Delaware", "label": "Delaware" },
+            { "value": "District of Columbia", "label": "District of Columbia" },
+            { "value": "Florida", "label": "Florida" },
+            { "value": "Georgia", "label": "Georgia" },
+            { "value": "Hawaii", "label": "Hawaii" },
+            { "value": "Idaho", "label": "Idaho" },
+            { "value": "Illinois", "label": "Illinois" },
+            { "value": "Indiana", "label": "Indiana" },
+            { "value": "Iowa", "label": "Iowa" },
+            { "value": "Kansas", "label": "Kansas" },
+            { "value": "Kentucky", "label": "Kentucky" },
+            { "value": "Louisiana", "label": "Louisiana" },
+            { "value": "Maine", "label": "Maine" },
+            { "value": "Manitoba", "label": "Manitoba" },
+            { "value": "Maryland", "label": "Maryland" },
+            { "value": "Massachusetts", "label": "Massachusetts" },
+            { "value": "Michigan", "label": "Michigan" },
+            { "value": "Minnesota", "label": "Minnesota" },
+            { "value": "Mississippi", "label": "Mississippi" },
+            { "value": "Missouri", "label": "Missouri" },
+            { "value": "Montana", "label": "Montana" },
+            { "value": "Nebraska", "label": "Nebraska" },
+            { "value": "Nevada", "label": "Nevada" },
+            { "value": "New Brunswick", "label": "New Brunswick" },
+            { "value": "New Hampshire", "label": "New Hampshire" },
+            { "value": "New Jersey", "label": "New Jersey" },
+            { "value": "New Mexico", "label": "New Mexico" },
+            { "value": "New York", "label": "New York" },
+            { "value": "Newfoundland and Labrador", "label": "Newfoundland and Labrador" },
+            { "value": "North Carolina", "label": "North Carolina" },
+            { "value": "North Dakota", "label": "North Dakota" },
+            { "value": "Northwest Territories", "label": "Northwest Territories" },
+            { "value": "Nova Scotia", "label": "Nova Scotia" },
+            { "value": "Nunavut", "label": "Nunavut" },
+            { "value": "Ohio", "label": "Ohio" },
+            { "value": "Oklahoma", "label": "Oklahoma" },
+            { "value": "Ontario", "label": "Ontario" },
+            { "value": "Oregon", "label": "Oregon" },
+            { "value": "Pennsylvania", "label": "Pennsylvania" },
+            { "value": "Prince Edward Island", "label": "Prince Edward Island" },
+            { "value": "Quebec", "label": "Quebec" },
+            { "value": "Rhode Island", "label": "Rhode Island" },
+            { "value": "Saskatchewan", "label": "Saskatchewan" },
+            { "value": "South Carolina", "label": "South Carolina" },
+            { "value": "South Dakota", "label": "South Dakota" },
+            { "value": "Tennessee", "label": "Tennessee" },
+            { "value": "Texas", "label": "Texas" },
+            { "value": "Utah", "label": "Utah" },
+            { "value": "Vermont", "label": "Vermont" },
+            { "value": "Virginia", "label": "Virginia" },
+            { "value": "Washington", "label": "Washington" },
+            { "value": "West Virginia", "label": "West Virginia" },
+            { "value": "Wisconsin", "label": "Wisconsin" },
+            { "value": "Wyoming", "label": "Wyoming" },
+            { "value": "Yukon", "label": "Yukon" }
+          ]
+        },   
+        { "type": "text", "id": "location_3_lat", "label": "Latitude" },
+        { "type": "text", "id": "location_3_lng", "label": "Longitude" },
+
+        /* ---------------------- */
+        /* LOCATION 4             */
+        /* ---------------------- */
+        {
+          "type": "header",
+          "content": "Location 4"
+        },
+        { "type": "text", "id": "location_4_title", "label": "Title" },
+        { "type": "textarea", "id": "location_4_desc", "label": "Description" },
+        { "type": "text", "id": "location_4_address", "label": "Address" },
+        { "type": "text", "id": "location_4_phone", "label": "Phone" },
+        {
+          "type": "select",
+          "id": "location_4_state",
+          "label": "State",
+          "options": [
+            { "value": "", "label": "None" },
+            { "value": "Alabama", "label": "Alabama" },
+            { "value": "Alaska", "label": "Alaska" },
+            { "value": "Alberta", "label": "Alberta" },
+            { "value": "Arizona", "label": "Arizona" },
+            { "value": "Arkansas", "label": "Arkansas" },
+            { "value": "British Columbia", "label": "British Columbia" },
+            { "value": "California", "label": "California" },
+            { "value": "Colorado", "label": "Colorado" },
+            { "value": "Connecticut", "label": "Connecticut" },
+            { "value": "Delaware", "label": "Delaware" },
+            { "value": "District of Columbia", "label": "District of Columbia" },
+            { "value": "Florida", "label": "Florida" },
+            { "value": "Georgia", "label": "Georgia" },
+            { "value": "Hawaii", "label": "Hawaii" },
+            { "value": "Idaho", "label": "Idaho" },
+            { "value": "Illinois", "label": "Illinois" },
+            { "value": "Indiana", "label": "Indiana" },
+            { "value": "Iowa", "label": "Iowa" },
+            { "value": "Kansas", "label": "Kansas" },
+            { "value": "Kentucky", "label": "Kentucky" },
+            { "value": "Louisiana", "label": "Louisiana" },
+            { "value": "Maine", "label": "Maine" },
+            { "value": "Manitoba", "label": "Manitoba" },
+            { "value": "Maryland", "label": "Maryland" },
+            { "value": "Massachusetts", "label": "Massachusetts" },
+            { "value": "Michigan", "label": "Michigan" },
+            { "value": "Minnesota", "label": "Minnesota" },
+            { "value": "Mississippi", "label": "Mississippi" },
+            { "value": "Missouri", "label": "Missouri" },
+            { "value": "Montana", "label": "Montana" },
+            { "value": "Nebraska", "label": "Nebraska" },
+            { "value": "Nevada", "label": "Nevada" },
+            { "value": "New Brunswick", "label": "New Brunswick" },
+            { "value": "New Hampshire", "label": "New Hampshire" },
+            { "value": "New Jersey", "label": "New Jersey" },
+            { "value": "New Mexico", "label": "New Mexico" },
+            { "value": "New York", "label": "New York" },
+            { "value": "Newfoundland and Labrador", "label": "Newfoundland and Labrador" },
+            { "value": "North Carolina", "label": "North Carolina" },
+            { "value": "North Dakota", "label": "North Dakota" },
+            { "value": "Northwest Territories", "label": "Northwest Territories" },
+            { "value": "Nova Scotia", "label": "Nova Scotia" },
+            { "value": "Nunavut", "label": "Nunavut" },
+            { "value": "Ohio", "label": "Ohio" },
+            { "value": "Oklahoma", "label": "Oklahoma" },
+            { "value": "Ontario", "label": "Ontario" },
+            { "value": "Oregon", "label": "Oregon" },
+            { "value": "Pennsylvania", "label": "Pennsylvania" },
+            { "value": "Prince Edward Island", "label": "Prince Edward Island" },
+            { "value": "Quebec", "label": "Quebec" },
+            { "value": "Rhode Island", "label": "Rhode Island" },
+            { "value": "Saskatchewan", "label": "Saskatchewan" },
+            { "value": "South Carolina", "label": "South Carolina" },
+            { "value": "South Dakota", "label": "South Dakota" },
+            { "value": "Tennessee", "label": "Tennessee" },
+            { "value": "Texas", "label": "Texas" },
+            { "value": "Utah", "label": "Utah" },
+            { "value": "Vermont", "label": "Vermont" },
+            { "value": "Virginia", "label": "Virginia" },
+            { "value": "Washington", "label": "Washington" },
+            { "value": "West Virginia", "label": "West Virginia" },
+            { "value": "Wisconsin", "label": "Wisconsin" },
+            { "value": "Wyoming", "label": "Wyoming" },
+            { "value": "Yukon", "label": "Yukon" }
+          ]
+        },   
+        { "type": "text", "id": "location_4_lat", "label": "Latitude" },
+        { "type": "text", "id": "location_4_lng", "label": "Longitude" }
+
+      ]
+    }
+  ],
+
+  "max_blocks": 50,
+
+  "presets": [
+    {
+      "name": "Locations",
+      "category": "Maps"
+    }
+  ]
+}
+{% endschema %}

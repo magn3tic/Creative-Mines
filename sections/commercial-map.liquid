@@ -1,3 +1,5 @@
+<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+
 <!-- Commercial Representative Map Section -->
 <section class="content-area bg_dark-green">
   <div class="container">
@@ -20,33 +22,63 @@
           {% endif %}
 
           {% for block in section.blocks %}
+          {% if block.settings.liquid != blank %}
             <div class="trigger-tooltip {{ block.settings.position_class }}">
                 <div class="trigger-pin">
                     <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/plus-minus.webp" alt="icon">
                 </div>
-              <div class="trigger-content">
-                {% if block.settings.name != blank %}
-                  <span class="title">{{ block.settings.name }}</span>
-                {% endif %}
-                <ul>
-                  {% if block.settings.email != blank %}
-                    <li>
-                      <a class="emailCopy" href="mailto:{{ block.settings.email }}">{{ block.settings.email }}</a>
-                    </li>
-                  {% endif %}
-                   <li><a href="javascript:;" class="clone"><img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/clone.webp"></a></li>
-                </ul>
-                {% if block.settings.phone != blank %}
-                  <p>{{ block.settings.phone }}</p>
-                {% endif %}
-              </div>
             </div>
+            <div class="trigger-popup">
+                <div class="tp-inner">
+                    <div class="tp-close">&times;</div>
+                    {{ block.settings.liquid }}
+                </div>
+            </div>
+          {% endif %}            
           {% endfor %}
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  document.addEventListener('click', function(e) {
+
+    // If clicking a trigger-pin
+    const pin = e.target.closest('.trigger-pin');
+    if (pin) {
+
+      // Close all popups
+      document.querySelectorAll('.trigger-popup').forEach(p => p.classList.remove('show'));
+      document.querySelectorAll('.trigger-pin').forEach(p => p.classList.remove('act'));
+
+      // Activate clicked pin
+      pin.classList.add('act');
+
+      // Show its popup (next sibling)
+      const popup = pin.parentElement.nextElementSibling;
+      if (popup && popup.classList.contains('trigger-popup')) {
+        popup.classList.add('show');
+      }
+
+      return;
+    }
+
+    // Close button
+    if (e.target.closest('.tp-close')) {
+      document.querySelectorAll('.trigger-popup').forEach(p => p.classList.remove('show'));
+      document.querySelectorAll('.trigger-pin').forEach(p => p.classList.remove('act'));
+      return;
+    }
+
+  });
+
+});
+</script>
+
 
 {% schema %}
 {
@@ -76,9 +108,11 @@
       "name": "Representative Pin",
       "settings": [
         { "type": "text", "id": "position_class", "label": "Position Class (e.g. location-post1)" },
-        { "type": "text", "id": "name", "label": "Representative Name" },
-        { "type": "text", "id": "email", "label": "Email" },
-        { "type": "text", "id": "phone", "label": "Phone Number" }
+        {
+          "type": "liquid",
+          "id": "liquid",
+          "label": "Hubspot Form Code"
+        }        
       ]
     }
   ],

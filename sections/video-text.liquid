@@ -5,9 +5,15 @@
         <img src="{{ section.settings.video_image | img_url: 'master' }}" alt="video thumbnail">
       {% endif %}
       {% if section.settings.video_url != blank %}
-        <a href="{{ section.settings.video_url }}" data-lity>
-          <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/play-icon.webp" alt="Play">
-        </a>
+        <video 
+          src="{{ section.settings.video_url }}" 
+          playsinline 
+          poster="{{ section.settings.video_image | img_url: 'master' }}" 
+          class="story-video"
+        ></video>
+        <div class="play-video">
+          <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/play_orange.webp" alt="Play">
+        </div>        
       {% endif %}
     </div>
 

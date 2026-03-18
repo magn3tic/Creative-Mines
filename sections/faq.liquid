@@ -1,21 +1,24 @@
 <section class="content-area" data-aos="fade-up">
-  <div class="container ">
+  <div class="container">
     <div class="row">
       <div class="col-md-4 col-sm-5">
         <div>
           {% if section.settings.heading != blank %}
             <h2 class="h4">{{ section.settings.heading }}</h2>
           {% endif %}
-          
-          {% assign all_categories = section.blocks | map: 'settings' | map: 'category' | uniq | sort %}
 
-          {% if section.settings.show_dropdown and all_categories.size > 0 %}
+          {% comment %}
+          Collect all categories (from checkbox IDs)
+          {% endcomment %}
+          {% assign all_categories = "option1,option2,option3,option4,option5,option6,option7,option8,option9,option10" | split: "," %}
+
+          {% if section.settings.show_dropdown %}
             <!-- Mobile Dropdown -->
             <div class="faq_filter d-md-none">
               <select id="faqCategoryFilter">
                 <option value="All">All Topics</option>
                 {% for cat in all_categories %}
-                  <option value="{{ cat | escape }}">
+                  <option value="{{ cat }}">
                     {% case cat %}
                       {% when "option1" %}Design Options
                       {% when "option2" %}Installation & Application
@@ -27,7 +30,6 @@
                       {% when "option8" %}How to Order
                       {% when "option9" %}Pricing
                       {% when "option10" %}Care & Maintenance
-                      {% else %}{{ cat }}
                     {% endcase %}
                   </option>
                 {% endfor %}
@@ -40,7 +42,7 @@
                 <li><a href="javascript:;" data-category="All" class="active">All Topics</a></li>
                 {% for cat in all_categories %}
                   <li>
-                    <a href="javascript:;" data-category="{{ cat | escape }}">
+                    <a href="javascript:;" data-category="{{ cat }}">
                       {% case cat %}
                         {% when "option1" %}Design Options
                         {% when "option2" %}Installation & Application
@@ -52,7 +54,6 @@
                         {% when "option8" %}How to Order
                         {% when "option9" %}Pricing
                         {% when "option10" %}Care & Maintenance
-                        {% else %}{{ cat }}
                       {% endcase %}
                     </a>
                   </li>
@@ -60,29 +61,78 @@
               </ul>
             </div>
           {% endif %}
-          
         </div>
       </div>
 
       <div class="col-md-8 col-sm-7">
         <div class="pr-accordion ps-lg-5" id="accordionExample">
+
           {% for block in section.blocks %}
             {% assign uid = block.id %}
-            <div class="accordion-item" data-category="{{ block.settings.category }}">
-              <div class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ uid }}" aria-expanded="false" aria-controls="{{ uid }}">
-                  {{ block.settings.question }}
-                  <em class="fa-solid fa-chevron-down"></em>
-                </button>
-              </div>
-              <div id="{{ uid }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                  <div class="short-content">
+
+            {% if block.type == 'faq_item' %}
+              {% assign catlist = '' %}
+              {% for i in (1..10) %}
+                {% assign key = 'cat_option' | append: i %}
+                {% if block.settings[key] %}
+                  {% assign catlist = catlist | append: 'option' | append: i | append: ',' %}
+                {% endif %}
+              {% endfor %}
+
+              <div class="accordion-item" data-category="{{ catlist | strip }}">
+                <div class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ uid }}" aria-expanded="false" aria-controls="{{ uid }}">
+                    {{ block.settings.question }}
+                    <em class="fa-solid fa-chevron-down"></em>
+                  </button>
+                </div>
+                <div id="{{ uid }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
                     {{ block.settings.answer }}
+                    {% if block.settings.faqvideo != blank %}
+                      <div class="faq-video mt-3">{{ block.settings.faqvideo }}</div>
+                    {% endif %}
                   </div>
                 </div>
               </div>
-            </div>
+
+            {% elsif block.type == 'faq_itemtwo' %}
+              {% for i in (1..10) %}
+                {% assign q_key = 'question_' | append: i %}
+                {% assign a_key = 'answer_' | append: i %}
+                {% assign v_key = 'faqvideo_' | append: i %}
+                {% assign q = block.settings[q_key] %}
+                {% assign a = block.settings[a_key] %}
+                {% assign v = block.settings[v_key] %}
+                {% if q != blank %}
+                  {% assign sub_id = uid | append: '-' | append: i %}
+                  {% assign catlist = '' %}
+                  {% for j in (1..10) %}
+                    {% assign key = 'cat_option' | append: j | append: '_' | append: i %}
+                    {% if block.settings[key] %}
+                      {% assign catlist = catlist | append: 'option' | append: j | append: ',' %}
+                    {% endif %}
+                  {% endfor %}
+
+                  <div class="accordion-item" data-category="{{ catlist | strip }}">
+                    <div class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ sub_id }}" aria-expanded="false" aria-controls="{{ sub_id }}">
+                        {{ q }}
+                        <em class="fa-solid fa-chevron-down"></em>
+                      </button>
+                    </div>
+                    <div id="{{ sub_id }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        {{ a }}
+                        {% if v != blank %}
+                          <div class="faq-video mt-3">{{ v }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
           {% endfor %}
         </div>
       </div>
@@ -91,37 +141,38 @@
 </section>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const filter = document.getElementById("faqCategoryFilter");
-    const tabs = document.querySelectorAll("#faqCategoryTabs a");
-    const items = document.querySelectorAll(".accordion-item");
+document.addEventListener("DOMContentLoaded", function () {
+  const filter = document.getElementById("faqCategoryFilter");
+  const tabs = document.querySelectorAll("#faqCategoryTabs a");
+  const items = document.querySelectorAll(".accordion-item");
 
-    function filterFaq(selected) {
-      items.forEach(item => {
-        const category = item.getAttribute("data-category");
-        item.style.display = (selected === "All" || selected === category) ? "block" : "none";
-      });
-    }
+  function filterFaq(selected) {
+    items.forEach(item => {
+      const categories = (item.getAttribute("data-category") || "").split(",");
+      const visible = selected === "All" || categories.includes(selected);
+      item.style.display = visible ? "block" : "none";
+    });
+  }
 
-    if (filter) {
-      filter.addEventListener("change", function () {
-        filterFaq(this.value);
-        tabs.forEach(tab => tab.classList.remove("active"));
-        document.querySelector(`#faqCategoryTabs a[data-category="${this.value}"]`)?.classList.add("active");
-      });
-    }
+  if (filter) {
+    filter.addEventListener("change", function () {
+      filterFaq(this.value);
+      tabs.forEach(tab => tab.classList.remove("active"));
+      document.querySelector(`#faqCategoryTabs a[data-category="${this.value}"]`)?.classList.add("active");
+    });
+  }
 
-    if (tabs.length) {
-      tabs.forEach(tab => {
-        tab.addEventListener("click", function () {
-          tabs.forEach(t => t.classList.remove("active"));
-          this.classList.add("active");
-          filterFaq(this.dataset.category);
-          if (filter) filter.value = this.dataset.category;
-        });
+  if (tabs.length) {
+    tabs.forEach(tab => {
+      tab.addEventListener("click", function () {
+        tabs.forEach(t => t.classList.remove("active"));
+        this.classList.add("active");
+        filterFaq(this.dataset.category);
+        if (filter) filter.value = this.dataset.category;
       });
-    }
-  });
+    });
+  }
+});
 </script>
 
 {% schema %}
@@ -158,26 +209,192 @@
           "label": "Answer"
         },
         {
-          "type": "select",
-          "id": "category",
-          "label": "Category",
-          "options": [
-            { "value": "option1", "label": "Design Options" },
-            { "value": "option2", "label": "Installation & Application" },
-            { "value": "option3", "label": "Technical Specifications" },
-            { "value": "option4", "label": "Product Details" },
-            { "value": "option5", "label": "Product Performance" },
-            { "value": "option6", "label": "Customization & Design Support" },
-            { "value": "option7", "label": "Environmental Benefits" },
-            { "value": "option8", "label": "How to Order" },
-            { "value": "option9", "label": "Pricing" },
-            { "value": "option10", "label": "Care & Maintenance" }
-          ]
-        }
+          "type": "textarea",
+          "id": "faqvideo",
+          "label": "Video Embed"
+        },        
+        {
+          "type": "header",
+          "content": "Select Categories"
+        },
+        { "type": "checkbox", "id": "cat_option1", "label": "Design Options" },
+        { "type": "checkbox", "id": "cat_option2", "label": "Installation & Application" },
+        { "type": "checkbox", "id": "cat_option3", "label": "Technical Specifications" },
+        { "type": "checkbox", "id": "cat_option4", "label": "Product Details" },
+        { "type": "checkbox", "id": "cat_option5", "label": "Product Performance" },
+        { "type": "checkbox", "id": "cat_option6", "label": "Customization & Design Support" },
+        { "type": "checkbox", "id": "cat_option7", "label": "Environmental Benefits" },
+        { "type": "checkbox", "id": "cat_option8", "label": "How to Order" },
+        { "type": "checkbox", "id": "cat_option9", "label": "Pricing" },
+        { "type": "checkbox", "id": "cat_option10", "label": "Care & Maintenance" }
+      ]
+    },
+    {
+      "type": "faq_itemtwo",
+      "name": "FAQ Item (Multi)",
+      "settings": [
+        { "type": "header", "content": "FAQ 1" },
+        { "type": "text", "id": "question_1", "label": "Question 1" },
+        { "type": "richtext", "id": "answer_1", "label": "Answer 1" },
+        { "type": "textarea", "id": "faqvideo_1", "label": "Video Embed 1" },
+        { "type": "header", "content": "Select Categories for FAQ 1" },
+        { "type": "checkbox", "id": "cat_option1_1", "label": "Design Options" },
+        { "type": "checkbox", "id": "cat_option2_1", "label": "Installation & Application" },
+        { "type": "checkbox", "id": "cat_option3_1", "label": "Technical Specifications" },
+        { "type": "checkbox", "id": "cat_option4_1", "label": "Product Details" },
+        { "type": "checkbox", "id": "cat_option5_1", "label": "Product Performance" },
+        { "type": "checkbox", "id": "cat_option6_1", "label": "Customization & Design Support" },
+        { "type": "checkbox", "id": "cat_option7_1", "label": "Environmental Benefits" },
+        { "type": "checkbox", "id": "cat_option8_1", "label": "How to Order" },
+        { "type": "checkbox", "id": "cat_option9_1", "label": "Pricing" },
+        { "type": "checkbox", "id": "cat_option10_1", "label": "Care & Maintenance" },
+
+        { "type": "header", "content": "FAQ 2" },
+        { "type": "text", "id": "question_2", "label": "Question 2" },
+        { "type": "richtext", "id": "answer_2", "label": "Answer 2" },
+        { "type": "textarea", "id": "faqvideo_2", "label": "Video Embed 2" },
+        { "type": "header", "content": "Select Categories for FAQ 2" },
+        { "type": "checkbox", "id": "cat_option1_2", "label": "Design Options" },
+        { "type": "checkbox", "id": "cat_option2_2", "label": "Installation & Application" },
+        { "type": "checkbox", "id": "cat_option3_2", "label": "Technical Specifications" },
+        { "type": "checkbox", "id": "cat_option4_2", "label": "Product Details" },
+        { "type": "checkbox", "id": "cat_option5_2", "label": "Product Performance" },
+        { "type": "checkbox", "id": "cat_option6_2", "label": "Customization & Design Support" },
+        { "type": "checkbox", "id": "cat_option7_2", "label": "Environmental Benefits" },
+        { "type": "checkbox", "id": "cat_option8_2", "label": "How to Order" },
+        { "type": "checkbox", "id": "cat_option9_2", "label": "Pricing" },
+        { "type": "checkbox", "id": "cat_option10_2", "label": "Care & Maintenance" },
+
+        { "type": "header", "content": "FAQ 3" },
+        { "type": "text", "id": "question_3", "label": "Question 3" },
+        { "type": "richtext", "id": "answer_3", "label": "Answer 3" },
+        { "type": "textarea", "id": "faqvideo_3", "label": "Video Embed 3" },
+        { "type": "header", "content": "Select Categories for FAQ 3" },
+        { "type": "checkbox", "id": "cat_option1_3", "label": "Design Options" },
+        { "type": "checkbox", "id": "cat_option2_3", "label": "Installation & Application" },
+        { "type": "checkbox", "id": "cat_option3_3", "label": "Technical Specifications" },
+        { "type": "checkbox", "id": "cat_option4_3", "label": "Product Details" },
+        { "type": "checkbox", "id": "cat_option5_3", "label": "Product Performance" },
+        { "type": "checkbox", "id": "cat_option6_3", "label": "Customization & Design Support" },
+        { "type": "checkbox", "id": "cat_option7_3", "label": "Environmental Benefits" },
+        { "type": "checkbox", "id": "cat_option8_3", "label": "How to Order" },
+        { "type": "checkbox", "id": "cat_option9_3", "label": "Pricing" },
+        { "type": "checkbox", "id": "cat_option10_3", "label": "Care & Maintenance" },
+
+        { "type": "header", "content": "FAQ 4" },
+        { "type": "text", "id": "question_4", "label": "Question 4" },
+        { "type": "richtext", "id": "answer_4", "label": "Answer 4" },
+        { "type": "textarea", "id": "faqvideo_4", "label": "Video Embed 4" },
+        { "type": "header", "content": "Select Categories for FAQ 4" },
+        { "type": "checkbox", "id": "cat_option1_4", "label": "Design Options" },
+        { "type": "checkbox", "id": "cat_option2_4", "label": "Installation & Application" },
+        { "type": "checkbox", "id": "cat_option3_4", "label": "Technical Specifications" },
+        { "type": "checkbox", "id": "cat_option4_4", "label": "Product Details" },
+        { "type": "checkbox", "id": "cat_option5_4", "label": "Product Performance" },
+        { "type": "checkbox", "id": "cat_option6_4", "label": "Customization & Design Support" },
+        { "type": "checkbox", "id": "cat_option7_4", "label": "Environmental Benefits" },
+        { "type": "checkbox", "id": "cat_option8_4", "label": "How to Order" },
+        { "type": "checkbox", "id": "cat_option9_4", "label": "Pricing" },
+        { "type": "checkbox", "id": "cat_option10_4", "label": "Care & Maintenance" },
+
+        { "type": "header", "content": "FAQ 5" },
+        { "type": "text", "id": "question_5", "label": "Question 5" },
+        { "type": "richtext", "id": "answer_5", "label": "Answer 5" },
+        { "type": "textarea", "id": "faqvideo_5", "label": "Video Embed 5" },
+        { "type": "header", "content": "Select Categories for FAQ 5" },
+        { "type": "checkbox", "id": "cat_option1_5", "label": "Design Options" },
+        { "type": "checkbox", "id": "cat_option2_5", "label": "Installation & Application" },
+        { "type": "checkbox", "id": "cat_option3_5", "label": "Technical Specifications" },
+        { "type": "checkbox", "id": "cat_option4_5", "label": "Product Details" },
+        { "type": "checkbox", "id": "cat_option5_5", "label": "Product Performance" },
+        { "type": "checkbox", "id": "cat_option6_5", "label": "Customization & Design Support" },
+        { "type": "checkbox", "id": "cat_option7_5", "label": "Environmental Benefits" },
+        { "type": "checkbox", "id": "cat_option8_5", "label": "How to Order" },
+        { "type": "checkbox", "id": "cat_option9_5", "label": "Pricing" },
+        { "type": "checkbox", "id": "cat_option10_5", "label": "Care & Maintenance" },
+
+        { "type": "header", "content": "FAQ 6" },
+        { "type": "text", "id": "question_6", "label": "Question 6" },
+        { "type": "richtext", "id": "answer_6", "label": "Answer 6" },
+        { "type": "textarea", "id": "faqvideo_6", "label": "Video Embed 6" },
+        { "type": "header", "content": "Select Categories for FAQ 6" },
+        { "type": "checkbox", "id": "cat_option1_6", "label": "Design Options" },
+        { "type": "checkbox", "id": "cat_option2_6", "label": "Installation & Application" },
+        { "type": "checkbox", "id": "cat_option3_6", "label": "Technical Specifications" },
+        { "type": "checkbox", "id": "cat_option4_6", "label": "Product Details" },
+        { "type": "checkbox", "id": "cat_option5_6", "label": "Product Performance" },
+        { "type": "checkbox", "id": "cat_option6_6", "label": "Customization & Design Support" },
+        { "type": "checkbox", "id": "cat_option7_6", "label": "Environmental Benefits" },
+        { "type": "checkbox", "id": "cat_option8_6", "label": "How to Order" },
+        { "type": "checkbox", "id": "cat_option9_6", "label": "Pricing" },
+        { "type": "checkbox", "id": "cat_option10_6", "label": "Care & Maintenance" },
+
+        { "type": "header", "content": "FAQ 7" },
+        { "type": "text", "id": "question_7", "label": "Question 7" },
+        { "type": "richtext", "id": "answer_7", "label": "Answer 7" },
+        { "type": "textarea", "id": "faqvideo_7", "label": "Video Embed 7" },
+        { "type": "header", "content": "Select Categories for FAQ 7" },
+        { "type": "checkbox", "id": "cat_option1_7", "label": "Design Options" },
+        { "type": "checkbox", "id": "cat_option2_7", "label": "Installation & Application" },
+        { "type": "checkbox", "id": "cat_option3_7", "label": "Technical Specifications" },
+        { "type": "checkbox", "id": "cat_option4_7", "label": "Product Details" },
+        { "type": "checkbox", "id": "cat_option5_7", "label": "Product Performance" },
+        { "type": "checkbox", "id": "cat_option6_7", "label": "Customization & Design Support" },
+        { "type": "checkbox", "id": "cat_option7_7", "label": "Environmental Benefits" },
+        { "type": "checkbox", "id": "cat_option8_7", "label": "How to Order" },
+        { "type": "checkbox", "id": "cat_option9_7", "label": "Pricing" },
+        { "type": "checkbox", "id": "cat_option10_7", "label": "Care & Maintenance" },
+
+        { "type": "header", "content": "FAQ 8" },
+        { "type": "text", "id": "question_8", "label": "Question 8" },
+        { "type": "richtext", "id": "answer_8", "label": "Answer 8" },
+        { "type": "textarea", "id": "faqvideo_8", "label": "Video Embed 8" },
+        { "type": "header", "content": "Select Categories for FAQ 8" },
+        { "type": "checkbox", "id": "cat_option1_8", "label": "Design Options" },
+        { "type": "checkbox", "id": "cat_option2_8", "label": "Installation & Application" },
+        { "type": "checkbox", "id": "cat_option3_8", "label": "Technical Specifications" },
+        { "type": "checkbox", "id": "cat_option4_8", "label": "Product Details" },
+        { "type": "checkbox", "id": "cat_option5_8", "label": "Product Performance" },
+        { "type": "checkbox", "id": "cat_option6_8", "label": "Customization & Design Support" },
+        { "type": "checkbox", "id": "cat_option7_8", "label": "Environmental Benefits" },
+        { "type": "checkbox", "id": "cat_option8_8", "label": "How to Order" },
+        { "type": "checkbox", "id": "cat_option9_8", "label": "Pricing" },
+        { "type": "checkbox", "id": "cat_option10_8", "label": "Care & Maintenance" },
+
+        { "type": "header", "content": "FAQ 9" },
+        { "type": "text", "id": "question_9", "label": "Question 9" },
+        { "type": "richtext", "id": "answer_9", "label": "Answer 9" },
+        { "type": "textarea", "id": "faqvideo_9", "label": "Video Embed 9" },
+        { "type": "header", "content": "Select Categories for FAQ 9" },
+        { "type": "checkbox", "id": "cat_option1_9", "label": "Design Options" },
+        { "type": "checkbox", "id": "cat_option2_9", "label": "Installation & Application" },
+        { "type": "checkbox", "id": "cat_option3_9", "label": "Technical Specifications" },
+        { "type": "checkbox", "id": "cat_option4_9", "label": "Product Details" },
+        { "type": "checkbox", "id": "cat_option5_9", "label": "Product Performance" },
+        { "type": "checkbox", "id": "cat_option6_9", "label": "Customization & Design Support" },
+        { "type": "checkbox", "id": "cat_option7_9", "label": "Environmental Benefits" },
+        { "type": "checkbox", "id": "cat_option8_9", "label": "How to Order" },
+        { "type": "checkbox", "id": "cat_option9_9", "label": "Pricing" },
+        { "type": "checkbox", "id": "cat_option10_9", "label": "Care & Maintenance" },
+
+        { "type": "header", "content": "FAQ 10" },
+        { "type": "text", "id": "question_10", "label": "Question 10" },
+        { "type": "richtext", "id": "answer_10", "label": "Answer 10" },
+        { "type": "textarea", "id": "faqvideo_10", "label": "Video Embed 10" },
+        { "type": "header", "content": "Select Categories for FAQ 10" },
+        { "type": "checkbox", "id": "cat_option1_10", "label": "Design Options" },
+        { "type": "checkbox", "id": "cat_option2_10", "label": "Installation & Application" },
+        { "type": "checkbox", "id": "cat_option3_10", "label": "Technical Specifications" },
+        { "type": "checkbox", "id": "cat_option4_10", "label": "Product Details" },
+        { "type": "checkbox", "id": "cat_option5_10", "label": "Product Performance" },
+        { "type": "checkbox", "id": "cat_option6_10", "label": "Customization & Design Support" },
+        { "type": "checkbox", "id": "cat_option7_10", "label": "Environmental Benefits" },
+        { "type": "checkbox", "id": "cat_option8_10", "label": "How to Order" },
+        { "type": "checkbox", "id": "cat_option9_10", "label": "Pricing" },
+        { "type": "checkbox", "id": "cat_option10_10", "label": "Care & Maintenance" }
       ]
     }
   ],
-  "max_blocks": 50,
   "presets": [
     {
       "name": "FAQ",

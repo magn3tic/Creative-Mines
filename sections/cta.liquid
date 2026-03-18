@@ -2,7 +2,7 @@
   {% if block.type == 'style_1' %}
   <section class="content-area">
     <div class="container-fluid">        
-    <div class="cta-inner" data-aos="fade-up">
+    <div class="cta-inner {% if block.settings.enable_dark %} is-dark{% endif %}" data-aos="fade-up">
       {% if block.settings.background_image != blank %}
         <img src="{{ block.settings.background_image | img_url: 'master' }}" alt="cta banner" class="bg_img">
       {% endif %}
@@ -189,7 +189,13 @@
           "type": "url",
           "id": "button_link",
           "label": "Button Link"
-        }
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_dark",
+          "label": "Enable Dark Version",
+          "default": false
+        }        
       ]
     },
     {

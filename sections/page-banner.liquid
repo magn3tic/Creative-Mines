@@ -1,4 +1,4 @@
-<section class="page-banner-area{% if section.settings.style != 'style-three' %} alt{% endif %}{% if section.settings.style == 'style-one' %} no-height{% endif %}">
+<section class="page-banner-area{% if section.settings.style != 'style-three' %} alt{% endif %}{% if section.settings.style == 'style-one' %} no-height{% endif %} {% if section.settings.disable_opacity %} no-overlay{% endif %}">
   {% if section.settings.image != blank %}
     <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.heading | escape }}" class="bg">
   {% endif %}
@@ -92,6 +92,12 @@
       "id": "rbutton_link",
       "label": "Button Link"
     },
+    {
+      "type": "checkbox",
+      "id": "disable_opacity",
+      "label": "Disable background opacity",
+      "default": false
+    }    
   ],
   "presets": [
     {

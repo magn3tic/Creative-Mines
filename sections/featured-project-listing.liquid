@@ -35,9 +35,10 @@
             </div>
           </div>
           {% endif %}
+          <br>
         </div>
-
-        <div class="col-lg-3 col-sm-4">
+        
+        <!--<div class="col-lg-3 col-sm-4">
           <div class="featured-project-filter text-end">
             <label for="casetype">Sort By:</label>
             <select id="casetype">
@@ -49,7 +50,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
 
     <!-- Project Grid -->
     <div class="featured-project-inner">
@@ -96,9 +97,38 @@
   </div>
 </section>
 
+<script id="{{ section.settings.unique_id }}" type="application/json">
+[
+  {% for block in section.blocks %}
+    {
+      "title": {{ block.settings.title | json }},
+      "description": {{ block.settings.description | json }},
+      "image": "{{ block.settings.image | img_url: '800x' }}",
+      "link": {{ block.settings.link | json }},
+      "architect": {{ block.settings.architect | json }},
+      "builder": {{ block.settings.builder | json }},
+      "interior": {{ block.settings.interior | json }},
+      "structural": {{ block.settings.structural | json }},
+      "photography": {{ block.settings.photography | json }}
+    }
+    {% unless forloop.last %},{% endunless %}
+  {% endfor %}
+]
+</script>
+
 {% schema %}
 {
   "name": "Featured Projects Listing",
+
+  "settings": [
+    {
+      "type": "text",
+      "id": "unique_id",
+      "label": "Unique ID (Do NOT change)",
+      "default": "featured-projects-master"
+    }
+  ],
+
   "blocks": [
     {
       "type": "project",
@@ -117,6 +147,7 @@
       ]
     }
   ],
+
   "presets": [
     { "name": "Featured Projects Listing" }
   ]
@@ -124,47 +155,104 @@
 {% endschema %}
 
 {% javascript %}
-document.addEventListener('DOMContentLoaded', function() {
-  const items = document.querySelectorAll('.project-item');
+document.addEventListener('DOMContentLoaded', function () {
+
+  const grid = document.querySelector('.project-grid');
   const loadMoreBtn = document.querySelector('.load-more-projects');
   const filterLinks = document.querySelectorAll('.featured-project-menu a');
+  const sortSelect = document.getElementById('casetype');
+
+  let items = Array.from(document.querySelectorAll('.project-item'));
+
+  items.forEach((item, index) => {
+    item.dataset.index = index;
+  });
 
   let visibleCount = 6;
   const increment = 6;
 
-  items.forEach((item, i) => { item.style.display = (i < visibleCount) ? 'block' : 'none'; });
+  let activeFilter = 'all';
+  let activeSort = 'common'; 
+
+  if (sortSelect) sortSelect.value = 'common';
+
+  function getTitle(item) {
+    return (
+      item.querySelector('.heading')?.innerText.trim().toLowerCase() || ''
+    );
+  }
+
+  function getFilteredItems() {
+    if (activeFilter === 'all') return [...items];
+    return items.filter(item => item.classList.contains(activeFilter));
+  }
+
+  function applySort(list) {
+    let sorted = [...list];
+
+    if (activeSort === 'common') {
+      sorted.sort((a, b) => getTitle(a).localeCompare(getTitle(b)));
+    }
+
+    if (activeSort === 'newest') {
+      sorted.sort((a, b) => b.dataset.index - a.dataset.index);
+    }
+
+    if (activeSort === 'popular') {
+      sorted.sort(
+        (a, b) => (b.dataset.popular || 0) - (a.dataset.popular || 0)
+      );
+    }
+
+    return sorted;
+  }
+
+  function render() {
+    let list = getFilteredItems();
+    list = applySort(list);
+
+    grid.innerHTML = '';
+    list.forEach(item => grid.appendChild(item));
+
+    list.forEach((item, i) => {
+      item.style.display = i < visibleCount ? 'block' : 'none';
+    });
+
+    if (loadMoreBtn) {
+      loadMoreBtn.style.display =
+        list.length > visibleCount ? 'inline-block' : 'none';
+    }
+  }
+
+  render();
 
   if (loadMoreBtn) {
-    loadMoreBtn.addEventListener('click', function() {
+    loadMoreBtn.addEventListener('click', () => {
       visibleCount += increment;
-      items.forEach((item, i) => { item.style.display = (i < visibleCount) ? 'block' : 'none'; });
-      if (visibleCount >= items.length) loadMoreBtn.style.display = 'none';
+      render();
     });
   }
 
-  if (filterLinks.length > 0) {
-    filterLinks.forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const filter = link.dataset.filter;
-        filterLinks.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
+  filterLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
 
-        let filteredItems = [];
-        items.forEach(item => {
-          if (filter === 'all' || item.classList.contains(filter)) {
-            filteredItems.push(item);
-          }
-        });
+      filterLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
 
-        filteredItems.forEach((item, i) => { item.style.display = (i < visibleCount) ? 'block' : 'none'; });
-        items.forEach(item => { if (!filteredItems.includes(item)) item.style.display = 'none'; });
+      activeFilter = link.dataset.filter;
+      visibleCount = 6;
+      render();
+    });
+  });
 
-        loadMoreBtn.style.display = (filteredItems.length > visibleCount) ? 'inline-block' : 'none';
-
-        visibleCount = 9;
-      });
+  if (sortSelect) {
+    sortSelect.addEventListener('change', () => {
+      activeSort = sortSelect.value;
+      visibleCount = 6;
+      render();
     });
   }
+
 });
 {% endjavascript %}

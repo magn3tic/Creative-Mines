@@ -11,6 +11,7 @@
         <div class="col-lg-9">
           {% if section.settings.heading != blank %}
             <h1 class="banner-heading alt">{{ section.settings.heading }}</h1>
+            <p style="color:white;">Explore our inspiration gallery and discover how our products come to life in real projects. Click on any photograph to view the products used and see how they come together in each space.</p>
           {% endif %}
         </div>
       </div>
@@ -94,21 +95,77 @@
       <div class="inner-body">
         <div class="row">
           <div class="col-lg-8 col-sm-7">
-            <div class="leftside">
+            <div class="leftside position-relative">
               <img src="{{ block.settings.imagepop | img_url: 'master' }}" alt="">
 
+              {% if 
+                block.settings.architect != blank or
+                block.settings.builder != blank or
+                block.settings.interior_design != blank or
+                block.settings.structural_engineer != blank or
+                block.settings.design_studio != blank or
+                block.settings.project_name != blank
+              %}
+                <div class="photo-credit">
+                  <div class="pc-wrapper">
+                    <ul>
+                      {% if block.settings.architect != blank %}
+                        <li>Architect&nbsp;- {{ block.settings.architect }}</li>
+                      {% endif %}
+                      {% if block.settings.builder != blank %}
+                        <li>Builder&nbsp;- {{ block.settings.builder }}</li>
+                      {% endif %}
+                      {% if block.settings.interior_design != blank %}
+                        <li>Interior Design&nbsp;- {{ block.settings.interior_design }}</li>
+                      {% endif %}
+                      {% if block.settings.structural_engineer != blank %}
+                        <li>Structural Engineer&nbsp;- {{ block.settings.structural_engineer }}</li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-center">
+                    <p>
+                      {% if block.settings.design_studio != blank %}
+                        <span><strong>Design Studio:</strong> {{ block.settings.design_studio }}</span>
+                      {% endif %}
+                      {% if block.settings.project_name != blank %}
+                        {% if block.settings.design_studio != blank %} | {% endif %}
+                        <span><strong>Project:</strong> {{ block.settings.project_name }}</span>
+                      {% endif %}
+                    </p>
+                    <em class="fa-solid fa-chevron-up"></em>
+                  </div>
+                </div>
+              {% endif %}               
             </div>
           </div>
           <div class="col-lg-4 col-sm-5">
             <div class="rightside">
               <h2 class="title">{{ product.title }}</h2>
-              <p>{{ product.description | strip_html | truncate: 160 }}</p>
+              <p>{{ product.description | strip_html }}</p>
+
+              {% assign variant = nil %}
+              {% if block.settings.variant_id != blank %}
+                {% assign variant_id_number = block.settings.variant_id | plus: 0 %}
+                {% assign variant = product.variants | where: 'id', variant_id_number | first %}
+              {% endif %}
 
               <div class="pr-single-meta">
-                  <p> <span>Color: Wildflower</span></p>
-                  <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/popup-color.webp" alt="">
+                {% if variant %}
+                  <p><span>Color: {{ variant.option1 }}</span></p>
+                  {% if variant.featured_image %}
+                    <img src="{{ variant.featured_image | img_url: '100x' }}" alt="{{ variant.option1 }}">
+                  {% endif %}
+                {% else %}
+                  {% assign first_variant = product.selected_or_first_available_variant %}
+                  <p><span>Color: {{ first_variant.option1 }}</span></p>
+                  {% if first_variant.featured_image %}
+                    <img src="{{ first_variant.featured_image | img_url: '100x' }}" alt="{{ first_variant.option1 }}">
+                  {% endif %}
+                {% endif %}
               </div>
-              <div class="cs-prices">
+
+              <!--<div class="cs-prices d-none">
                   <div class="price-item">
                       <span class="d-block">Price Per Square Ft.</span>
                       <span class="d-block price"><del>$24.85</del> $17.85</span>
@@ -131,12 +188,18 @@
                     <span class="d-block price">{{ product.price | money }}</span>
                   </div>
                 {% endif %}
-              </div>
+              </div>-->
 
               <div class="cs-actions">
                 <div class="left">
-                  <a href="{{ product.url }}" class="cta-btn btn_default">Order A Free Sample</a>
-                  <a href="{{ product.url }}" class="cta-btn btn_default_border">Shop the Look</a>
+                  <a href="javascript:void(0);" 
+                    class="cta-btn btn_default order-sample-btn" 
+                    data-product="{{ block.settings.product }}" 
+                    data-variant="{{ block.settings.variant_id }}">
+                    Order <span> A Free </span> Sample
+                  </a>
+
+                  <a href="{{ product.url }}?variant={{ block.settings.variant_id }} " class="cta-btn btn_default_border">Shop the Look</a>
                 </div>
               </div>
 
@@ -183,6 +246,67 @@ jQuery(document).ready(function($) {
         }
       });
     }
+  });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const buttons = document.querySelectorAll('.order-sample-btn');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', async function(e) {
+      e.preventDefault();
+      const productHandle = this.dataset.product;
+      const variantId = parseInt(this.dataset.variant);
+
+      if (!productHandle || !variantId) {
+        alert('Product or variant not configured.');
+        return;
+      }
+
+      // Fetch product JSON from Shopify
+      const res = await fetch(`/products/${productHandle}.js`);
+      const product = await res.json();
+
+      // Find variant color and matching sample variant
+      const selectedVariant = product.variants.find(v => v.id === variantId);
+      if (!selectedVariant) {
+        alert('Variant not found.');
+        return;
+      }
+
+      const colorName = selectedVariant.option1 ? selectedVariant.option1.toLowerCase() : '';
+
+      const sampleVariant = product.variants.find(v =>
+        v.title.toLowerCase().includes('sample') &&
+        v.option1 &&
+        v.option1.toLowerCase() === colorName
+      );
+
+      if (!sampleVariant) {
+        alert('Sample variant not found for this color.');
+        return;
+      }
+
+      // Add to cart
+      const formData = new FormData();
+      formData.append('id', sampleVariant.id);
+      formData.append('quantity', 1);
+
+      try {
+        const cartContainer = document.querySelector('cart-container') || document.body.appendChild(document.createElement('cart-container'));
+        if (cartContainer.add) {
+          await cartContainer.add(formData);
+        } else {
+          await fetch('/cart/add.js', { method: 'POST', body: formData });
+        }
+        window.dispatchEvent(new Event('kt.cart.reloaded'));
+      } catch (err) {
+        console.error('Add to cart failed:', err);
+        alert('Something went wrong adding the sample to cart.');
+      }
+    });
   });
 });
 </script>
@@ -246,7 +370,47 @@ jQuery(document).ready(function($) {
           "type": "product",
           "id": "product",
           "label": "Select Product"
-        }
+        },
+        {
+          "type": "text",
+          "id": "variant_id",
+          "label": "Variant ID (optional)",
+          "info": "Paste the specific variant ID to display color or variant info."
+        },
+        {
+          "type": "header",
+          "content": "Photo Credits"
+        },
+        {
+          "type": "text",
+          "id": "architect",
+          "label": "Architect"
+        },
+        {
+          "type": "text",
+          "id": "builder",
+          "label": "Builder"
+        },
+        {
+          "type": "text",
+          "id": "interior_design",
+          "label": "Interior Design"
+        },
+        {
+          "type": "text",
+          "id": "structural_engineer",
+          "label": "Structural Engineer"
+        },
+        {
+          "type": "text",
+          "id": "design_studio",
+          "label": "Design Studio"
+        },
+        {
+          "type": "text",
+          "id": "project_name",
+          "label": "Project Name"
+        }                        
       ]
     }
   ],

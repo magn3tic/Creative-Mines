@@ -9,21 +9,38 @@
             <div class="row align-items-lg-center">
                 <div class="col-lg-7">
                     <div class="top-actions  d-none d-lg-block">
+                      
                         <ul class="product-tools">
-                          {% if product.metafields.custom.installation-guides != blank %}
-                            <li>
-                              <a href="{{ product.metafields.custom.installation-guides | file_url }}" download>
-                                <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/download-dark.webp" alt="icon">
-                                Installation Guide
-                              </a>
-                            </li>
-                          {% else %}
-                            <li>
-                              <a href="https://creativemines-trade.myshopify.com/pages/resources">
-                                <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/download-dark.webp" alt="icon">
-                                Installation Guide
-                              </a>
-                            </li>
+                          {% assign guides = product.metafields.custom["installation-guides"].value %}
+
+                          {% if guides != blank %}
+                            {% if guides.size > 1 %}
+                              <li class="guide-dropdown">
+                                <a href="javascript:;">
+                                  <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/download-dark.webp" alt="icon">
+                                  Installation Guides
+                                </a>
+                                <ul>
+                                  {% for file in guides %}
+                                    <li>
+                                      <a href="{{ file.url }}" download>
+                                        Download Guide {{ forloop.index }}
+                                      </a>
+                                    </li>
+                                  {% endfor %}
+                                </ul>
+                              </li>
+
+                            {% else %}
+                              {% for file in guides %}
+                                <li>
+                                  <a href="{{ file.url }}" download>
+                                    <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/download-dark.webp" alt="icon">
+                                    Installation Guide
+                                  </a>
+                                </li>
+                              {% endfor %}
+                            {% endif %}
                           {% endif %}
 
                           {% if product.metafields.custom.hatch_pattern != blank %}
@@ -71,6 +88,20 @@
           <!-- Product Gallery -->
           <div class="col-lg-7">
 
+<script>
+  window.variantTechnicalInfo = {
+    {% for v in product.variants %}
+      "{{ v.id }}":
+      {% if v.metafields.custom.technical_info != blank %}
+        {{ v.metafields.custom.technical_info | metafield_text | json }}
+      {% else %}
+        ""
+      {% endif %}
+      {% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  };
+</script>
+            
               <script id="variantVideos" type="application/json">
               {
                 {% for variant in product.variants %}
@@ -170,47 +201,217 @@
                       {% for option in product.options_with_values %}
                         {% if option.name == "Color" %}
                           {% for value in option.values %}
-                            {% assign variant = product.variants | where: "option1", value | first %}
+
+                            {%- assign matched_variant = nil -%}
+                            {% for v in product.variants %}
+                              {% if v.options contains value %}
+                                {% assign matched_variant = v %}
+                                {% break %}
+                              {% endif %}
+                            {% endfor %}
+
                             <li>
                               <div class="cs-item">
                                 <input type="radio"
                                       name="color"
                                       id="color-{{ forloop.index }}"
                                       value="{{ value }}"
-                                      {% if variant == product.selected_or_first_available_variant %}checked{% endif %}>
+                                      {% if matched_variant == product.selected_or_first_available_variant %}checked{% endif %}>
+
                                 <label for="color-{{ forloop.index }}">
-                                  {% if variant.featured_image %}
-                                    <img src="{{ variant.featured_image | img_url: '100x' }}" alt="{{ value }}">
+                                  {% if matched_variant and matched_variant.featured_image %}
+                                    <img src="{{ matched_variant.featured_image | img_url: '100x' }}" alt="{{ value }}">
                                   {% else %}
                                     {{ value }}
                                   {% endif %}
                                 </label>
                               </div>
                             </li>
+
                           {% endfor %}
                         {% endif %}
                       {% endfor %}
                     </ul>
                   </div>
                 {% endif %}
+                <input type="hidden" id="currentVariantId" value="{{ product.selected_or_first_available_variant.id }}">
 
+                <!-- Build Variant Description JSON (Rich Text → HTML) -->
+                <script>
+                  window.variantDescriptions = {
+                    {% for v in product.variants %}
+                      "{{ v.id }}": {{ v.metafields.custom.description | metafield_text | json }}{% unless forloop.last %},{% endunless %}
+                    {% endfor %}
+                  };
+                </script>
+
+                <!-- Build Variant ID → Option Value Map -->
+                <script>
+                  window.productVariants = [
+                    {% for v in product.variants %}
+                      {
+                        id: {{ v.id }},
+                        option1: "{{ v.option1 }}"
+                      }{% unless forloop.last %},{% endunless %}
+                    {% endfor %}
+                  ];
+                </script>
+
+                <!-- Load + Switch Variant Description -->
+                <script>
+                  document.addEventListener("DOMContentLoaded", function () {
+
+                    const descBox = document.getElementById("variant-description");
+                    const variantIdInput = document.getElementById("currentVariantId");
+
+                    // Display selected variant description
+                    function loadDescription(id) {
+                      if (window.variantDescriptions[id]) {
+                        descBox.innerHTML = window.variantDescriptions[id];
+                      }
+                    }
+
+                    // Load default (first selected) variant description
+                    loadDescription(variantIdInput.value);
+
+                    // Update on swatch change
+                    document.querySelectorAll('.custom-checkbox input[name="color"]').forEach(function (radio) {
+                      radio.addEventListener("change", function () {
+                        const selectedValue = this.value;
+
+                        const variant = window.productVariants.find(v => v.option1 === selectedValue);
+                        if (!variant) return;
+
+                        variantIdInput.value = variant.id;
+                        loadDescription(variant.id);
+                      });
+                    });
+
+                  });
+                </script>
                 <!-- Mobile Description -->
                 <div class="mt-3 d-md-none">
-                  <p>{{ product.description | strip_html | truncate: 180 }}</p>
-                  <div class="top-actions">
-                    <ul>
-                        <li><a href="javascript:;"><img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/download-dark.webp" alt="icon">Installation Guide</a></li>
-                        <li><a href="javascript:;"><img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/download-dark.webp" alt="icon">Hatch Pattern</a></li>
-                        <li><a href="javascript:;"><img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/download-dark.webp" alt="icon">Download Image</a></li>
-                        <li><a href="javascript:;"><img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/share.webp" alt="icon">Share Image</a></li>
-                    </ul>
+                  <!--<p>{{ product.description | strip_html | truncate: 180 }}</p> -->
+
+                  <div class="sp-collapse">
+                    <span>Resources <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.0469 5.62756L6.02188 0.603032C5.98927 0.570377 5.95054 0.544471 5.90791 0.526796C5.86528 0.50912 5.81959 0.500022 5.77344 0.500022C5.72729 0.500022 5.68159 0.50912 5.63896 0.526796C5.59634 0.544471 5.55761 0.570377 5.525 0.603032L0.5 5.62756" stroke="#1C2120" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    </span>
+                    <div class="top-actions">
+                      <ul>
+                          <li><a href="javascript:;"><img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/download-dark.webp" alt="icon">Installation Guide</a></li>
+                          <li><a href="javascript:;"><img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/download-dark.webp" alt="icon">Hatch Pattern</a></li>
+                          <li><a href="javascript:;"><img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/download-dark.webp" alt="icon">Download Image</a></li>
+                          <li><a href="javascript:;"><img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/share.webp" alt="icon">Share Image</a></li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
+
+                {% if product.metafields.custom.disable_add_to_cart %}
+
+                <div class="cs-actions">
+                  <div class="left">
+                      <form method="post" action="/cart/add" id="sampleForm" class="product-form only-order-sample" data-product-form>
+                        <input type="hidden" name="id" id="sampleVariantId" value="{{ product.selected_or_first_available_variant.id }}">
+                        <button type="submit" class="cta-btn btn_default">Order Sample</button>
+
+                        {% if section.settings.custom_heading != blank %}
+                          <a href="#contact-to-order" class="cta-btn btn_default_border">{{ section.settings.custom_heading }}</a>
+                        {% endif %}
+                      </form>
+
+                      {% if section.settings.custom_liquid != blank %}
+                        <div class="trigger-popup">
+                            <div class="tp-inner">
+                                <div class="tp-close">&times;</div>
+                                {{ section.settings.custom_liquid }}
+                            </div>
+                        </div>                        
+                      {% endif %}                    
+
+                      <script id="productVariants" type="application/json">
+                        {{ product.variants | json }}
+                      </script>
+                  </div>
+                  <div class="right text-md-end text-center">
+                    <a href="javascript:;" 
+                      class="share-product" 
+                      data-title="{{ product.title }}" 
+                      data-url="{{ shop.url }}{{ product.url }}">
+                      <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/share.webp" alt="">
+                      Share This Product
+                    </a>
+                  </div>
+
+                  <!-- Share Popup -->
+                  <div class="share-popup">
+                    <div class="share-popup-inner">
+                      <button class="close-share">&times;</button>
+                      <h4>Share this product</h4>
+                      <div class="share-icons">
+                        <a href="#" class="share-fb" target="_blank" aria-label="Share on Facebook">
+                          <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/facebook-dark.webp" alt="Facebook">
+                        </a>
+                        <a href="#" class="share-x" target="_blank" aria-label="Share on X">
+                          <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/x-dark.webp" alt="X">
+                        </a>
+                        <a href="#" class="share-pin" target="_blank" aria-label="Share on Pinterest">
+                          <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/pinterest-dark.webp" alt="Pinterest">
+                        </a>
+                        <a href="#" class="share-copy" aria-label="Copy link">
+                          <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/link-dark.webp" alt="Copy Link">
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                </div> 
+                               
+                {% else %}
 
                 {% if customer %}
                     {% if customer.tags contains 'B2B Approved' or customer.tags contains 'B2B_Approved' %}
 
+                    <div class="cs-prices" id="csPrices">
+                      <div class="price-item price-sf" style="display:none;">
+                        <span class="d-block">Price Per Square Ft.</span>
+                        <span class="d-block price"><del></del> <strong></strong></span>
+                      </div>
+                      <div class="price-item price-lf" style="display:none;">
+                        <span class="d-block">Price Per Linear Ft.</span>
+                        <span class="d-block price"><del></del> <strong></strong></span>
+                      </div>
+                    </div>
+
                     <!-- Materials Calculator -->
+                     {% if product.handle == 'stone-split-modular-small'  %}
+                    <div class='variants-url'>
+                      <a class="cta-btn btn_default_border cta-btn-active" href="/products/stone-split-modular-small">
+                        Split Modular 2.5"
+                      </a>
+                       <a class="cta-btn btn_default_border" href="/products/stone-split-modular-large">
+                        Split Modular 5"
+                      </a>
+                    </div>
+                  {% elsif product.handle == 'stone-split-modular-large' %}
+                    <div class='variants-url'>
+                      <a class="cta-btn btn_default_border " href="/products/stone-split-modular-small">
+                        Split Modular 2.5"
+                      </a>
+                       <a class="cta-btn btn_default_border cta-btn-active" href="/products/stone-split-modular-large">
+                        Split Modular 5"
+                      </a>
+                    </div>
+                  {% else %}
+                    {% assign ref = product.metafields.custom['variant-product'].value %}
+                    {% if ref %}
+                      <a style="margin-top:20px;" class="cta-btn btn_default_border" href="{{ ref.url }}">
+                        {{ ref.title }}
+                      </a>
+                    {% endif %}
+                  {% endif %}
                     <div class="mt-calculator">
                       <span class="d-block title">Materials Calculator:</span>
                       <form>
@@ -218,14 +419,14 @@
                           <li class="col-md-5 col-sm-4">
                             <label for="sf">Square Ft. Needed</label>
                             <div class="mt-fields">
-                              <input id="sf" type="number" min="0" placeholder="200">
+                              <input id="sf" type="number" min="0" placeholder="0">
                               <span class="pos_label">SF</span>
                             </div>
                           </li>
                           <li class="col-md-5 col-sm-4">
                             <label for="lf">Linear Ft. Needed</label>
                             <div class="mt-fields">
-                              <input id="lf" type="number" min="0" placeholder="24">
+                              <input id="lf" type="number" min="0" placeholder="0">
                               <span class="pos_label">LF</span>
                             </div>
                           </li>
@@ -233,7 +434,8 @@
                             <label for="overage">Overage</label>
                             <div class="mt-fields">
                               <select id="overage">
-                                <option value="10">10%</option>
+                                <option value="0">0%</option>
+                                <option value="10" selected>10%</option>                                
                                 <option value="15">15%</option>
                                 <option value="25">25%</option>
                                 <option value="45">45%</option>
@@ -253,23 +455,32 @@
                       </div>
                       <div class="box-dm">
                         <a href="#" id="showBoxInfo">View Box Dimensions</a>
-                        <div id="boxInfo" class="small mt-2 text-start"></div>
+                        <div id="boxInfo" class="small mt-2 text-start">
+                            {% if section.settings.box_dimension_image != blank %}
+                              <div class="box-dimension-img">
+                                <img 
+                                  src="{{ section.settings.box_dimension_image | img_url: 'master' }}" 
+                                  alt="Box Dimension">
+                              </div>
+                            {% endif %}                          
+                        </div>
                       </div>
-
                     </div>
+
+                    <div id="boxesInfo"></div>
 
                     <!-- Actions -->
                     <div class="cs-actions mt-0">
                       <div class="left">
-                        <form method="post" action="/cart/add" id="sampleForm" class="product-form" data-product-form>
-                          <input type="hidden" name="id" id="sampleVariantId" value="{{ product.selected_or_first_available_variant.id }}">
-                          <button type="submit" class="cta-btn btn_default">Order Sample</button>
-                          <a href="#" class="cta-btn btn_default_border" id="startProjectBtn">Add to Cart</a>
+                        <form id="sampleForm" class="order-sample-b2b">
+                          <a href="#" class="cta-btn btn_default" id="startProjectBtn">Add to Cart</a>
+
+                          <input type="hidden" id="sampleVariantId" value="">
+                          <button type="submit" class="cta-btn btn_default_border">Order Sample</button>
                         </form>
                       </div>
                       <div class="right text-end">
                         <span class="d-block subtotal">Subtotal: {{ cart.total_price | money }}</span>
-                        <div id="boxInfo" class="small mt-2 text-start" style="display:none;"></div>
                       </div>
                     </div>
 
@@ -299,210 +510,1151 @@
                     ]
                     </script>
 
-                    <!-- Calculator Logic -->
+                    {% assign boxes_type = product.metafields.custom.boxes_type.value | default: '' %}
+
+                    {% assign is_large_only = false %}
+                    {% assign is_small_only = false %}
+                    {% assign is_no_corners = false %}
+
+                    {% if boxes_type contains 'Large Box Only' %}
+                      {% assign is_large_only = true %}
+                    {% endif %}
+
+                    {% if boxes_type contains 'Small Box Only' %}
+                      {% assign is_small_only = true %}
+                    {% endif %}
+
+                    {% if boxes_type contains 'No Corners' %}
+                      {% assign is_no_corners = true %}
+                    {% endif %}                    
+
+                    {% assign box_types = product.metafields.custom.boxes_type.value %}
+                    {% assign has_box_restrictions = false %}
+
+                    {% if box_types != blank %}
+                      {% assign has_box_restrictions = true %}
+                    {% endif %}
+
+                    {% if has_box_restrictions %}
+
+                    <script>
+                    window.boxesTypeConfig = {
+                      largeOnly: {{ is_large_only | json }},
+                      smallOnly: {{ is_small_only | json }},
+                      noCorners: {{ is_no_corners | json }}
+                    };
+                    </script>             
+
                     <script>
                     document.addEventListener('DOMContentLoaded', function () {
-                        const productVariants = JSON.parse(document.getElementById('productVariants').textContent);
-                        const subtotalEl = document.querySelector('.subtotal');
-                        const sfInput = document.getElementById('sf');
-                        const lfInput = document.getElementById('lf');
-                        const overSelect = document.getElementById('overage');
-                        const allSmall = document.getElementById('cl1');
-                        const boxInfo = document.getElementById('boxInfo');
-                        const viewBoxBtn = document.getElementById('showBoxInfo');
-                        const cartContainer = document.querySelector('cart-container');
+                      const productVariants = JSON.parse(
+                        document.getElementById('productVariants')?.textContent || '[]'
+                      );
 
-                        if (!productVariants.length) return;
+                      const subtotalEl = document.querySelector('.subtotal');
+                      const sfInput = document.getElementById('sf');
+                      const lfInput = document.getElementById('lf');
+                      const overSelect = document.getElementById('overage');
+                      const allSmall = document.getElementById('cl1');
+                      const boxInfo = document.getElementById('boxesInfo');
+                      const cfg = window.boxesTypeConfig || {};
 
-                        const formatMoney = cents => Shopify.formatMoney ? Shopify.formatMoney(cents) : '$' + (cents / 100).toFixed(2);
+                      if (!productVariants.length) return;
 
-                        function calculateTotals() {
-                          const A = parseFloat(sfInput.value) || 0; 
-                          const B = parseFloat(lfInput.value) || 0; 
-                          const P = parseFloat(overSelect.value) || 10;
-                          const useSmallOnly = allSmall.checked;
+                      /* ---------- FIND FLAT / CORNER VARIANTS ---------- */
 
-                          const baseTitle = document.querySelector('.product__title')?.textContent?.trim() || '';
-                          const variants = productVariants.filter(v => v.title.toLowerCase().includes('flat') || v.title.toLowerCase().includes('corner'));
+                      const flatVariants = productVariants.filter(v =>
+                        v.title.toLowerCase().includes('flat')
+                      );
 
-                          const largeFlat = variants.find(v => v.title.toLowerCase().includes('large box') && v.title.toLowerCase().includes('flat'));
-                          const smallFlat = variants.find(v => v.title.toLowerCase().includes('small box') && v.title.toLowerCase().includes('flat'));
-                          const largeCorner = variants.find(v => v.title.toLowerCase().includes('large box') && v.title.toLowerCase().includes('corner'));
-                          const smallCorner = variants.find(v => v.title.toLowerCase().includes('small box') && v.title.toLowerCase().includes('corner'));
+                      const cornerVariants = productVariants.filter(v =>
+                        v.title.toLowerCase().includes('corner')
+                      );
 
-                          if (!largeFlat || !smallFlat || !largeCorner || !smallCorner) return;
+                      const largeFlat = flatVariants.find(v =>
+                        v.title.toLowerCase().includes('large box')
+                      );
 
-                          const Fb = parseFloat(largeFlat.metafields.custom.coverage || 0);
-                          const Fs = parseFloat(smallFlat.metafields.custom.coverage || 0);
-                          const Cb = parseFloat(largeCorner.metafields.custom.coverage || 0);
-                          const Cs = parseFloat(smallCorner.metafields.custom.coverage || 0);
+                      const smallFlat = flatVariants.find(v =>
+                        v.title.toLowerCase().includes('small box')
+                      );
 
-                          const totalFlat = A * (1 + P / 100);
-                          const totalCorner = B * (1 + P / 100);
+                      const largeCorner = cornerVariants.find(v =>
+                        v.title.toLowerCase().includes('large box')
+                      );
 
-                          let flatLarge = 0, flatSmall = 0, cornerLarge = 0, cornerSmall = 0;
+                      const smallCorner = cornerVariants.find(v =>
+                        v.title.toLowerCase().includes('small box')
+                      );
 
-                          if (useSmallOnly) {
-                            flatSmall = Math.ceil(totalFlat / Fs);
-                            cornerSmall = Math.ceil(totalCorner / Cs);
-                          } else {
-                            flatLarge = Math.floor(totalFlat / Fb);
-                            const remainFlat = totalFlat - flatLarge * Fb;
-                            flatSmall = Math.ceil(remainFlat / Fs);
+                      const hasLargeFlat = !!largeFlat;
+                      const hasSmallFlat = !!smallFlat;
 
-                            cornerLarge = Math.floor(totalCorner / Cb);
-                            const remainCorner = totalCorner - cornerLarge * Cb;
-                            cornerSmall = Math.ceil(remainCorner / Cs);
-                          }
+                      /* ---------- HIDE "ALL SMALL BOXES" CHECKBOX ---------- */
+                      if (
+                        cfg.largeOnly ||
+                        cfg.smallOnly ||
+                        !hasLargeFlat ||
+                        !hasSmallFlat
+                      ) {
+                        allSmall?.closest('div')?.remove();
+                      }
 
-                          const subtotalCents =
-                            flatLarge * (largeFlat.price || 0) +
-                            flatSmall * (smallFlat.price || 0) +
-                            cornerLarge * (largeCorner.price || 0) +
-                            cornerSmall * (smallCorner.price || 0);
+                      /* ---------- NO CORNERS UI ---------- */
+                      if (cfg.noCorners) {
+                        lfInput.value = '';
+                        lfInput.closest('li')?.classList.add('d-none');
 
-                          subtotalEl.innerHTML = `Subtotal: <b>${formatMoney(subtotalCents)}</b>`;
+                        const sfLi = sfInput.closest('li');
+                        sfLi?.classList.remove('col-md-5', 'col-sm-4');
+                        sfLi?.classList.add('col-md-7', 'col-sm-6');
 
-                          boxInfo.dataset.flatLarge = flatLarge;
-                          boxInfo.dataset.flatSmall = flatSmall;
-                          boxInfo.dataset.cornerLarge = cornerLarge;
-                          boxInfo.dataset.cornerSmall = cornerSmall;
-                          boxInfo.dataset.subtotal = formatMoney(subtotalCents);
+                        const overLi = overSelect.closest('li');
+                        overLi?.classList.remove('col-md-2', 'col-sm-4');
+                        overLi?.classList.add('col-md-5', 'col-sm-6');
+                      }
+
+                      const formatMoney = cents =>
+                        window.Shopify?.formatMoney
+                          ? Shopify.formatMoney(cents)
+                          : '$' + (cents / 100).toFixed(2);
+
+                      function calculateTotals() {
+                        const A = parseFloat(sfInput.value) || 0;
+                        const B = cfg.noCorners ? 0 : (parseFloat(lfInput.value) || 0);
+                        const P = Number(overSelect.value);
+
+                        if (A === 0 && B === 0) {
+                          boxInfo.style.display = 'none';
+                          subtotalEl.innerHTML = 'Subtotal: <b>$0.00</b>';
+                          return;
                         }
 
-                        viewBoxBtn.addEventListener('mouseenter', function () {
-                          if (!boxInfo.dataset.subtotal) return;
-                          boxInfo.classList.add('hover-active');
-                          boxInfo.innerHTML = `
-                            <div class="mt-2">
-                              <strong>Box Breakdown:</strong><br>
-                              Flat: ${boxInfo.dataset.flatLarge} large box & ${boxInfo.dataset.flatSmall} small box<br>
-                              Corner: ${boxInfo.dataset.cornerLarge} large box & ${boxInfo.dataset.cornerSmall} small box<br>
-                              <span class="d-block mt-2"><strong>Total:</strong> ${boxInfo.dataset.subtotal}</span>
-                            </div>
-                          `;
-                        });
+                        /* ---------- DETERMINE MODE ---------- */
+                        let useSmallOnly = allSmall?.checked || false;
 
-                        [sfInput, lfInput, overSelect, allSmall].forEach(el => el.addEventListener('input', calculateTotals));
+                        if (cfg.largeOnly || (!hasSmallFlat && hasLargeFlat)) {
+                          useSmallOnly = false;
+                        }
 
-                        document.addEventListener('change', function (e) {
-                          if (e.target.matches('.custom-checkbox input[name="color"]')) {
-                            sfInput.value = '';
-                            lfInput.value = '';
-                            overSelect.selectedIndex = 0;
-                            allSmall.checked = false;
+                        if (cfg.smallOnly || (!hasLargeFlat && hasSmallFlat)) {
+                          useSmallOnly = true;
+                        }
 
-                            boxInfo.innerHTML = '';
-                            subtotalEl.innerHTML = 'Subtotal: <b>$0.00</b>';
+                        const Fb = largeFlat?.metafields?.custom?.coverage || 0;
+                        const Fs = smallFlat?.metafields?.custom?.coverage || 0;
+                        const Cb = largeCorner?.metafields?.custom?.coverage || 0;
+                        const Cs = smallCorner?.metafields?.custom?.coverage || 0;
 
-                            setTimeout(calculateTotals, 300);
+                        const totalFlat = A * (1 + P / 100);
+                        const totalCorner = B * (1 + P / 100);
+
+                        let flatLarge = 0,
+                            flatSmall = 0,
+                            cornerLarge = 0,
+                            cornerSmall = 0;
+
+                        /* ---------- FLAT CALCULATION ---------- */
+                        if (A > 0) {
+                          if (!useSmallOnly && hasLargeFlat && Fb > 0) {
+                            flatLarge = Math.floor(totalFlat / Fb);
+
+                            if (flatLarge < 1) flatLarge = 1;
+
+                            const remainFlat = totalFlat - flatLarge * Fb;
+
+                            if (!cfg.largeOnly && Fs > 0 && remainFlat > 0) {
+                              flatSmall = Math.ceil(remainFlat / Fs);
+                            } else {
+                              flatSmall = 0;
+                            }
                           }
-                        });
 
-                        calculateTotals();
-                      });                
+                          if (useSmallOnly && hasSmallFlat && Fs > 0) {
+                            flatSmall = Math.ceil(totalFlat / Fs);
+                            if (flatSmall < 1) flatSmall = 1;
+                          }
+                        }
+
+                        /* ---------- CORNERS ---------- */
+                        if (!cfg.noCorners) {
+                          if (!useSmallOnly && Cb > 0) {
+                            cornerLarge = Math.ceil(totalCorner / Cb);
+                          }
+                          if (useSmallOnly && Cs > 0) {
+                            cornerSmall = Math.ceil(totalCorner / Cs);
+                          }
+                        }
+
+                        /* ---------- SUBTOTAL ---------- */
+                        const subtotalCents =
+                          (flatLarge   * (largeFlat?.price || 0)) +
+                          (flatSmall   * (smallFlat?.price || 0)) +
+                          (cornerLarge * (largeCorner?.price || 0)) +
+                          (cornerSmall * (smallCorner?.price || 0));
+
+                        subtotalEl.innerHTML = `Subtotal: <b>${formatMoney(subtotalCents)}</b>`;
+
+                        /* ---------- BOX BREAKDOWN ---------- */
+                        let html = `<strong>Box Breakdown:</strong><br>`;
+
+                        if (flatLarge > 0 || flatSmall > 0) {
+                          const flatParts = [];
+                          if (flatLarge > 0) flatParts.push(`${flatLarge} large box`);
+                          if (flatSmall > 0) flatParts.push(`${flatSmall} small box`);
+                          html += `<span>Flat: ${flatParts.join(' & ')}</span><br>`;
+                        }
+
+                        if (!cfg.noCorners && (cornerLarge > 0 || cornerSmall > 0)) {
+                          const cornerParts = [];
+                          if (cornerLarge > 0) cornerParts.push(`${cornerLarge} large box`);
+                          if (cornerSmall > 0) cornerParts.push(`${cornerSmall} small box`);
+                          html += `<span>Corner: ${cornerParts.join(' & ')}</span>`;
+                        }
+
+                        boxInfo.innerHTML = `<div>${html}</div>`;
+                        boxInfo.style.display = 'block';
+                      }
+
+                      [sfInput, lfInput, overSelect, allSmall].forEach(el => {
+                        el && el.addEventListener('input', calculateTotals);
+                      });
+
+                      calculateTotals();
+                    });
                     </script>
 
-                    <!-- AJAX for BOTH -->
                     <script>
+                    /* ---------- RESET ON VARIANT CHANGE ---------- */
+                    document.addEventListener('DOMContentLoaded', function () {
+                      document.querySelectorAll('.custom-checkbox input[name="color"]').forEach(radio => {
+                        radio.addEventListener('change', function () {
+                          const sfInput = document.getElementById('sf');
+                          const lfInput = document.getElementById('lf');
+                          const overSelect = document.getElementById('overage');
+                          const allSmall = document.getElementById('cl1');
+                          const boxInfo = document.getElementById('boxesInfo');
+                          const subtotalEl = document.querySelector('.subtotal');
+
+                          if (sfInput) sfInput.value = '';
+                          if (lfInput) lfInput.value = '';
+                          if (overSelect) overSelect.selectedIndex = 0;
+                          if (allSmall) allSmall.checked = false;
+
+                          if (boxInfo) {
+                            boxInfo.style.display = 'none';
+                            boxInfo.innerHTML = '';
+                          }
+
+                          if (subtotalEl) {
+                            subtotalEl.innerHTML = 'Subtotal: <b>$0.00</b>';
+                          }
+                        });
+                      });
+                    });
+                    </script>
+
+                      <script>
                       document.addEventListener('DOMContentLoaded', function () {
-                        const productData = JSON.parse(document.getElementById('productVariants').textContent);
+                        const productData = JSON.parse(
+                          document.getElementById('productVariants')?.textContent || '[]'
+                        );
+
                         const sampleForm = document.getElementById('sampleForm');
                         const sampleInput = document.getElementById('sampleVariantId');
                         const startProjectBtn = document.getElementById('startProjectBtn');
-                        const boxInfo = document.getElementById('boxInfo');
+                        const boxInfo = document.getElementById('boxesInfo');
+                        const cfg = window.boxesTypeConfig || {};
+
+                        /* ---------------- HELPERS ---------------- */
 
                         function getCartContainer() {
-                          return document.querySelector('cart-container') || document.body.appendChild(document.createElement('cart-container'));
+                          return (
+                            document.querySelector('cart-container') ||
+                            document.body.appendChild(document.createElement('cart-container'))
+                          );
                         }
+
+                        async function refreshDrawerContent() {
+                          try {
+                            window.__cartBusy = true; // ✅ ADD
+
+                            const res = await fetch(location.href, {
+                              headers: { "Cache-Control": "no-store", "Pragma": "no-cache" }
+                            });
+
+                            const text = await res.text();
+                            const dom = new DOMParser().parseFromString(text, 'text/html');
+                            const newDrawer = dom.querySelector('#offcanvas-cart');
+
+                            if (newDrawer) {
+                              document.querySelector('#offcanvas-cart').innerHTML = newDrawer.innerHTML;
+                            }
+                          } catch (e) {
+                          } finally {
+                            setTimeout(() => {
+                              window.__cartBusy = false; 
+                            }, 150);
+                          }
+                        }
+
+                        function keepRefreshingCartDrawer() {
+                          let tries = 0;
+                          const i = setInterval(async () => {
+                            tries++;
+                            await refreshDrawerContent();
+                            if (!document.querySelector('#offcanvas-cart.show') || tries > 20) {
+                              clearInterval(i);
+                            }
+                          }, 120);
+                        }
+
+                        async function updateCartBadge() {
+                          try {
+                            const cart = await fetch('/cart.js').then(r => r.json());
+                            let badge = document.querySelector('.cart-count-badge');
+                            const headerCart =
+                              document.querySelector('.header-cart') ||
+                              document.querySelector('.site-header__cart') ||
+                              document.querySelector('.shipment');
+
+                            if (!badge) {
+                              badge = document.createElement('span');
+                              badge.className = 'cart-count-badge';
+                              headerCart?.appendChild(badge);
+                            }
+                            badge.textContent = cart.item_count || 0;
+                          } catch (e) {}
+                        }
+
+                        /* ---------------- SAMPLE FORM ---------------- */
 
                         if (sampleForm) {
                           sampleForm.addEventListener('submit', async e => {
                             e.preventDefault();
-                            const variantId = sampleInput.value;
-                            if (!variantId) return;
+                            if (!sampleInput?.value) return;
 
-                            const formData = new FormData();
-                            formData.append('id', variantId);
-                            formData.append('quantity', 1);
+                            const fd = new FormData();
+                            fd.append('id', sampleInput.value);
+                            fd.append('quantity', 1);
 
-                            const cartContainer = getCartContainer();
-                            await cartContainer.add(formData);
-                          });
-                        }
-
-                        if (startProjectBtn) {
-                          startProjectBtn.addEventListener('click', async e => {
-                            e.preventDefault();
-
-                            const flatLarge = parseInt(boxInfo.dataset.flatLarge || 0);
-                            const flatSmall = parseInt(boxInfo.dataset.flatSmall || 0);
-                            const cornerLarge = parseInt(boxInfo.dataset.cornerLarge || 0);
-                            const cornerSmall = parseInt(boxInfo.dataset.cornerSmall || 0);
-
-                            if (!flatLarge && !flatSmall && !cornerLarge && !cornerSmall) {
-                              alert('Please enter your SF/LF values first.');
-                              return;
-                            }
-
-                            function findVariant(type, shape) {
-                              return productData.find(v => {
-                                const t = v.title.toLowerCase();
-                                return (
-                                  t.includes(shape) &&
-                                  (t.includes(type) ||
-                                    (type === 'large box' && (t.includes('big') || t.includes('large'))) ||
-                                    (type === 'small box' && t.includes('small')))
-                                );
-                              });
-                            }
-
-                            const largeFlat = findVariant('large box', 'flat');
-                            const smallFlat = findVariant('small box', 'flat');
-                            const largeCorner = findVariant('large box', 'corner');
-                            const smallCorner = findVariant('small box', 'corner');
-
-                            const items = [];
-                            if (flatLarge > 0 && largeFlat) items.push({ id: largeFlat.id, quantity: flatLarge });
-                            if (flatSmall > 0 && smallFlat) items.push({ id: smallFlat.id, quantity: flatSmall });
-                            if (cornerLarge > 0 && largeCorner) items.push({ id: largeCorner.id, quantity: cornerLarge });
-                            if (cornerSmall > 0 && smallCorner) items.push({ id: smallCorner.id, quantity: cornerSmall });
-
-                            if (!items.length) {
-                              alert('Could not match box variants.');
-                              return;
-                            }
-
-                            const cartContainer = getCartContainer();
-
-                            for (const item of items) {
-                              const fd = new FormData();
-                              fd.append('id', item.id);
-                              fd.append('quantity', item.quantity);
-                              const container = getCartContainer(); // reselect after each reload
-                              await container.add(fd);
-                            }
+                            await getCartContainer().add(fd);
+                            await updateCartBadge();
 
                             setTimeout(() => {
                               const offcanvas = document.querySelector('#offcanvas-cart');
                               if (offcanvas) {
-                                window.bootstrap.Offcanvas.getOrCreateInstance(offcanvas).show();
+                                bootstrap.Offcanvas.getOrCreateInstance(offcanvas).show();
+                                keepRefreshingCartDrawer();
                               }
-                            }, 600);
+                            }, 300);
                           });
                         }
+
+                        /* ---------------- START PROJECT ---------------- */
+
+                        if (!startProjectBtn) return;
+
+                        startProjectBtn.addEventListener('click', async e => {
+                          e.preventDefault();
+
+                          const sfInput = document.getElementById('sf');
+                          const lfInput = document.getElementById('lf');
+
+                          const sfVisible = sfInput && sfInput.offsetParent !== null;
+                          const lfVisible = lfInput && lfInput.offsetParent !== null;
+
+                          const sfVal = sfVisible ? parseFloat(sfInput.value) || 0 : 0;
+                          const lfVal = lfVisible ? parseFloat(lfInput.value) || 0 : 0;
+
+                          if (sfVal <= 0 && lfVal <= 0) {
+                            alert('Please enter either Square Ft. or Linear Ft. value.');
+                            (sfVisible ? sfInput : lfInput)?.focus();
+                            return;
+                          }
+
+                          let fl = parseInt(boxInfo?.dataset?.flatLarge || 0);
+                          let fs = parseInt(boxInfo?.dataset?.flatSmall || 0);
+                          let cl = parseInt(boxInfo?.dataset?.cornerLarge || 0);
+                          let cs = parseInt(boxInfo?.dataset?.cornerSmall || 0);
+
+                          if (!fl && !fs && !cl && !cs && boxInfo?.innerText) {
+                            const txt = boxInfo.innerText.toLowerCase();
+                            fl = parseInt((txt.match(/flat:\s*(\d+)\s*large/) || [])[1] || 0);
+                            fs = parseInt((txt.match(/flat:\s*(\d+)\s*small/) || [])[1] || 0);
+                            cl = parseInt((txt.match(/corner:\s*(\d+)\s*large/) || [])[1] || 0);
+                            cs = parseInt((txt.match(/corner:\s*(\d+)\s*small/) || [])[1] || 0);
+                          }
+
+                          if (!fl && !fs && !cl && !cs) {
+                            alert('Please enter your SF/LF values first.');
+                            return;
+                          }
+
+                          const currentVariantId =
+                            document.getElementById('currentVariantId')?.value || null;
+
+                          const selectedVariant =
+                            productData.find(v => v.id == currentVariantId) || productData[0];
+
+                          const color =
+                            selectedVariant?.option1?.trim().toLowerCase() || '';
+
+                          const findVariant = (size, type) =>
+                            productData.find(v =>
+                              v.title.toLowerCase().includes(size) &&
+                              v.title.toLowerCase().includes(type) &&
+                              v.option1?.toLowerCase() === color
+                            );
+
+                          const flatLarge   = findVariant('large box', 'flat');
+                          const flatSmall   = findVariant('small box', 'flat');
+                          const cornerLarge = findVariant('large box', 'corner');
+                          const cornerSmall = findVariant('small box', 'corner');
+
+                          const items = [];
+
+                          // FLAT
+                          if (!cfg.smallOnly && fl > 0 && flatLarge)
+                            items.push({ id: flatLarge.id, quantity: fl });
+
+                          if (!cfg.largeOnly && fs > 0 && flatSmall)
+                            items.push({ id: flatSmall.id, quantity: fs });
+
+                          // CORNERS
+                          if (!cfg.noCorners) {
+                            if (!cfg.smallOnly && cl > 0 && cornerLarge)
+                              items.push({ id: cornerLarge.id, quantity: cl });
+
+                            if (!cfg.largeOnly && cs > 0 && cornerSmall)
+                              items.push({ id: cornerSmall.id, quantity: cs });
+                          }
+
+                          if (!items.length) {
+                            alert('Could not match box variants for this configuration.');
+                            return;
+                          }
+
+                          const cart = getCartContainer();
+
+                          for (const item of items) {
+                            const fd = new FormData();
+                            fd.append('id', item.id);
+                            fd.append('quantity', item.quantity);
+                            await cart.add(fd);
+                            await updateCartBadge();
+                          }
+
+                          setTimeout(() => {
+                            const offcanvas = document.querySelector('#offcanvas-cart');
+                            if (offcanvas) {
+                              bootstrap.Offcanvas.getOrCreateInstance(offcanvas).show();
+                              keepRefreshingCartDrawer();
+                            }
+                          }, 300);
+                        });
                       });
+                      </script>
+
+                      <script>
+                      document.addEventListener('DOMContentLoaded', function () {
+                        const productVariants = JSON.parse(
+                          document.getElementById('productVariants')?.textContent || '[]'
+                        );
+
+                        const sfInput   = document.getElementById('sf');
+                        const lfInput   = document.getElementById('lf');
+                        const overageEl = document.getElementById('overage');
+                        const boxInfo   = document.getElementById('boxesInfo');
+                        const pricesEl  = document.getElementById('csPrices');
+                        const cfg       = window.boxesTypeConfig || {};
+
+                        if (!productVariants.length || !pricesEl || !boxInfo) return;
+
+                        const sfBlock = pricesEl.querySelector('.price-sf');
+                        const lfBlock = pricesEl.querySelector('.price-lf');
+
+                        const DISCOUNT_RATE = 0.15;
+
+                        const moneyRound = n => '$' + n.toFixed(2);
+                        const moneyFloor = n => '$' + (Math.round(n * 100) / 100).toFixed(2);
+
+                        /* ---------- HELPERS ---------- */
+
+                      function findVariant(type, size, color) {
+                        return productVariants.find(v => {
+                          const title = v.title.toLowerCase();
+
+                          const isType = title.includes(type);
+                          const isSize =
+                            size === 'large box'
+                              ? title.includes('large')
+                              : title.includes('small');
+
+                          const isColor = !color || v.option1?.toLowerCase() === color;
+
+                          return isType && isSize && isColor;
+                        });
+                      }
+
+                        function getCoverage(v) {
+                          return Number(v?.metafields?.custom?.coverage || 0);
+                        }
+
+                        function getBoxCounts() {
+                          let fl = parseInt(boxInfo.dataset.flatLarge || 0);
+                          let fs = parseInt(boxInfo.dataset.flatSmall || 0);
+                          let cl = parseInt(boxInfo.dataset.cornerLarge || 0);
+                          let cs = parseInt(boxInfo.dataset.cornerSmall || 0);
+
+                          if (!fl && !fs && !cl && !cs && boxInfo.innerText) {
+                            const t = boxInfo.innerText.toLowerCase();
+                            fl = parseInt((t.match(/flat:\s*(\d+)\s*large/) || [])[1] || 0);
+                            fs = parseInt((t.match(/flat:\s*(\d+)\s*small/) || [])[1] || 0);
+                            cl = parseInt((t.match(/corner:\s*(\d+)\s*large/) || [])[1] || 0);
+                            cs = parseInt((t.match(/corner:\s*(\d+)\s*small/) || [])[1] || 0);
+                          }
+
+                          return { fl, fs, cl, cs };
+                        }
+
+                        /* ---------- MAIN PRICE UPDATE ---------- */
+
+                        function updatePrices() {
+                          pricesEl.style.display = 'none';
+                          sfBlock.style.display = 'none';
+                          lfBlock.style.display = 'none';
+
+                          const sf = parseFloat(sfInput?.value) || 0;
+                          const lf = parseFloat(lfInput?.value) || 0;
+
+                          const { fl, fs, cl, cs } = getBoxCounts();
+
+                          if ((sf <= 0 && lf <= 0) || (!fl && !fs && !cl && !cs)) return;
+
+                          const currentVariantId =
+                            document.getElementById('currentVariantId')?.value || null;
+
+                          const selected =
+                            productVariants.find(v => v.id == currentVariantId) || productVariants[0];
+
+                          const color = selected?.option1?.toLowerCase() || '';
+
+                          const flatLarge   = findVariant('flat', 'large box', color);
+                          const flatSmall   = findVariant('flat', 'small box', color);
+                          const cornerLarge = findVariant('corner', 'large box', color);
+                          const cornerSmall = findVariant('corner', 'small box', color);
+
+                          let sfShown = false;
+                          let lfShown = false;
+
+                          /* ---------- PRICE PER SQUARE FT (FIXED FOR LARGE ONLY) ---------- */
+                          if (sf > 0 && (fl || fs)) {
+                            let trade = 0;
+                            let msrp  = 0;
+                            let coverage = 0;
+
+                            if (flatLarge && fl) {
+                              trade    += fl * flatLarge.price;
+                              msrp     += fl * (flatLarge.price / (1 - DISCOUNT_RATE));
+                              coverage += fl * getCoverage(flatLarge);
+                            }
+
+                            if (flatSmall && fs) {
+                              trade    += fs * flatSmall.price;
+                              msrp     += fs * (flatSmall.price / (1 - DISCOUNT_RATE));
+                              coverage += fs * getCoverage(flatSmall);
+                            }
+
+                            // 🔑 KEY FIX:
+                            const effSF = sf * (1 + (parseFloat(overageEl?.value) || 0) / 100);
+                            let divisor = coverage;
+
+                            // Large box only → price per entered SF
+                            if (cfg.largeOnly && effSF > 0) {
+                              divisor = effSF;
+                            }
+
+                            if (divisor > 0) {
+                              sfBlock.querySelector('del').textContent =
+                                moneyRound((msrp / divisor) / 100);
+                              sfBlock.querySelector('strong').textContent =
+                                moneyFloor((trade / divisor) / 100);
+                              sfBlock.style.display = 'block';
+                              sfShown = true;
+                            }
+                          }
+
+                          /* ---------- PRICE PER LINEAR FT ---------- */
+                          if (!cfg.noCorners && lf > 0 && (cl || cs)) {
+                            let trade = 0;
+                            let msrp  = 0;
+                            let coverage = 0;
+
+                            if (cornerLarge && cl) {
+                              trade    += cl * cornerLarge.price;
+                              msrp     += cl * (cornerLarge.price / (1 - DISCOUNT_RATE));
+                              coverage += cl * getCoverage(cornerLarge);
+                            }
+
+                            if (cornerSmall && cs) {
+                              trade    += cs * cornerSmall.price;
+                              msrp     += cs * (cornerSmall.price / (1 - DISCOUNT_RATE));
+                              coverage += cs * getCoverage(cornerSmall);
+                            }
+
+                            if (coverage > 0) {
+                              lfBlock.querySelector('del').textContent =
+                                moneyRound((msrp / coverage) / 100);
+                              lfBlock.querySelector('strong').textContent =
+                                moneyFloor((trade / coverage) / 100);
+                              lfBlock.style.display = 'block';
+                              lfShown = true;
+                            }
+                          }
+
+                          if (sfShown || lfShown) {
+                            pricesEl.style.display = 'block';
+                          }
+                        }
+
+                        /* ---------- EVENTS ---------- */
+
+                        ['input', 'change'].forEach(evt => {
+                          document.addEventListener(evt, e => {
+                            if (['sf', 'lf', 'overage'].includes(e.target.id)) {
+                              updatePrices();
+                            }
+                          });
+                        });
+
+                        const observer = new MutationObserver(updatePrices);
+                        observer.observe(boxInfo, { attributes: true, childList: true, subtree: true });
+
+                        updatePrices();
+                      });
+                      </script>          
+                  
+                  {% else %}
+
+                    <!-- Calculator Logic -->
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                      const productVariants = JSON.parse(
+                        document.getElementById('productVariants')?.textContent || '[]'
+                      );
+                      const subtotalEl = document.querySelector('.subtotal');
+                      const sfInput = document.getElementById('sf');
+                      const lfInput = document.getElementById('lf');
+                      const overSelect = document.getElementById('overage');
+                      const allSmall = document.getElementById('cl1');
+                      const boxInfo = document.getElementById('boxesInfo');
+
+                      if (!productVariants.length) return;
+
+                      const formatMoney = cents =>
+                        window.Shopify?.formatMoney
+                          ? Shopify.formatMoney(cents)
+                          : '$' + (cents / 100).toFixed(2);
+
+                      function resetOutput() {
+                        boxInfo.innerHTML = '';
+                        boxInfo.style.display = 'none';
+
+                        boxInfo.dataset.flatLarge = 0;
+                        boxInfo.dataset.flatSmall = 0;
+                        boxInfo.dataset.cornerLarge = 0;
+                        boxInfo.dataset.cornerSmall = 0;
+
+                        subtotalEl.innerHTML = 'Subtotal: <b>$0.00</b>';
+                      }
+
+                      function calculateTotals() {
+                        const A = parseFloat(sfInput.value) || 0;
+                        const B = parseFloat(lfInput.value) || 0;
+                        const P = Number(overSelect.value);
+                        const useSmallOnly = allSmall.checked;
+
+                        if (A <= 0 && B <= 0) {
+                          resetOutput();
+                          return;
+                        }
+
+                        const variants = productVariants.filter(v =>
+                          v.title.toLowerCase().includes('flat') ||
+                          v.title.toLowerCase().includes('corner')
+                        );
+
+                        const largeFlat   = variants.find(v => v.title.toLowerCase().includes('large box') && v.title.toLowerCase().includes('flat'));
+                        const smallFlat   = variants.find(v => v.title.toLowerCase().includes('small box') && v.title.toLowerCase().includes('flat'));
+                        const largeCorner = variants.find(v => v.title.toLowerCase().includes('large box') && v.title.toLowerCase().includes('corner'));
+                        const smallCorner = variants.find(v => v.title.toLowerCase().includes('small box') && v.title.toLowerCase().includes('corner'));
+
+                        if (!largeFlat || !smallFlat) {
+                          resetOutput();
+                          return;
+                        }
+
+                        const Fb = parseFloat(largeFlat.metafields?.custom?.coverage || 0);
+                        const Fs = parseFloat(smallFlat.metafields?.custom?.coverage || 0);
+                        const Cb = parseFloat(largeCorner?.metafields?.custom?.coverage || 0);
+                        const Cs = parseFloat(smallCorner?.metafields?.custom?.coverage || 0);
+
+                        const totalFlat   = A * (1 + P / 100);
+                        const totalCorner = B * (1 + P / 100);
+
+                        let flatLarge = 0, flatSmall = 0, cornerLarge = 0, cornerSmall = 0;
+
+                        /* ---------- FLAT ---------- */
+                        if (A > 0) {
+                          if (useSmallOnly) {
+                            if (Fs > 0) {
+                              flatSmall = Math.ceil(totalFlat / Fs);
+
+                              if (flatSmall < 1) flatSmall = 1;
+                            }
+                          } else {
+                            if (Fb > 0) {
+                              flatLarge = Math.floor(totalFlat / Fb);
+
+                              if (flatLarge < 1) flatLarge = 1;
+
+                              const remainFlat = totalFlat - flatLarge * Fb;
+                              if (Fs > 0 && remainFlat > 0) {
+                                flatSmall = Math.ceil(remainFlat / Fs);
+                              }
+                            }
+                          }
+                        } else {
+                          flatLarge = 0;
+                          flatSmall = 0;
+                        }
+
+                        /* ---------- CORNERS ---------- */
+                        if (B > 0 && largeCorner && smallCorner) {
+                          if (useSmallOnly) {
+                            if (Cs > 0) cornerSmall = Math.ceil(totalCorner / Cs);
+                          } else {
+                            if (Cb > 0) {
+                              cornerLarge = Math.floor(totalCorner / Cb);
+                              const remainCorner = totalCorner - cornerLarge * Cb;
+                              if (Cs > 0 && remainCorner > 0) {
+                                cornerSmall = Math.ceil(remainCorner / Cs);
+                              }
+                            }
+                          }
+                        }
+
+                        /* ---------- SUBTOTAL ---------- */
+                        const subtotalCents =
+                          flatLarge * (largeFlat.price || 0) +
+                          flatSmall * (smallFlat.price || 0) +
+                          cornerLarge * (largeCorner?.price || 0) +
+                          cornerSmall * (smallCorner?.price || 0);
+
+                        subtotalEl.innerHTML = `Subtotal: <b>${formatMoney(subtotalCents)}</b>`;
+
+                        boxInfo.dataset.flatLarge = flatLarge;
+                        boxInfo.dataset.flatSmall = flatSmall;
+                        boxInfo.dataset.cornerLarge = cornerLarge;
+                        boxInfo.dataset.cornerSmall = cornerSmall;
+
+                        let html = `<strong>Box Breakdown:</strong><br>`;
+
+                        if (flatLarge > 0 || flatSmall > 0) {
+                          const flatParts = [];
+                          if (flatLarge > 0) flatParts.push(`${flatLarge} large box`);
+                          if (flatSmall > 0) flatParts.push(`${flatSmall} small box`);
+                          html += `<span>Flat: ${flatParts.join(' & ')}</span><br>`;
+                        }
+
+                        if (B > 0 && (cornerLarge > 0 || cornerSmall > 0)) {
+                          const cornerParts = [];
+                          if (cornerLarge > 0) cornerParts.push(`${cornerLarge} large box`);
+                          if (cornerSmall > 0) cornerParts.push(`${cornerSmall} small box`);
+                          html += `<span>Corner: ${cornerParts.join(' & ')}</span>`;
+                        }
+
+                        boxInfo.innerHTML = `<div>${html}</div>`;
+                        boxInfo.style.display = 'block';
+                      }
+
+                      [sfInput, lfInput, overSelect, allSmall].forEach(el =>
+                        el && el.addEventListener('input', calculateTotals)
+                      );
+
+                      document.addEventListener('change', function (e) {
+                        if (e.target.matches('.custom-checkbox input[name="color"]')) {
+                          sfInput.value = '';
+                          lfInput.value = '';
+                          overSelect.selectedIndex = 0;
+                          allSmall.checked = false;
+                          resetOutput();
+                        }
+                      });
+
+                      resetOutput();
+                    });
                     </script>
 
+                    <!-- AJAX for BOTH -->
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                      const productData = JSON.parse(
+                        document.getElementById('productVariants')?.textContent || '[]'
+                      );
+
+                      const sampleForm = document.getElementById('sampleForm');
+                      const sampleInput = document.getElementById('sampleVariantId');
+                      const startProjectBtn = document.getElementById('startProjectBtn');
+                      const boxInfo = document.getElementById('boxesInfo');
+
+                      function getCartContainer() {
+                        return (
+                          document.querySelector('cart-container') ||
+                          document.body.appendChild(document.createElement('cart-container'))
+                        );
+                      }
+
+                      async function refreshDrawerContent() {
+                        try {
+                          window.__cartBusy = true; 
+
+                          const response = await fetch(location.href, {
+                            method: "GET",
+                            headers: {
+                              "Cache-Control": "no-store",
+                              "Pragma": "no-cache",
+                            }
+                          });
+
+                          const text = await response.text();
+                          const dom = new DOMParser().parseFromString(text, "text/html");
+                          const newDrawer = dom.querySelector("#offcanvas-cart");
+
+                          if (newDrawer) {
+                            document.querySelector("#offcanvas-cart").innerHTML = newDrawer.innerHTML;
+                          }
+                        } catch (err) {
+                          console.warn("Drawer refresh failed:", err);
+                        } finally {
+                          setTimeout(() => {
+                            window.__cartBusy = false; 
+                          }, 150);
+                        }
+                      }
+
+                      function keepRefreshingCartDrawer() {
+                        let tries = 0;
+                        const interval = setInterval(async () => {
+                          tries++;
+                          await refreshDrawerContent();
+                          if (!document.querySelector("#offcanvas-cart.show") || tries > 20) {
+                            clearInterval(interval);
+                          }
+                        }, 120);
+                      }
+
+                      async function updateCartBadge() {
+                        try {
+                          const cart = await fetch('/cart.js').then(r => r.json());
+                          const count = cart.item_count || 0;
+
+                          let badge = document.querySelector('.cart-count-badge');
+                          const headerCart =
+                            document.querySelector('.header-cart') ||
+                            document.querySelector('.site-header__cart') ||
+                            document.querySelector('.shipment');
+
+                          if (!badge) {
+                            badge = document.createElement('span');
+                            badge.className = 'cart-count-badge';
+                            headerCart?.appendChild(badge);
+                          } else {
+                            badge.textContent = count;
+                          }
+                        } catch (err) {
+                          console.warn('Badge update failed:', err);
+                        }
+                      }
+
+                      if (sampleForm) {
+                        sampleForm.addEventListener('submit', async e => {
+                          e.preventDefault();
+                          if (!sampleInput?.value) return;
+
+                          const fd = new FormData();
+                          fd.append('id', sampleInput.value);
+                          fd.append('quantity', 1);
+
+                          await getCartContainer().add(fd);
+                          await updateCartBadge();
+
+                          setTimeout(() => {
+                            const offcanvas = document.querySelector('#offcanvas-cart');
+                            if (offcanvas) {
+                              bootstrap.Offcanvas.getOrCreateInstance(offcanvas).show();
+                              keepRefreshingCartDrawer();
+                            }
+                          }, 300);
+                        });
+                      }
+
+                      if (!startProjectBtn) return;
+
+                      startProjectBtn.addEventListener('click', async e => {
+                        e.preventDefault();
+
+                        const sfInput = document.getElementById('sf');
+                        const lfInput = document.getElementById('lf');
+
+                        const sfVisible = sfInput && sfInput.offsetParent !== null;
+                        const lfVisible = lfInput && lfInput.offsetParent !== null;
+
+                        const sfVal = sfVisible ? parseFloat(sfInput.value) || 0 : 0;
+                        const lfVal = lfVisible ? parseFloat(lfInput.value) || 0 : 0;
+
+                        if (sfVal <= 0 && lfVal <= 0) {
+                          alert('Please enter either Square Ft. or Linear Ft. value.');
+                          (sfVisible ? sfInput : lfInput)?.focus();
+                          return;
+                        }
+
+                        const currentVariantInput = document.getElementById('currentVariantId');
+                        const currentVariantId = currentVariantInput ? currentVariantInput.value : null;
+
+                        const selectedVariant =
+                          productData.find(v => v.id == currentVariantId) || productData[0];
+
+                        const colorName =
+                          selectedVariant.option1 ? selectedVariant.option1.trim().toLowerCase() : '';
+
+                        const flatLarge = productData.find(v =>
+                          v.title.toLowerCase().includes('large box') &&
+                          v.title.toLowerCase().includes('flat') &&
+                          v.option1.toLowerCase() === colorName
+                        );
+
+                        const flatSmall = productData.find(v =>
+                          v.title.toLowerCase().includes('small box') &&
+                          v.title.toLowerCase().includes('flat') &&
+                          v.option1.toLowerCase() === colorName
+                        );
+
+                        const cornerLarge = productData.find(v =>
+                          v.title.toLowerCase().includes('large box') &&
+                          v.title.toLowerCase().includes('corner') &&
+                          v.option1.toLowerCase() === colorName
+                        );
+
+                        const cornerSmall = productData.find(v =>
+                          v.title.toLowerCase().includes('small box') &&
+                          v.title.toLowerCase().includes('corner') &&
+                          v.option1.toLowerCase() === colorName
+                        );
+
+                        const flatLargeQty = parseInt(boxInfo.dataset.flatLarge || 0);
+                        const flatSmallQty = parseInt(boxInfo.dataset.flatSmall || 0);
+                        const cornerLargeQty = parseInt(boxInfo.dataset.cornerLarge || 0);
+                        const cornerSmallQty = parseInt(boxInfo.dataset.cornerSmall || 0);
+
+                        if (!flatLargeQty && !flatSmallQty && !cornerLargeQty && !cornerSmallQty) {
+                          alert('Please enter your SF/LF values first.');
+                          return;
+                        }
+
+                        const items = [];
+                        if (flatLargeQty > 0 && flatLarge)
+                          items.push({ id: flatLarge.id, quantity: flatLargeQty });
+
+                        if (flatSmallQty > 0 && flatSmall)
+                          items.push({ id: flatSmall.id, quantity: flatSmallQty });
+
+                        if (cornerLargeQty > 0 && cornerLarge)
+                          items.push({ id: cornerLarge.id, quantity: cornerLargeQty });
+
+                        if (cornerSmallQty > 0 && cornerSmall)
+                          items.push({ id: cornerSmall.id, quantity: cornerSmallQty });
+
+                        if (!items.length) {
+                          alert('Could not match box variants for this color.');
+                          return;
+                        }
+
+                        const cartContainer = getCartContainer();
+
+                        for (const item of items) {
+                          const fd = new FormData();
+                          fd.append('id', item.id);
+                          fd.append('quantity', item.quantity);
+                          await cartContainer.add(fd);
+                          await updateCartBadge();
+                        }
+
+                        setTimeout(() => {
+                          const offcanvas = document.querySelector('#offcanvas-cart');
+                          if (offcanvas) {
+                            bootstrap.Offcanvas.getOrCreateInstance(offcanvas).show();
+                            keepRefreshingCartDrawer();
+                          }
+                        }, 300);
+                      });
+                    });
+                    </script>
+
+                    <script>
+                      document.addEventListener('DOMContentLoaded', function () {
+                      const productVariants = JSON.parse(
+                        document.getElementById('productVariants')?.textContent || '[]'
+                      );
+
+                      const sfInput = document.getElementById('sf');
+                      const lfInput = document.getElementById('lf');
+                      const overageEl = document.getElementById('overage');
+                      const boxInfo = document.getElementById('boxesInfo');
+                      const pricesEl = document.getElementById('csPrices');
+                      const cfg = window.boxesTypeConfig || {};
+
+                      if (!productVariants.length || !pricesEl || !boxInfo) return;
+
+                      const sfBlock = pricesEl.querySelector('.price-sf');
+                      const lfBlock = pricesEl.querySelector('.price-lf');
+
+                      const moneyRound = n => '$' + n.toFixed(2);
+                      const moneyFloor = n => '$' + (Math.round(n * 100) / 100).toFixed(2);
+
+                      const DISCOUNT_RATE = 0.15; 
+
+                      function findVariant(type, size, color) {
+                        return productVariants.find(v =>
+                          v.title.toLowerCase().includes(type) &&
+                          v.title.toLowerCase().includes(size) &&
+                          v.option1?.toLowerCase() === color
+                        );
+                      }
+
+                      function getCoverage(variant) {
+                        return Number(variant?.metafields?.custom?.coverage || 0);
+                      }
+
+                      function updatePrices() {
+                        pricesEl.style.display = 'none';
+                        sfBlock.style.display = 'none';
+                        lfBlock.style.display = 'none';
+
+                        const sf = parseFloat(sfInput?.value) || 0;
+                        const lf = parseFloat(lfInput?.value) || 0;
+
+                        const fl = parseInt(boxInfo.dataset.flatLarge || 0);
+                        const fs = parseInt(boxInfo.dataset.flatSmall || 0);
+                        const cl = parseInt(boxInfo.dataset.cornerLarge || 0);
+                        const cs = parseInt(boxInfo.dataset.cornerSmall || 0);
+
+                        if ((sf <= 0 && lf <= 0) || (!fl && !fs && !cl && !cs)) return;
+
+                        const currentVariantId =
+                          document.getElementById('currentVariantId')?.value || null;
+
+                        const selected =
+                          productVariants.find(v => v.id == currentVariantId) || productVariants[0];
+
+                        const color = selected?.option1?.toLowerCase() || '';
+
+                        const flatLarge   = findVariant('flat', 'large box', color);
+                        const flatSmall   = findVariant('flat', 'small box', color);
+                        const cornerLarge = findVariant('corner', 'large box', color);
+                        const cornerSmall = findVariant('corner', 'small box', color);
+
+                        let sfShown = false;
+                        let lfShown = false;
+
+                        /* ---------- PRICE PER SQUARE FT ---------- */
+                        if (sf > 0 && (fl || fs)) {
+                          let tradeTotal = 0;
+                          let msrpTotal = 0;
+                          let coverageTotal = 0;
+
+                          if (flatLarge && fl) {
+                            tradeTotal += fl * flatLarge.price;
+                            msrpTotal  += fl * (flatLarge.price / (1 - DISCOUNT_RATE));
+                            coverageTotal += fl * getCoverage(flatLarge);
+                          }
+
+                          if (flatSmall && fs) {
+                            tradeTotal += fs * flatSmall.price;
+                            msrpTotal  += fs * (flatSmall.price / (1 - DISCOUNT_RATE));
+                            coverageTotal += fs * getCoverage(flatSmall);
+                          }
+
+                          if (coverageTotal > 0) {
+                            sfBlock.querySelector('del').textContent =
+                              moneyRound((msrpTotal / coverageTotal) / 100);
+                            sfBlock.querySelector('strong').textContent =
+                              moneyFloor((tradeTotal / coverageTotal) / 100);
+                            sfBlock.style.display = 'block';
+                            sfShown = true;
+                          }
+                        }
+
+                        /* ---------- PRICE PER LINEAR FT ---------- */
+                        if (!cfg.noCorners && lf > 0 && (cl || cs)) {
+                          let tradeTotal = 0;
+                          let msrpTotal = 0;
+                          let coverageTotal = 0;
+
+                          if (cornerLarge && cl) {
+                            tradeTotal += cl * cornerLarge.price;
+                            msrpTotal  += cl * (cornerLarge.price / (1 - DISCOUNT_RATE));
+                            coverageTotal += cl * getCoverage(cornerLarge);
+                          }
+
+                          if (cornerSmall && cs) {
+                            tradeTotal += cs * cornerSmall.price;
+                            msrpTotal  += cs * (cornerSmall.price / (1 - DISCOUNT_RATE));
+                            coverageTotal += cs * getCoverage(cornerSmall);
+                          }
+
+                          if (coverageTotal > 0) {
+                            lfBlock.querySelector('del').textContent =
+                              moneyRound((msrpTotal / coverageTotal) / 100);
+                            lfBlock.querySelector('strong').textContent =
+                              moneyFloor((tradeTotal / coverageTotal) / 100);
+                            lfBlock.style.display = 'block';
+                            lfShown = true;
+                          }
+                        }
+
+                        if (sfShown || lfShown) {
+                          pricesEl.style.display = 'block';
+                        }
+                      }
+
+                      ['input', 'change'].forEach(evt => {
+                        document.addEventListener(evt, e => {
+                          if (['sf', 'lf', 'overage'].includes(e.target.id)) {
+                            updatePrices();
+                          }
+                        });
+                      });
+
+                      const observer = new MutationObserver(updatePrices);
+                      observer.observe(boxInfo, { attributes: true });
+
+                      updatePrices();
+                    });
+                    </script>                  
+
+                  {% endif %}                   
+                  
                   {% endif %}
                 {% else %}
 
                 <div class="cs-actions">
                   <div class="left">
-                      <form method="post" action="/cart/add" id="sampleForm" class="product-form" data-product-form>
+                      <form method="post" action="/cart/add" id="sampleForm" class="product-form only-order-sample" data-product-form>
                         <input type="hidden" name="id" id="sampleVariantId" value="{{ product.selected_or_first_available_variant.id }}">
                         <button type="submit" class="cta-btn btn_default">Order Sample</button>
-                        <a href="#" class="cta-btn btn_default_border">Start a Project</a>
+                        <a href="https://creativemines-trade.myshopify.com/pages/start-project" class="cta-btn btn_default_border">Start a Project</a>
                       </form>
 
                       <script id="productVariants" type="application/json">
@@ -542,7 +1694,8 @@
                   </div>
 
                 </div>
-                {% endif %}                
+                {% endif %}     
+              {% endif %}                
               </div>
             </div>
           </div>
@@ -556,36 +1709,45 @@
       <div class="col-lg-7">
         <h2 class="h1">Experience the Difference</h2>
       </div>
+
       <div class="col-lg-5">
         <div class="cs-tab ps-lg-5">
           <ul id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc" type="button" role="tab" aria-controls="desc" aria-selected="true">
-                Product Description
+              <button class="nav-link active" id="desc-main" data-bs-toggle="tab" data-bs-target="#dmain" type="button" role="tab" aria-controls="dmain" aria-selected="true">
+                Color Description
               </button>
             </li>
 
-            {% if product.metafields.custom.technical-info != blank %}
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc" type="button" role="tab" aria-controls="desc" aria-selected="false">
+                Profile Description
+              </button>
+            </li>
+
               <li class="nav-item" role="presentation">
                 <button class="nav-link" id="specs-tab" data-bs-toggle="tab" data-bs-target="#specs" type="button" role="tab" aria-controls="specs" aria-selected="false">
                   Technical Specifications
                 </button>
               </li>
-            {% endif %}
           </ul>
 
           <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade active show" id="desc" role="tabpanel" aria-labelledby="desc-tab">
+            <div class="tab-pane fade active show" id="dmain" role="tabpanel" aria-labelledby="desc-main">
+                <div id="variant-description" class="variant-description"></div>
+            </div>
+
+            <div class="tab-pane fade" id="desc" role="tabpanel" aria-labelledby="desc-tab">
               {{ product.description }}
             </div>
 
-            {% if product.metafields.custom.technical-info != blank %}
-              {% for page in product.metafields.custom.technical-info.value %}
-                <div class="tab-pane fade" id="specs" role="tabpanel" aria-labelledby="specs-tab">
-                  {{ page.content }}
-                </div>
-              {% endfor %}
-            {% endif %}          
+            <div class="tab-pane fade" id="specs" role="tabpanel" aria-labelledby="specs-tab">
+
+              <div id="variant-tech-wrap">
+                <div id="variant-technical-info" class="variant-technical-info"></div>
+              </div>
+            </div>       
+            
           </div>
         </div>
       </div>
@@ -594,109 +1756,147 @@
 </section>
 
 <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+ 
+  document.querySelectorAll('a[href="#contact-to-order"]').forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      const popup = document.querySelector('.trigger-popup');
+      if (popup) popup.classList.add('show');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('tp-close') || e.target.classList.contains('trigger-popup')) {
+      document.querySelector('.trigger-popup')?.classList.remove('show');
+    }
+  });
+
+});
+
 document.addEventListener('DOMContentLoaded', function() {
-  const sampleForm = document.getElementById('sampleForm');
-  const sampleInput = document.getElementById('sampleVariantId');
-  const productData = JSON.parse(document.getElementById('productVariants').textContent);
+  const forms = document.querySelectorAll('.only-order-sample, .order-sample-b2b');
+  if (!forms.length) return;
+
+  const productDataEl = document.getElementById('productVariants');
+  if (!productDataEl) return;
+
+  const productData = JSON.parse(productDataEl.textContent);
   const variantRadios = document.querySelectorAll('.custom-checkbox input[name="color"]');
+  const productOptions = {{ product.options | json }};
+  const colorIndex = productOptions.findIndex(opt => opt.toLowerCase() === 'color');
 
-  if (!sampleForm || !sampleInput) return;
-
-  // --- Ensure single clean cart badge ---
-  function ensureCartBadge() {
-    // Remove any duplicate or null text badges
-    document.querySelectorAll('.cart-count-badge').forEach((badge, i) => {
-      if (i > 0) badge.remove();
-      else if (!badge.textContent || badge.textContent.includes('null') || badge.textContent.trim() === '') {
-        badge.textContent = '0';
-      }
-    });
-
-    // Get main shipment/cart element
-    const headerCart = document.querySelector('.shipment, .header-cart, .site-header__cart') || document.body;
-
-    // Find or create single badge
-    let badge = headerCart.querySelector('.cart-count-badge');
-    if (!badge) {
-      badge = document.createElement('span');
-      badge.className = 'cart-count-badge';
-      badge.textContent = '0';
-      headerCart.appendChild(badge);
-    }
-
-    // Always sanitize any rogue "null" text nodes in headerCart
-    [...headerCart.childNodes].forEach(node => {
-      if (node.nodeType === 3 && node.textContent.trim().toLowerCase().includes('null')) {
-        node.remove();
-      }
-    });
-
-    return badge;
-  }
-
-  // --- Update Sample Variant ---
-  function updateSampleVariant(selectedVariant) {
-    if (!selectedVariant) return;
-    const sampleVariant = productData.find(v =>
-      v.title.toLowerCase().includes('sample') &&
-      v.option1 &&
-      selectedVariant.option1 &&
-      v.option1.trim().toLowerCase() === selectedVariant.option1.trim().toLowerCase()
+  function getColor(variant) {
+    return (
+      (variant[`option${colorIndex + 1}`] || variant.option1 || '')
+        .trim()
+        .toLowerCase()
     );
-
-    sampleInput.value = sampleVariant ? sampleVariant.id : '';
-    const button = sampleForm.querySelector('button[type="submit"]');
-    button.disabled = !sampleVariant;
   }
 
-  // --- Variant Switch ---
-  variantRadios.forEach(radio => {
-    radio.addEventListener('change', function() {
-      const selectedValue = this.value.trim().toLowerCase();
-      const selectedVariant = productData.find(v =>
-        v.option1 && v.option1.trim().toLowerCase() === selectedValue
+  forms.forEach(sampleForm => {
+    const sampleInput = sampleForm.querySelector('#sampleVariantId');
+    if (!sampleInput) return;
+
+    let currentVariantInput = sampleForm.querySelector('#currentVariantId');
+    if (!currentVariantInput) {
+      currentVariantInput = document.createElement('input');
+      currentVariantInput.type = 'hidden';
+      currentVariantInput.id = 'currentVariantId';
+      currentVariantInput.value = {{ product.selected_or_first_available_variant.id }};
+      sampleForm.appendChild(currentVariantInput);
+    }
+
+    function ensureCartBadge() {
+      document.querySelectorAll('.cart-count-badge').forEach((badge, i) => {
+        if (i > 0) badge.remove();
+        else if (!badge.textContent || badge.textContent.includes('null') || badge.textContent.trim() === '') {
+          badge.textContent = '0';
+        }
+      });
+      const headerCart = document.querySelector('.shipment, .header-cart, .site-header__cart') || document.body;
+      let badge = headerCart.querySelector('.cart-count-badge');
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'cart-count-badge';
+        badge.textContent = '0';
+        headerCart.appendChild(badge);
+      }
+      [...headerCart.childNodes].forEach(node => {
+        if (node.nodeType === 3 && node.textContent.trim().toLowerCase().includes('null')) node.remove();
+      });
+      return badge;
+    }
+
+    function findSampleVariant(baseVariantId) {
+      const baseVariant = productData.find(v => v.id == baseVariantId);
+      if (!baseVariant) return null;
+      const colorValue = getColor(baseVariant);
+
+      return (
+        productData.find(v => {
+          const variantColor = getColor(v);
+          return v.title.toLowerCase().includes('sample') && variantColor === colorValue;
+        }) || null
       );
-      updateSampleVariant(selectedVariant);
+    }
+
+    variantRadios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        const selectedValue = this.value.trim().toLowerCase();
+        const selectedVariant = productData.find(v => {
+          const colorValue = getColor(v);
+          return colorValue === selectedValue && !v.title.toLowerCase().includes('sample');
+        });
+
+        if (selectedVariant) {
+          currentVariantInput.value = selectedVariant.id;
+
+          const colorSpan = document.querySelector('.pr-single-meta span');
+          if (colorSpan) colorSpan.textContent = selectedVariant.option1;
+
+          const priceEl = document.querySelector('.product-price');
+          if (priceEl && typeof Shopify.formatMoney !== 'undefined') {
+            priceEl.textContent = Shopify.formatMoney(selectedVariant.price);
+          }
+        }
+      });
+    });
+
+    sampleForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const currentVariantId = currentVariantInput.value;
+      const sampleVariant = findSampleVariant(currentVariantId);
+
+      if (!sampleVariant) {
+        alert('Sample variant not available for this color.');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('id', sampleVariant.id);
+      formData.append('quantity', 1);
+
+      ensureCartBadge();
+      let cartContainer = document.querySelector('cart-container');
+      if (!cartContainer) {
+        cartContainer = document.createElement('cart-container');
+        document.body.appendChild(cartContainer);
+      }
+
+      try {
+        await cartContainer.add(formData);
+        window.dispatchEvent(new Event('kt.cart.reloaded'));
+      } catch (err) {
+        console.error('Cart add failed:', err);
+      }
     });
   });
 
-  // --- Default Variant ---
-  const defaultVariant = productData.find(v => v.id === {{ product.selected_or_first_available_variant.id }});
-  updateSampleVariant(defaultVariant);
-
-  // --- AJAX Add to Cart ---
-  sampleForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const variantId = sampleInput.value;
-    if (!variantId) return;
-
-    const formData = new FormData();
-    formData.append('id', variantId);
-    formData.append('quantity', 1);
-
-    ensureCartBadge();
-    let cartContainer = document.querySelector('cart-container');
-    if (!cartContainer) {
-      cartContainer = document.createElement('cart-container');
-      document.body.appendChild(cartContainer);
-    }
-
-    try {
-      await cartContainer.add(formData);
-      window.dispatchEvent(new Event('kt.cart.reloaded'));
-    } catch (err) {
-      console.error('Cart add failed:', err);
-      setTimeout(() => {
-        const retryContainer = document.querySelector('cart-container');
-        if (retryContainer && retryContainer.add) retryContainer.add(formData);
-      }, 400);
-    }
-  });
-
-  // --- Keep Badge & Qty Synced ---
   window.addEventListener('kt.cart.reloaded', () => {
-    const badge = ensureCartBadge();
-
+    const badge = document.querySelector('.cart-count-badge') || ensureCartBadge();
     fetch('/cart.js')
       .then(res => res.json())
       .then(data => {
@@ -705,59 +1905,34 @@ document.addEventListener('DOMContentLoaded', function() {
       .catch(() => {
         badge.textContent = '0';
       });
+  });
 
-    // Clean any leftover "null" text inside shipment link again
-    const headerCart = document.querySelector('.shipment, .header-cart, .site-header__cart');
-    if (headerCart) {
-      [...headerCart.childNodes].forEach(node => {
-        if (node.nodeType === 3 && node.textContent.trim().toLowerCase().includes('null')) {
-          node.remove();
-        }
-      });
+  function refreshCartBadge() {
+    let badge = document.querySelector('.cart-count-badge');
+    const headerCart = document.querySelector('.header-cart, .site-header__cart') || document.querySelector('.shipment');
+    if (!badge) {
+      badge = document.createElement('span');
+      badge.className = 'cart-count-badge';
+      badge.textContent = '0';
+      headerCart?.appendChild(badge);
     }
 
-    document.querySelectorAll('.btn-qty-minus, .btn-qty-plus').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const input = this.parentElement.querySelector('input[type="number"]');
-        if (!input) return;
-        if (this.classList.contains('btn-qty-minus')) input.stepDown();
-        else input.stepUp();
-        input.dispatchEvent(new Event('change', { bubbles: true }));
+    fetch('/cart.js')
+      .then(r => r.json())
+      .then(cart => {
+        const count = cart.item_count || 0;
+        badge.textContent = count.toString();
+      })
+      .catch(() => {
+        badge.textContent = '0';
       });
-    });
-  });
-});
-
-function refreshCartBadge() {
-  let badge = document.querySelector('.cart-count-badge');
-  const headerCart = document.querySelector('.header-cart, .site-header__cart') || document.querySelector('.shipment');
-
-  if (!badge) {
-    badge = document.createElement('span');
-    badge.className = 'cart-count-badge';
-    badge.textContent = '0';
-    headerCart?.appendChild(badge);
   }
 
-  fetch('/cart.js')
-    .then(r => r.json())
-    .then(cart => {
-      const count = cart.item_count || 0;
-      badge.textContent = count.toString();
-    })
-    .catch(() => {
-      badge.textContent = '0';
-    });
-}
-
-// Run once on load and whenever the cart reloads
-document.addEventListener('DOMContentLoaded', refreshCartBadge);
-window.addEventListener('kt.cart.reloaded', refreshCartBadge);
-
+  refreshCartBadge();
+});
 </script>
 
 <script>
-
 document.addEventListener('DOMContentLoaded', function() {
   const sliderDiv = document.querySelector('.product-single-slider-div');
   const featuredImage = document.querySelector('.variant-featured-image');
@@ -935,6 +2110,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const colorText = document.querySelector('.pr-single-meta span');
     if (colorText) colorText.textContent = variant.option1;
+    
   }
 
   variantRadios.forEach(radio => {
@@ -952,16 +2128,30 @@ document.addEventListener('DOMContentLoaded', function() {
   );
   rebuildGallery(defaultVariant);
 });
+
+$(window).on("scroll", function () {
+     AOS.init();
+ });
 </script>
 
 <script>
 
-  document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.download-image').forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
-      const url = btn.dataset.img;
+
+      // Always get the CURRENT active featured image
+      const activeImg = document.querySelector('.variant-featured-image img');
+      if (!activeImg) {
+        console.warn('No active image found');
+        return;
+      }
+
+      const url = activeImg.src;
       const fileName = url.split('/').pop().split('?')[0];
+
+      // Force download
       const link = document.createElement('a');
       link.href = url;
       link.download = fileName;
@@ -970,6 +2160,7 @@ document.addEventListener('DOMContentLoaded', function() {
       link.remove();
     });
   });
+
 
   document.querySelectorAll('.share-image').forEach(btn => {
     btn.addEventListener('click', e => {
@@ -1045,6 +2236,224 @@ document.addEventListener('DOMContentLoaded', function () {
 
 </script>
 
+<script>
+function wrapFirstWord() {
+  document.querySelectorAll('.trigger-content h6').forEach(h6 => {
+    if (h6.dataset.done) return;
+
+    const text = h6.innerHTML.trim();
+    if (!text) return;
+
+    const parts = text.split(' ');
+    if (parts.length < 2) return;
+
+    h6.innerHTML = `<span class="first-word">${parts.shift()}</span> ${parts.join(' ')}`;
+    h6.dataset.done = "1";
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  wrapFirstWord();
+
+  $('.product-slider')
+    .on('init afterChange setPosition', function () {
+      setTimeout(wrapFirstWord, 0);
+    });
+});
+</script>
+
+<script>
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('[data-line]');
+  if (!btn) return;
+
+  if (window.__cartBusy) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    return;
+  }
+
+  const line = parseInt(btn.dataset.line, 10);
+  if (!line) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+});
+</script>  
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  // Color radio buttons
+  const radios = Array.from(
+    document.querySelectorAll('.custom-checkbox input[name="color"]')
+  );
+
+  // Hidden input that stores the active variant ID
+  const variantIdInput = document.getElementById('currentVariantId');
+
+  // Variant map: [{ id, option1 }]
+  const variants = window.productVariants || [];
+
+  if (!radios.length || !variantIdInput || !variants.length) return;
+
+  const normalize = v => (v || '').trim().toLowerCase();
+
+  /* ---------------------------------------------
+     Helpers
+  ----------------------------------------------*/
+
+  // Get variant object by color (option1)
+  function getVariantByColor(color) {
+    return variants.find(v => normalize(v.option1) === normalize(color));
+  }
+
+  // Update URL to use color instead of variant ID
+  function setColorInUrl(color) {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('variant'); // Remove Shopify variant ID
+    url.searchParams.set('color', color);
+    window.history.replaceState({}, '', url.toString());
+  }
+
+  // Read color from URL (?color=...)
+  function getColorFromUrl() {
+    return new URLSearchParams(window.location.search).get('color');
+  }
+
+  // Select the corresponding radio and trigger existing listeners
+  function selectColor(color) {
+    const radio = radios.find(r => normalize(r.value) === normalize(color));
+    if (!radio) return false;
+
+    if (!radio.checked) radio.checked = true;
+    radio.dispatchEvent(new Event('change', { bubbles: true }));
+    return true;
+  }
+
+  /* ---------------------------------------------
+     1) ALWAYS: listen for color changes
+        → update variant ID + URL
+  ----------------------------------------------*/
+  radios.forEach(radio => {
+    radio.addEventListener('change', function () {
+      const variant = getVariantByColor(this.value);
+      if (!variant) return;
+
+      variantIdInput.value = variant.id;
+      setColorInUrl(variant.option1);
+    });
+  });
+
+  /* ---------------------------------------------
+     2) INIT: prioritize ?color= from URL
+        fallback to Shopify selected variant
+  ----------------------------------------------*/
+  let applied = false;
+
+  const colorFromUrl = getColorFromUrl();
+  if (colorFromUrl) {
+    const decodedColor = decodeURIComponent(colorFromUrl);
+    const variant = getVariantByColor(decodedColor);
+
+    if (variant) {
+      selectColor(variant.option1);
+      variantIdInput.value = variant.id;
+      setColorInUrl(variant.option1);
+      applied = true;
+    }
+  }
+
+  // Fallback to Shopify default selected variant
+  if (!applied) {
+    const initialColor =
+      "{{ product.selected_or_first_available_variant.option1 | escape }}";
+
+    const initialVariant = getVariantByColor(initialColor);
+
+    if (initialVariant) {
+      selectColor(initialVariant.option1);
+      variantIdInput.value = initialVariant.id;
+      setColorInUrl(initialVariant.option1);
+    }
+  }
+
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const techBox     = document.getElementById("variant-technical-info");
+  const specsTabBtn = document.getElementById("specs-tab");
+  const specsTabLi  = specsTabBtn?.closest("li");
+
+  const firstTabBtn = document.querySelector('#myTab button.nav-link'); // first tab
+
+  if (!techBox || !window.variantTechnicalInfo) return;
+
+  function activateFirstTab() {
+    if (!firstTabBtn) return;
+
+    const firstTarget = document.querySelector(firstTabBtn.dataset.bsTarget);
+
+    document.querySelectorAll('#myTab .nav-link').forEach(btn => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+
+    document.querySelectorAll('.tab-pane').forEach(pane => {
+      pane.classList.remove('show', 'active');
+    });
+
+    firstTabBtn.classList.add('active');
+    firstTabBtn.setAttribute('aria-selected', 'true');
+
+    if (firstTarget) {
+      firstTarget.classList.add('show', 'active');
+    }
+  }
+
+  function updateTechnicalInfo(variantId) {
+    const html = window.variantTechnicalInfo[variantId] || "";
+
+    if (html.trim() !== "") {
+      techBox.innerHTML = html;
+      if (specsTabLi) specsTabLi.style.display = "";
+    } else {
+
+      if (specsTabBtn?.classList.contains("active")) {
+        activateFirstTab();
+      }
+
+      techBox.innerHTML = "";
+      if (specsTabLi) specsTabLi.style.display = "none";
+    }
+  }
+
+  const variantInput = document.getElementById("currentVariantId");
+  if (!variantInput) return;
+
+  updateTechnicalInfo(variantInput.value);
+
+  let lastValue = variantInput.value;
+
+  const observer = new MutationObserver(() => {
+    if (variantInput.value !== lastValue) {
+      lastValue = variantInput.value;
+      updateTechnicalInfo(lastValue);
+    }
+  });
+
+  observer.observe(variantInput, {
+    attributes: true,
+    attributeFilter: ["value"]
+  });
+
+});
+</script>
+
+
 {% schema %}
 {
   "name": "Product main",
@@ -1054,1052 +2463,26 @@ document.addEventListener('DOMContentLoaded', function () {
       "content": "Styling"
     },
     {
-      "type": "select",
-      "id": "bg_color",
-      "label": "Background color",
-      "default": "bg-body",
-      "options": [
-        { "value": "bg-primary", "label": "Primary" },
-        { "value": "bg-secondary", "label": "Secondary" },
-        { "value": "bg-body", "label": "Body" },
-        { "value": "bg-white", "label": "White" }
-      ]
-    },
-    {
-      "type": "range",
-      "id": "bg_opacity",
-      "label": "Background opacity",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 100,
-      "unit": "%"
-    },
-    {
-      "type": "select",
-      "id": "bg_gradient",
-      "label": "Background gradient",
-      "options": [
-        { "value": "bg-gradient", "label": "Yes" },
-        { "value": "", "label": "No" }
-      ],
-      "default": ""
-    },
-    {
-      "type": "checkbox",
-      "id": "bg_left_right_gradients",
-      "label": "Background left/right gradients",
-      "default": true
-    },
-    {
-      "type": "select",
-      "id": "text_color",
-      "label": "Text color",
-      "default": "text-body",
-      "options": [
-        { "value": "text-primary", "label": "Primary" },
-        { "value": "text-secondary", "label": "Secondary" },
-        { "value": "text-body", "label": "Body" },
-        { "value": "text-white", "label": "White" }
-      ]
-    },
-    {
-      "type": "range",
-      "id": "border_top_width",
-      "label": "Border top width",
-      "default": 0,
-      "min": 0,
-      "max": 16,
-      "step": 1,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "border_bottom_width",
-      "label": "Border bottom width",
-      "default": 0,
-      "min": 0,
-      "max": 16,
-      "step": 1,
-      "unit": "px"
-    },
-    {
-      "type": "select",
-      "id": "border_color",
-      "label": "Border color",
-      "default": "border-primary",
-      "options": [
-        { "value": "border-primary", "label": "Primary" },
-        { "value": "border-secondary", "label": "Secondary" },
-        { "value": "border-body", "label": "Body" },
-        { "value": "border-white", "label": "White" }
-      ]
-    },
-    {
-      "type": "range",
-      "id": "border_opacity",
-      "label": "Border opacity",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 100,
-      "unit": "%"
-    },
-    {
-      "type": "text",
-      "id": "container_max_width",
-      "label": "Container max-width (px)",
-      "info": "Leave empty to use the global container width"
+      "type": "image_picker",
+      "id": "box_dimension_image",
+      "label": "Box Dimension Image",
+      "info": "Upload an image showing the product's box dimensions."
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "Contact To Order"
     },
     {
-      "type": "range",
-      "id": "pt",
-      "label": "Top",
-      "min": 0,
-      "max": 20,
-      "step": 1,
-      "default": 10
-    },
-    {
-      "type": "range",
-      "id": "pb",
-      "label": "Bottom",
-      "min": 0,
-      "max": 20,
-      "step": 1,
-      "default": 10
-    }
-  ],
-  "blocks": [
-    {
-      "type": "media_gallery",
-      "name": "Media gallery",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "select",
-          "id": "img_orientation",
-          "label": "Image orientation",
-          "default": "ratio-1x1",
-          "options": [
-            { "group": "Adapt", "value": "adapt", "label": "Adapt" },
-            { "group": "Square", "value": "ratio-1x1", "label": "1x1" },
-            { "group": "Horizontal", "value": "ratio-4x3", "label": "4x3" },
-            { "group": "Horizontal", "value": "ratio-16x9", "label": "16x9" },
-            { "group": "Horizontal", "value": "ratio-21x9", "label": "21x9" },
-            { "group": "Vertical", "value": "ratio-3x4", "label": "3x4" },
-            { "group": "Vertical", "value": "ratio-9x16", "label": "9x16" },
-            { "group": "Vertical", "value": "ratio-9x21", "label": "9x21" }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "img_border",
-          "label": "Image border",
-          "default": "img-thumbnail",
-          "options": [
-            { "value": "", "label": "None" },
-            { "value": "rounded", "label": "Rounded" },
-            { "value": "img-thumbnail", "label": "Thumbnail" }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "effect",
-          "label": "Effect",
-          "default": "slide", 
-          "options": [
-            { "value": "slide", "label": "Slide" },
-            { "value": "fade", "label": "Fade" },
-            { "value": "cube", "label": "Cube" },
-            { "value": "coverflow", "label": "Coverflow" },
-            { "value": "flip", "label": "Flip" },
-            { "value": "creative", "label": "Creative" }
-          ],
-          "info": "NOTE: This feature is supported only in our Premium Shopify Themes."
-        },
-        {
-          "type": "range",
-          "id": "speed",
-          "label": "Speed",
-          "default": 300,
-          "min": 0,
-          "max": 2000,
-          "step": 100,
-          "unit": "ms"
-        },
-        {
-          "type": "select",
-          "id": "controls_color", 
-          "label": "Controls color",
-          "options": [
-            { "value": "primary", "label": "Primary" },
-            { "value": "secondary", "label": "Secondary" },
-            { "value": "body-color", "label": "Body" },
-            { "value": "white", "label": "White" }
-          ],
-          "default": "white"
-        },
-        {
-          "type": "select",
-          "id": "pagination_type",
-          "label": "Pagination type",
-          "default": "fraction", 
-          "options": [
-            { "value": "bullets", "label": "Bullets" },
-            { "value": "fraction", "label": "Fraction" }
-          ],
-          "info": "NOTE: This feature is supported only in our Premium Shopify Themes."
-        },
-        {
-          "type": "checkbox",
-          "id": "scrollbar",
-          "label": "Show scrollbar",
-          "default": true,
-          "info": "NOTE: This feature is supported only in our Premium Shopify Themes."
-        },
-        {
-          "type": "select",
-          "id": "show_thumbs",
-          "label": "Show thumbnails",
-          "default": "show",
-          "options": [
-            { "value": "hide", "label": "Hide" },
-            { "value": "show", "label": "Show" },
-            { "value": "desktop-only", "label": "Desktop-only" }
-          ]
-        },
-        {
-          "type": "range",
-          "id": "thumbs_per_view",
-          "label": "Thumbnails per view",
-          "default": 5,
-          "min": 2,
-          "max": 8
-        },
-        {
-          "type": "checkbox",
-          "id": "full_screen",
-          "label": "Enable full-screen gallery",
-          "default": true,
-          "info": "NOTE: This feature is supported only in our Premium Shopify Themes."
-        },
-        {
-          "type": "select",
-          "id": "full_screen_effect",
-          "label": "Full screen - Effect",
-          "default": "zoom",
-          "options": [
-            { "value": "slide", "label": "Slide" },
-            { "value": "fade", "label": "Fade" },
-            { "value": "zoom", "label": "Zoom" }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "title",
-      "name": "Title",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "select",
-          "id": "title_font_size",
-          "label": "Title font-size",
-          "default": "h2",
-          "options": [
-            { "value": "h1", "label": "H1" },
-            { "value": "h2", "label": "H2" },
-            { "value": "h3", "label": "H3" },
-            { "value": "h4", "label": "H4" },
-            { "value": "h5", "label": "H5" },
-            { "value": "h6", "label": "H6" }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "Spacing"
-        },
-        {
-          "type": "range",
-          "id": "pt",
-          "label": "Top",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 3
-        },
-        {
-          "type": "range",
-          "id": "pb",
-          "label": "Bottom",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 3
-        }
-      ]
-    },
-    {
-      "type": "price",
-      "name": "Price",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "select",
-          "id": "font_size",
-          "label": "Font-size",
-          "default": "fs-lg",
-          "options": [
-            { "value": "fs-sm", "label": "sm" },
-            { "value": "fs-md", "label": "md" },
-            { "value": "fs-lg", "label": "lg" },
-            { "value": "fs-xl", "label": "xl" },
-            { "value": "fs-xxl", "label": "xxl" }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "badge_discount_type",
-          "label": "Sale badge discount type",
-          "default": "percentage",
-          "options": [
-            { "value": "percentage", "label": "Percentage" },
-            { "value": "value", "label": "Value" }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "Spacing"
-        },
-        {
-          "type": "range",
-          "id": "pt",
-          "label": "Top",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 3
-        },
-        {
-          "type": "range",
-          "id": "pb",
-          "label": "Bottom",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 3
-        }
-      ]
-    },
-    {
-      "type": "options",
-      "name": "Options",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "select",
-          "id": "options_style",
-          "label": "Options style",
-          "options": [
-            { "value": "buttons", "label": "Buttons" },
-            { "value": "select",  "label": "Select" }
-          ],
-          "default": "buttons"
-        },
-        {
-          "type": "text",
-          "id": "color_swatches",
-          "label": "Color swatches",
-          "default": "Color, color",
-          "info": "NOTE: This feature is supported only in our Premium Shopify Themes."
-        },
-        {
-          "type": "header",
-          "content": "Spacing"
-        },
-        {
-          "type": "range",
-          "id": "pt",
-          "label": "Top",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 4
-        },
-        {
-          "type": "range",
-          "id": "pb",
-          "label": "Bottom",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 4
-        }
-      ]
-    },
-    {
-      "type": "atc_button",
-      "name": "Add to cart button",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "checkbox",
-          "id": "show_qty_field",
-          "label": "Show quantity field",
-          "default": true
-        },
-        {
-          "type": "checkbox",
-          "id": "show_dynamic_buttons",
-          "label": "Show dynamic buttons",
-          "default": false
-        },
-        {
-          "type": "header",
-          "content": "\"Add to cart\" button"
-        },
-        {
-          "type": "select",
-          "id": "atc_btn_color",
-          "label": "Button color",
-          "default": "btn-primary",
-          "options": [
-            { "group": "Solid", "value": "btn-primary", "label": "Primary" },
-            { "group": "Solid", "value": "btn-secondary", "label": "Secondary" },
-            { "group": "Solid", "value": "btn-white", "label": "White" },
-            { "group": "Light", "value": "btn-light-primary", "label": "Primary" },
-            { "group": "Light", "value": "btn-light-secondary", "label": "Secondary" },
-            { "group": "Light", "value": "btn-light-white", "label": "White" },
-            { "group": "Outline", "value": "btn-outline-primary", "label": "Primary" },
-            { "group": "Outline", "value": "btn-outline-secondary", "label": "Secondary" },
-            { "group": "Outline", "value": "btn-outline-white", "label": "White" }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "atc_btn_size",
-          "label": "Button size",
-          "default": "",
-          "options": [
-            { "value": "btn-sm", "label": "Small" },
-            { "value": "", "label": "Medium" },
-            { "value": "btn-lg", "label": "Large" }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "\"Buy it now\" button"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_buy_btn",
-          "label": "Show button",
-          "default": true
-        },
-        {
-          "type": "select",
-          "id": "buy_btn_color",
-          "label": "Butotn color",
-          "default": "btn-secondary",
-          "options": [
-            { "group": "Solid", "value": "btn-primary", "label": "Primary" },
-            { "group": "Solid", "value": "btn-secondary", "label": "Secondary" },
-            { "group": "Solid", "value": "btn-white", "label": "White" },
-            { "group": "Light", "value": "btn-light-primary", "label": "Primary" },
-            { "group": "Light", "value": "btn-light-secondary", "label": "Secondary" },
-            { "group": "Light", "value": "btn-light-white", "label": "White" },
-            { "group": "Outline", "value": "btn-outline-primary", "label": "Primary" },
-            { "group": "Outline", "value": "btn-outline-secondary", "label": "Secondary" },
-            { "group": "Outline", "value": "btn-outline-white", "label": "White" }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "buy_btn_size",
-          "label": "Button size",
-          "default": "",
-          "options": [
-            { "value": "btn-sm", "label": "Small" },
-            { "value": "", "label": "Medium" },
-            { "value": "btn-lg", "label": "Large" }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "Spacing"
-        },
-        {
-          "type": "range",
-          "id": "pt",
-          "label": "Top",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 2
-        },
-        {
-          "type": "range",
-          "id": "pb",
-          "label": "Bottom",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 5
-        }
-      ]
-    },
-    {
-      "type": "richtext",
-      "name": "Richtext",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Richtext Title"
-        },
-        {
-          "type": "select",
-          "id": "title_font_size",
-          "label": "Title font-size",
-          "default": "h6",
-          "options": [
-            { "value": "h1", "label": "H1" },
-            { "value": "h2", "label": "H2" },
-            { "value": "h3", "label": "H3" },
-            { "value": "h4", "label": "H4" },
-            { "value": "h5", "label": "H5" },
-            { "value": "h6", "label": "H6" }
-          ]
-        },
-        {
-          "type": "richtext",
-          "id": "description",
-          "label": "Description",
-          "default": "<p>Richtext description goes here</p>"
-        },
-        {
-          "type": "select",
-          "id": "description_font_size",
-          "label": "Description font-size",
-          "default": "fs-md",
-          "options": [
-            { "value": "fs-sm", "label": "sm" },
-            { "value": "fs-md", "label": "md" },
-            { "value": "fs-lg", "label": "lg" },
-            { "value": "fs-xl", "label": "xl" },
-            { "value": "fs-xxl", "label": "xxl" }
-          ]
-        },
-        {
-          "type": "checkbox",
-          "id": "product_description",
-          "label": "Product description",
-          "info": "Show the actual product description",
-          "default": false
-        },
-        {
-          "type": "html",
-          "id": "description_classes",
-          "label": "Description classes",
-          "info": "A space-separated list of classes to apply (E.g. opacity-70 text-primary small)"
-        },
-
-        {
-          "type": "header",
-          "content": "Spacing"
-        },
-        {
-          "type": "range",
-          "id": "pt",
-          "label": "Top",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 0
-        },
-        {
-          "type": "range",
-          "id": "pb",
-          "label": "Bottom",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 0
-        }
-      ]
-    },
-    {
-      "type": "collapse",
-      "name": "Collapse",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "icon",
-          "label": "Icon"
-        },
-        {
-          "type": "range",
-          "id": "icon_size",
-          "label": "Icon size",
-          "default": 20,
-          "min": 8,
-          "max": 32,
-          "unit": "px"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Collapse Title"
-        },
-        {
-          "type": "select",
-          "id": "title_font_family",
-          "label": "Title font-family",
-          "default": "",
-          "options": [
-              { "value": "", "label": "Body" },
-              { "value": "heading", "label": "Heading" }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "title_font_size",
-          "label": "Title font-size",
-          "default": "fs-md",
-          "options": [
-            { "value": "fs-xs", "label": "xs" },
-            { "value": "fs-sm", "label": "sm" },
-            { "value": "fs-md", "label": "md" },
-            { "value": "fs-lg", "label": "lg" },
-            { "value": "fs-xl", "label": "xl" }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "title_text_transform",
-          "label": "Title text-transform",
-          "default": "text-capitalize",
-          "options": [
-              { "value": "", "label": "Normal" },
-              { "value": "text-capitalize", "label": "Capitalize" },
-              { "value": "text-lowercase", "label": "Lowercase" },
-              { "value": "text-uppercase", "label": "Uppercase" }
-    
-          ]
-        },
-        {
-          "type": "range",
-          "id": "title_letter_spacing",
-          "label": "Title letter-spacing",
-          "default": 0,
-          "min": 0,
-          "max": 5
-        },
-        {
-          "type": "richtext",
-          "id": "description",
-          "label": "Description",
-          "default": "<p>Collapse description goes here</p>"
-        },
-        {
-          "type": "checkbox",
-          "id": "product_description",
-          "label": "Product description",
-          "info": "Show the actual product description in the collapse",
-          "default": false
-        },
-        {
-          "type": "select",
-          "id": "description_font_size",
-          "label": "Description font-size",
-          "default": "fs-md",
-          "options": [
-            { "value": "fs-xs", "label": "xs" },
-            { "value": "fs-sm", "label": "sm" },
-            { "value": "fs-md", "label": "md" },
-            { "value": "fs-lg", "label": "lg" },
-            { "value": "fs-xl", "label": "xl" }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "General"
-        },
-        {
-          "type": "range",
-          "id": "border_top_width",
-          "label": "Border top width",
-          "default": 1,
-          "min": 0,
-          "max": 16,
-          "step": 1,
-          "unit": "px"
-        },
-        {
-          "type": "range",
-          "id": "border_bottom_width",
-          "label": "Border bottom width",
-          "default": 0,
-          "min": 0,
-          "max": 16,
-          "step": 1,
-          "unit": "px"
-        },
-        {
-          "type": "select",
-          "id": "border_color",
-          "label": "Border color",
-          "default": "border-body",
-          "options": [
-            { "value": "border-primary", "label": "Primary" },
-            { "value": "border-secondary", "label": "Secondary" },
-            { "value": "border-body", "label": "Body" },
-            { "value": "border-white", "label": "White" }
-          ]
-        },
-        {
-          "type": "range",
-          "id": "border_opacity",
-          "label": "Border opacity",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "default": 100,
-          "unit": "%"
-        },
-        {
-          "type": "checkbox",
-          "id": "open_by_default",
-          "label": "Open by default",
-          "default": false
-        },
-        {
-          "type": "header",
-          "content": "Spacing"
-        },
-        {
-          "type": "range",
-          "id": "pt",
-          "label": "Top",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 0
-        },
-        {
-          "type": "range",
-          "id": "pb",
-          "label": "Bottom",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 0
-        }
-      ]
+      "type": "text",
+      "id": "custom_heading",
+      "label": "Button Text"
     },
     {
       "type": "liquid",
-      "name": "Liquid code",
-      "settings": [
-        {
-          "type": "liquid",
-          "id": "liquid",
-          "label": "HTML code",
-          "default": "<p class=\"bg-primary text-white rounded p-5\">Today's date: <b>{{ 'now' | date: \"%b %d, %Y\" }}</b></p>",
-          "info": "Note: You may use both HTML and Liquid codes."
-        },
-        {
-          "type": "header",
-          "content": "Spacing"
-        },
-        {
-          "type": "range",
-          "id": "pt",
-          "label": "Top",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 3
-        },
-        {
-          "type": "range",
-          "id": "pb",
-          "label": "Bottom",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 3
-        }
-      ]
-    },
-    {
-      "type": "trust_icons",
-      "name": "Trust icons",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "NOTE: You may download svg icons from libraries like [Bootstrap Icons](https://icons.getbootstrap.com) and upload them below as images"
-        },
-        {
-          "type": "header",
-          "content": "General"
-        },
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Label",
-          "default": "What we promise",
-          "info": "Used for accessibility purposes"
-        },
-        {
-          "type": "text",
-          "id": "max_width",
-          "label": "Max-width (px)",
-          "default": "400"
-        },
-        {
-          "type": "range",
-          "id": "img_size",
-          "label": "Image (icon) size",
-          "default": 24,
-          "min": 16,
-          "max": 64,
-          "unit": "px"
-        },
-        {
-          "type": "header",
-          "content": "item 1"
-        },
-        {
-          "type": "image_picker",
-          "id": "img_1",
-          "label": "Image 1"
-        },
-        {
-          "type": "richtext",
-          "id": "text_1",
-          "label": "Text 1"
-        },
-        {
-          "type": "header",
-          "content": "item 2"
-        },
-        {
-          "type": "image_picker",
-          "id": "img_2",
-          "label": "Image 2"
-        },
-        {
-          "type": "richtext",
-          "id": "text_2",
-          "label": "Text 2"
-        },
-        {
-          "type": "header",
-          "content": "item 3"
-        },
-        {
-          "type": "image_picker",
-          "id": "img_3",
-          "label": "Image 3"
-        },
-        {
-          "type": "richtext",
-          "id": "text_3",
-          "label": "Text 3"
-        },
-        {
-          "type": "header",
-          "content": "item 4"
-        },
-        {
-          "type": "image_picker",
-          "id": "img_4",
-          "label": "Image 4"
-        },
-        {
-          "type": "richtext",
-          "id": "text_4",
-          "label": "Text 4"
-        },
-        {
-          "type": "header",
-          "content": "Spacing"
-        },
-        {
-          "type": "range",
-          "id": "pt",
-          "label": "Top",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 3
-        },
-        {
-          "type": "range",
-          "id": "pb",
-          "label": "Bottom",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 3
-        }
-      ]
-    },
-    {
-      "type": "separator",
-      "name": "Separator",
-      "settings": [
-        {
-          "type": "select",
-          "id": "bg_color",
-          "label": "Background color",
-          "default": "bg-primary",
-          "options": [
-            { "value": "bg-primary", "label": "Primary" },
-            { "value": "bg-secondary", "label": "Secondary" },
-            { "value": "bg-body", "label": "Body" },
-            { "value": "bg-white", "label": "White" }
-          ]
-        },
-        {
-          "type": "range",
-          "id": "bg_opacity",
-          "label": "Background opacity",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "default": 10,
-          "unit": "%"
-        },
-        {
-          "type": "range",
-          "id": "height",
-          "label": "Height",
-          "min": 0,
-          "max": 16,
-          "default": 1,
-          "step": 1,
-          "unit": "px"
-        },
-        {
-          "type": "header",
-          "content": "Spacing"
-        },
-        {
-          "type": "range",
-          "id": "pt",
-          "label": "Top",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 0
-        },
-        {
-          "type": "range",
-          "id": "pb",
-          "label": "Bottom",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 0
-        }
-      ]
-    },
-    {
-      "type": "stock_indicator",
-      "name": "Stock Indicator",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "NOTE: This feature is supported only in our Premium Shopify Themes."
-        },
-        {
-          "type": "range",
-          "id": "low_stock_threshold",
-          "label": "Low stock - threshold",
-          "default": 10,
-          "min": 2,
-          "max": 100
-        },
-        {
-          "type": "select",
-          "id": "low_stock_bg_color",
-          "label": "Low stock - bg color",
-          "default": "bg-warning",
-          "options": [
-            { "group": "Dark", "value": "bg-primary",  "label": "Primary" },
-            { "group": "Dark", "value": "bg-secondary", "label": "Secondary" },
-            { "group": "Dark", "value": "bg-body", "label": "Body" },
-            { "group": "Alert", "value": "bg-success",  "label": "Success" },
-            { "group": "Alert", "value": "bg-warning", "label": "Warning" },
-            { "group": "Alert", "value": "bg-danger", "label": "Danger" },
-            { "group": "Alert", "value": "bg-info",  "label": "Info" }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "has_stock_bg_color",
-          "label": "Has stock - bg color",
-          "default": "bg-success",
-          "options": [
-            { "group": "Dark", "value": "bg-primary",  "label": "Primary" },
-            { "group": "Dark", "value": "bg-secondary", "label": "Secondary" },
-            { "group": "Dark", "value": "bg-body", "label": "Body" },
-            { "group": "Alert", "value": "bg-success",  "label": "Success" },
-            { "group": "Alert", "value": "bg-warning", "label": "Warning" },
-            { "group": "Alert", "value": "bg-danger", "label": "Danger" },
-            { "group": "Alert", "value": "bg-info",  "label": "Info" }
-          ]
-        },
-        {
-          "type": "range",
-          "id": "progress_height",
-          "label": "Progress height",
-          "min": 1,
-          "max": 24,
-          "step": 1,
-          "default": 8,
-          "unit": "px"
-        },
-        {
-          "type": "header",
-          "content": "Spacing"
-        },
-        {
-          "type": "range",
-          "id": "pt",
-          "label": "Top",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 0
-        },
-        {
-          "type": "range",
-          "id": "pb",
-          "label": "Bottom",
-          "min": 0,
-          "max": 20,
-          "step": 1,
-          "default": 0
-        }
-      ]
-    },
-    {
-      "type": "@app"
-    }
+      "id": "custom_liquid",
+      "label": "Form Code"
+    },    
   ],
-  "templates": ["product"],
   "presets": [
     {
       "name": "Product main"

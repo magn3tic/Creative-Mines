@@ -44,7 +44,14 @@
                                                     <img src="{{ bg | image_url }}" alt="image">
                                                   {% endif %}
                                                   {% if heading %}
-                                                    <span class="d-block mg-title">{{ heading }}</span>
+                                                    {% assign heading_link_key = "im_heading_" | append: i | append: "_link" %}
+                                                    {% assign heading_link = block.settings[heading_link_key] %}
+
+                                                    {% if heading_link %}
+                                                      <a href="{{ heading_link }}" class="d-block mg-title">{{ heading }}</a>
+                                                    {% else %}
+                                                      <span class="d-block mg-title">{{ heading }}</span>
+                                                    {% endif %}
                                                   {% endif %}
                                                 </div>
                                                 <div class="mg-text">
@@ -126,13 +133,13 @@
 
                 {% if request.page_type == 'product' %}
                   {% if section.settings.logodark %}
-                    <img src="{{ section.settings.logodark | img_url:"75x63" }}" alt="Logo" class="lazyload">
+                    <img src="{{ section.settings.logodark | img_url: 'master' }}" alt="Logo" class="lazyload">
                   {% else %}
                     <span>Creative Mines</span>
                   {% endif %}  
                 {% else %}
                   {% if section.settings.logo %}
-                    <img src="{{ section.settings.logo | img_url:"75x63" }}" alt="Logo" class="lazyload">
+                    <img src="{{ section.settings.logo | img_url: 'master' }}" alt="Logo" class="lazyload">
                   {% else %}
                     <span>Creative Mines</span>
                   {% endif %}  
@@ -538,7 +545,12 @@
           "type": "text",
           "id": "im_heading_1",
           "label": "Main Heading"
-        },        
+        },     
+        {
+          "type": "url",
+          "id": "im_heading_1_link",
+          "label": "Main Heading Link"
+        },             
         {
           "type": "text",
           "id": "imi_heading",
@@ -574,6 +586,11 @@
           "label": "Heading"
         },        
         {
+          "type": "url",
+          "id": "im_heading_2_link",
+          "label": "Heading Link"
+        },        
+        {
           "type": "link_list",
           "id": "im_menu_2",
           "label": "Choose Menu - Left"
@@ -591,7 +608,12 @@
           "type": "text",
           "id": "im_heading_3",
           "label": "Heading"
-        },        
+        },      
+        {
+          "type": "url",
+          "id": "im_heading_3_link",
+          "label": "Heading Link"
+        },            
         {
           "type": "link_list",
           "id": "im_menu_3",
@@ -612,6 +634,11 @@
           "label": "Heading"
         },        
         {
+          "type": "url",
+          "id": "im_heading_4_link",
+          "label": "Heading Link"
+        },          
+        {
           "type": "link_list",
           "id": "im_menu_4",
           "label": "Choose Menu - Left"
@@ -630,6 +657,11 @@
           "id": "im_heading_5",
           "label": "Heading"
         },        
+        {
+          "type": "url",
+          "id": "im_heading_5_link",
+          "label": "Heading Link"
+        },          
         {
           "type": "link_list",
           "id": "im_menu_5",

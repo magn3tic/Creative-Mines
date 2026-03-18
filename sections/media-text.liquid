@@ -127,7 +127,7 @@
     {% endif %}        
   
     {% elsif block.type == 'media_text_bg_dark2' %}
-    <section class="image-content-area black-shape-bg">
+    <section class="image-content-area black-shape-bg" id="signup">
       {% if block.settings.image != blank %}<img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.heading | escape }}" data-aos="zoom-in" class="bg-image right d-none d-lg-block">{% endif %}
       <div class="container-fluid">
         <div class="row">

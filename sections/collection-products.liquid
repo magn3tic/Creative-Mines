@@ -92,9 +92,9 @@
                   <p>{{ color_count }} Color{% if color_count > 1 %}s{% endif %}</p>
                 {% endif %}
                 
-                  <a href="{{ product.url }}" class="cta-btn btn_default">
-                    Order Sample
-                  </a>
+                <a href="javascript:;" class="cta-btn btn_default order-sample-btn" data-variant-id="">
+                  Order Sample
+                </a>
 
                 <a href="{{ product.url }}" class="cta-btn btn_default_border">
                   Product Details
@@ -136,39 +136,49 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.sample-box-slider').forEach(sliderEl => {
     const $slider = $(sliderEl);
     const box = sliderEl.closest('.box');
-    const orderBtn = box.querySelector('.cta-btn.btn_default'); 
-    const detailsBtn = box.querySelector('.cta-btn.btn_default_border'); 
+    const orderBtn = box.querySelector('.cta-btn.btn_default');
+    const detailsBtn = box.querySelector('.cta-btn.btn_default_border');
     const colorDiff = box.querySelector('.color-diff span:last-child');
+
+    function ensureCartContainer() {
+      let cartContainer = document.querySelector('cart-container');
+      if (!cartContainer) {
+        cartContainer = document.createElement('cart-container');
+        document.body.appendChild(cartContainer);
+      }
+      return cartContainer;
+    }
+
+    function ensureCartBadge() {
+      const headerCart = document.querySelector('.shipment, .header-cart, .site-header__cart') || document.body;
+      let badge = headerCart.querySelector('.cart-count-badge');
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'cart-count-badge';
+        badge.textContent = '0';
+        headerCart.appendChild(badge);
+      }
+      return badge;
+    }
+
+    function refreshBadge() {
+      const badge = ensureCartBadge();
+      fetch('/cart.js')
+        .then(res => res.json())
+        .then(cart => {
+          badge.textContent = cart.item_count || 0;
+        });
+    }
 
     function updateFromCurrentSlide() {
       const currentSlide = sliderEl.querySelector('.slick-current');
       if (!currentSlide) return;
-
       const variantId = currentSlide.dataset.variantId;
       const color = currentSlide.dataset.variantColor;
-      const isSample = currentSlide.dataset.isSample === 'true';
-
-      let targetVariantId = variantId;
-
-      if (!isSample) {
-        const sampleSlide = sliderEl.querySelector(
-          `.slide[data-variant-color="${color}"][data-is-sample="true"]`
-        );
-        if (sampleSlide) {
-          targetVariantId = sampleSlide.dataset.variantId;
-        } else {
-          targetVariantId = null;
-        }
-      }
 
       if (orderBtn) {
-        if (variantId) {
-          orderBtn.href = `/cart/add?id=${variantId}&quantity=1`;
-          orderBtn.classList.remove('disabled');
-        } else {
-          orderBtn.href = '#';
-          orderBtn.classList.add('disabled');
-        }
+        orderBtn.dataset.variantId = variantId || '';
+        orderBtn.classList.toggle('disabled', !variantId);
       }
 
       if (detailsBtn && variantId) {
@@ -176,19 +186,58 @@ document.addEventListener('DOMContentLoaded', function() {
         detailsBtn.href = `${baseUrl}?variant=${variantId}`;
       }
 
-      if (colorDiff && color) {
-        colorDiff.textContent = color;
-      }
+      if (colorDiff && color) colorDiff.textContent = color;
     }
 
-    $slider.on('init', function() {
-      updateFromCurrentSlide();
-    });
+    $slider.on('init afterChange', updateFromCurrentSlide);
 
-    $slider.on('afterChange', function() {
-      updateFromCurrentSlide();
-    });
-    
+    // --- Add to Cart with theme's cart-container (auto drawer refresh)
+    if (orderBtn) {
+      orderBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+        const variantId = this.dataset.variantId;
+        if (!variantId) {
+          alert('Please select a sample variant.');
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('id', variantId);
+        formData.append('quantity', 1);
+
+        const cartContainer = ensureCartContainer();
+
+        try {
+          // use the theme's built-in cart handler
+          await cartContainer.add(formData);
+
+          // trigger your global event (cart updates, etc.)
+          window.dispatchEvent(new Event('kt.cart.reloaded'));
+
+          // update badge manually
+          refreshBadge();
+
+          // open drawer (Bootstrap offcanvas or similar)
+          const offcanvas = document.querySelector('#offcanvas-cart');
+          if (offcanvas && window.bootstrap) {
+            window.bootstrap.Offcanvas.getOrCreateInstance(offcanvas).show();
+          }
+
+          // temporary button feedback
+          const btnText = this.textContent;
+          this.textContent = 'Added!';
+          this.classList.add('added');
+          setTimeout(() => {
+            this.textContent = btnText;
+            this.classList.remove('added');
+          }, 1500);
+
+        } catch (err) {
+          console.error('Cart add failed:', err);
+          alert('Something went wrong adding to cart.');
+        }
+      });
+    }
   });
 });
 </script>

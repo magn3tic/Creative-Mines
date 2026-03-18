@@ -89,8 +89,6 @@
             });
         }
 
-
-
         const $slider = $('.product-single-slider');
         if ($slider.length) {
             // Slick Init
@@ -335,16 +333,15 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
 gsap.registerPlugin(ScrollTrigger);
 
 if (document.querySelector(".scroll-pin-image-area.desktop > .inner")) {
     gsap.fromTo(".scroll-pin-image-area.desktop > .inner", {
         scale: 0.3,
-        clipPath: 'inset(30% 30% 30% 30%)', // Partially clipped but visible
+        clipPath: 'inset(30% 30% 30% 30%)',
     }, {
         scale: 1,
-        clipPath: 'inset(0% 0% 0% 0%)', // Fully revealed
+        clipPath: 'inset(0% 0% 0% 0%)', 
         scrollTrigger: {
             scrub: true,
             trigger: ".scroll-pin-image-area.desktop",
@@ -359,10 +356,10 @@ if (document.querySelector(".scroll-pin-image-area.desktop > .inner")) {
 if (document.querySelector(".explore-collection-area.desktop .inner")) {
     gsap.fromTo(".explore-collection-area.desktop .inner", {
         scale: 0.3,
-        clipPath: 'inset(30% 30% 30% 30%)', // Partially clipped but visible
+        clipPath: 'inset(30% 30% 30% 30%)', 
     }, {
         scale: 1,
-        clipPath: 'inset(0% 0% 0% 0%)', // Fully revealed
+        clipPath: 'inset(0% 0% 0% 0%)', 
         scrollTrigger: {
             scrub: true,
             trigger: ".explore-collection-area.desktop",

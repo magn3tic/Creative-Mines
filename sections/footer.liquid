@@ -134,6 +134,65 @@
   </div>
 </footer>
 
+<script>
+var lastScrollTop = 0;
+var body = document.body;
+window.addEventListener("scroll",function(){
+var scrollTop = window.pageYOffset || document
+.documentElement.scrollTop;
+if(scrollTop > lastScrollTop){
+    body.classList.add("nav-down");
+}
+else{
+    body.classList.remove("nav-down");
+}
+lastScrollTop = scrollTop;
+});
+
+(function($) {
+  function initVideoToggle(context) {
+    const $scope = context ? $(context) : $(document);
+
+    $scope.find('.story-video-box .play-video')
+      .off('click.videoToggle')
+      .on('click.videoToggle', function() {
+        const $box = $(this).closest('.story-video-box');
+        const video = $box.find('video.story-video').get(0);
+        if (!video) return;
+
+        if (video.paused) {
+          video.play();
+          $box.addClass('is-playing');
+        } else {
+          video.pause();
+          $box.removeClass('is-playing');
+        }
+      });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    initVideoToggle();
+  });
+
+  document.addEventListener('shopify:section:load', function(e) {
+    initVideoToggle(e.target);
+  });
+})(jQuery);
+
+document.addEventListener('DOMContentLoaded', function() {
+  $('.sp-collapse span').on('click', function() {
+    const $parent = $(this).closest('.sp-collapse');
+
+    $parent.toggleClass('active');
+
+    $parent.find('.top-actions').stop(true, true).slideToggle(300);
+
+    $(this).find('svg').toggleClass('rotated');
+  });
+});
+
+</script>
+
 {% schema %}
 {
   "name": "Footer",

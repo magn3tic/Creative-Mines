@@ -1,4 +1,4 @@
-<section class="content-area bg_white">
+<section class="content-area bg_white pb-0">
   <div class="container-fluid">
     <div class="content-text">
       <h2>{{ section.settings.heading }}</h2>
@@ -38,7 +38,7 @@
                 </li>
                 <li class="col-lg-6 col-sm-6">
                   <label for="phone">PHONE NUMBER*</label>
-                  <input type="tel" name="customer[phone]" placeholder="+18004537040" id="phone" required>
+                  <input type="tel" name="customer[phone]" placeholder="(800) 4537040" pattern="^\(\d{3}\)\s?\d{7}$" id="phone" required>
                 </li>
                 <li class="col-lg-6 col-sm-6">
                   <label for="trade_type">WHAT’S YOUR TRADE*</label>
@@ -81,11 +81,70 @@
                 </li>
                 <li class="col-lg-12 col-sm-6">
                   <label for="country">COUNTRY</label>
-                  <input type="text" name="customer[addresses][0][country]" id="country">
+                  <input 
+                    type="text" 
+                    name="customer[addresses][0][country]" 
+                    value="US" 
+                    id="country" 
+                    readonly 
+                  >
                 </li>
+
                 <li class="col-lg-8 col-sm-6 margin">
                   <label for="province">STATE</label>
-                  <input type="text" name="customer[addresses][0][province]" id="province">
+                  <select name="customer[addresses][0][province]" id="province" required>
+                    <option value="">Select State</option>
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    <option value="DE">Delaware</option>
+                    <option value="FL">Florida</option>
+                    <option value="GA">Georgia</option>
+                    <option value="HI">Hawaii</option>
+                    <option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option>
+                    <option value="IN">Indiana</option>
+                    <option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option>
+                    <option value="KY">Kentucky</option>
+                    <option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option>
+                    <option value="MD">Maryland</option>
+                    <option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option>
+                    <option value="MT">Montana</option>
+                    <option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option>
+                    <option value="NH">New Hampshire</option>
+                    <option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option>
+                    <option value="NY">New York</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option>
+                    <option value="OH">Ohio</option>
+                    <option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option>
+                    <option value="SD">South Dakota</option>
+                    <option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option>
+                    <option value="UT">Utah</option>
+                    <option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option>
+                    <option value="WA">Washington</option>
+                    <option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option>
+                    <option value="WY">Wyoming</option>
+                  </select>
                 </li>
                 <li class="col-lg-4 col-sm-6">
                   <label for="zip">ZIP</label>
@@ -119,6 +178,13 @@
                     <option value="Yes">Yes</option>
                   </select>
                 </li>
+
+                <li class="col-lg-12 col-sm-6 tax-exempt-upload" style="display:none;">
+                  <p>If you intend to purchase merchandise for resale, and wish to waive sales tax on your qualifying orders, please provide your tax exempt documentation.</p>
+                  <label for="tax_exempt_file">UPLOAD TAX EXEMPT DOCUMENT</label>
+                  <input id="tax_exempt_file" type="file" name="customer[tax_exempt_doc]">
+                </li>
+
               </ul>
             </div>
           </div>
@@ -129,7 +195,7 @@
           <div class="trade-form-btn text-sm-end text-sm-start">
             <button type="submit" class="cta-btn btn_default">Submit</button>
             <div class="concent cl-action">
-              <input type="checkbox" name="customer[accepts_marketing]" id="newsletter">
+              <input type="checkbox" name="customer[accepts_marketing]" id="newsletter" checked>
               <label for="newsletter">Subscribe to our newsletter</label>
             </div>
           </div>
@@ -140,6 +206,34 @@
 </section>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const taxSelect = document.getElementById("tax_exempt");
+  const uploadField = document.querySelector(".tax-exempt-upload");
+
+  if (!taxSelect || !uploadField) return;
+
+  taxSelect.addEventListener("change", function () {
+    if (this.value === "Yes") {
+      uploadField.style.display = "block";
+    } else {
+      uploadField.style.display = "none";
+      const input = document.getElementById("tax_exempt_file");
+      if (input) input.value = ""; // reset
+    }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const phoneInput = document.getElementById("phone");
+  phoneInput.addEventListener("input", (e) => {
+    let value = e.target.value.replace(/\D/g, ""); // remove non-digits
+    if (value.length > 3 && value.length <= 6)
+      value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+    else if (value.length > 6)
+      value = `(${value.slice(0, 3)}) ${value.slice(3, 10)}`;
+    e.target.value = value;
+  });
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   const toggle = document.querySelector(".toggle-password");
@@ -162,6 +256,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
+
+    const fileInput = form.querySelector("#einlicense");
+    let base64File = "";
+    let fileName = "";
+    if (fileInput && fileInput.files.length) {
+      const file = fileInput.files[0];
+      fileName = file.name;
+      base64File = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(",")[1]);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    const taxExemptInput = form.querySelector("#tax_exempt_file");
+    let taxExemptBase64 = "";
+    let taxExemptName = "";
+
+    if (taxExemptInput && taxExemptInput.files.length) {
+      const taxFile = taxExemptInput.files[0];
+      taxExemptName = taxFile.name;
+
+      taxExemptBase64 = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(",")[1]);
+        reader.readAsDataURL(taxFile);
+      });
+    }    
 
     const payload = {
       // Basic info
@@ -190,12 +312,14 @@ document.addEventListener("DOMContentLoaded", () => {
       country: data["customer[addresses][0][country]"] || "",
       zip: data["customer[addresses][0][zip]"] || "",
 
-      // Marketing + files
-      accepts_marketing: data["customer[accepts_marketing]"] ? "Yes" : "No",
-      license_filename: form.querySelector("#einlicense")?.files[0]?.name || "",
+      // Marketing + file
+      accepts_marketing: !!data["customer[accepts_marketing]"],
+      license_file: base64File,
+      license_filename: fileName,
+      tax_exempt_doc_file: taxExemptBase64,
+      tax_exempt_doc_filename: taxExemptName,      
     };
 
-    // Optional: log to verify before sending
     console.log("Submitting payload:", payload);
 
     const btn = form.querySelector("button[type='submit']");
@@ -215,14 +339,27 @@ document.addEventListener("DOMContentLoaded", () => {
         form.style.display = "none";
 
         const successBox = document.createElement("div");
-        successBox.className = "alert alert-success shadow p-4 rounded text-center mt-4";
+        successBox.className =
+          "alert alert-success shadow p-4 rounded text-center mt-4";
         successBox.innerHTML = `
           <p class="mb-0">Thank you! Your application has been submitted for approval.</p>
         `;
         form.parentNode.appendChild(successBox);
       } else {
-        alert("⚠️ Submission failed. Please try again or contact support.");
-        console.log(json);
+        const errorMessage =
+          json.error_message ||
+          (Array.isArray(json.errors) ? json.errors.join("\n") : null) ||
+          (json.errors && typeof json.errors === "object"
+              ? Object.entries(json.errors)
+                  .map(([key, val]) => `${key}: ${val}`)
+                  .join("\n")
+              : null) ||
+          json.error ||
+          json.message ||
+          "Submission failed. Please try again.";
+
+        alert("⚠️ " + errorMessage);
+        console.error("API Error:", json);
       }
     } catch (err) {
       console.error(err);

@@ -34,46 +34,30 @@
               {% for item in search.results %}
                 {% case item.object_type %}
 
-                  {% when 'product' %}
-                    {% assign product = item %}
-                    <div class="col-lg-4 col-sm-6">
-                      <div class="box style2">
-                        <div class="inner">
-                          <a href="{{ product.url }}">
-                            {% if product.featured_image %}
-                              <img 
-                                src="{{ product.featured_image | img_url: '800x' }}" 
-                                alt="{{ product.title | escape }}">
-                            {% else %}
-                              <img 
-                                src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/placeholder.png" 
-                                alt="{{ product.title | escape }}">
-                            {% endif %}
-                          </a>
-                        </div>
-
-                        <div class="text">
-                          <h3 class="title">
-                            <a href="{{ product.url }}">{{ product.title }}</a>
-                          </h3>
-
-                          {% if product.price_varies %}
-                            <p>{{ 'From ' | append: product.price_min | money }}</p>
-                          {% else %}
-                            <p>{{ product.price | money }}</p>
-                          {% endif %}
-
-                          {% if product.available %}
-                            <form method="post" action="/cart/add" class="add-to-cart-form" enctype="multipart/form-data">
-                              <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-                              <button type="submit" class="cta-btn btn_default">Add to Cart</button>
-                            </form>
-                          {% else %}
-                            <p class="text-muted small">Sold Out</p>
-                          {% endif %}
-                        </div>
+                {% when 'product' %}
+                  {% assign product = item %}
+                  <div class="col-lg-4 col-sm-6">
+                    <a href="{{ product.url }}" class="box style2 product-link-box">
+                      <div class="inner">
+                        {% if product.featured_image %}
+                          <img 
+                            src="{{ product.featured_image | img_url: '800x' }}" 
+                            alt="{{ product.title | escape }}">
+                        {% else %}
+                          <img 
+                            src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/placeholder.png" 
+                            alt="{{ product.title | escape }}">
+                        {% endif %}
                       </div>
-                    </div>
+
+                      <div class="text">
+                        <h3 class="title">{{ product.title }}</h3>
+
+                        <button type="button" class="py-2 cta-btn btn_default mt-4">Shop Now</button>
+                          
+                      </div>
+                    </a>
+                  </div>                    
 
                   {% when 'article' %}
                     <div class="col-lg-4 col-sm-6">

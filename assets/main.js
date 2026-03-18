@@ -51,211 +51,98 @@
                 nextArrow: $('.hero-next-arrow'),
             });
 
-            // Start the progress bar animation if exists
-            function startProgressBar() {
-                if ($progressBar.length) {
-                    $progressBar.removeClass('active').removeAttr('style');
-                    void $progressBar[0].offsetWidth; // force reflow
-                    $progressBar.css('transition-duration', (sliderTimer / 1000) + 's');
-                    $progressBar.addClass('active');
-                }
-            }
-
-            // Start on load
-            startProgressBar();
-
-            // Restart on every slide change
-            $imageSlider.on('beforeChange', function () {
-                startProgressBar();
-            });
         }
 
 
-        var secondSliderTimer = 5000; // autoplaySpeed in ms
-        var $secondSlider = $('.product-slider');
-        var $secondProgressBar = $('.pr-slider-progress-holder').find('span');
+var $secondSlider = $('.product-slider');
 
-        // Only initialize second slider if element exists
-        if (
-            $secondSlider.length &&
-            $('.pr-slider-prev-arrow').length &&
-            $('.pr-slider-next-arrow').length
-        ) {
-            $secondSlider.slick({
-                dots: false,
-                arrows: true,
-                infinite: true,
-                speed: 300,
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                centerMode: false,
-                autoplay: true,
-                autoplaySpeed: secondSliderTimer,
-                fade: true,
-                pauseOnHover: false,
-                prevArrow: $('.pr-slider-prev-arrow'),
-                nextArrow: $('.pr-slider-next-arrow'),
-            });
+if (
+  $secondSlider.length &&
+  $('.pr-slider-prev-arrow').length &&
+  $('.pr-slider-next-arrow').length
+) {
+  $secondSlider.slick({
+    dots: false,
+    arrows: true,
+    infinite: true,
+    speed: 300,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    fade: true,
+    pauseOnHover: false,
+    prevArrow: $('.pr-slider-prev-arrow'),
+    nextArrow: $('.pr-slider-next-arrow')
+  });
 
-            /** ------------------------
-             * Custom Cursor Integration
-             * ------------------------ */
-            const $cursor = $(`
-        <div class="custom-cursor">
-            <svg width="70" height="70" class="cursor-svg" viewBox="0 0 70 70">
-                <circle r="32" cx="35" cy="35" stroke="#1C2120" stroke-width="2" fill="none"/>
-            </svg>
-            <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                <path class="arrow-left" d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
-                <path class="arrow-right" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/>
-            </svg>
-        </div>
-    `);
+  const $cursor = $(`
+    <div class="custom-cursor">
+       <svg class="arrow-icon" viewBox="0 0 320 512">
+        <path class="arrow-left" d="M41.4 233.4l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
+        <path class="arrow-right" d="M278.6 233.4l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/>
+      </svg>
+    </div>
+  `);
 
-            $('body').append($cursor);
+  $('body').append($cursor);
 
-            const $circle = $cursor.find('circle');
-            const radius = 32;
-            const circumference = 2 * Math.PI * radius;
-            $circle.css({
-                strokeDasharray: circumference,
-                strokeDashoffset: circumference
-            });
+  let direction = 'right';
+  let navDisabled = false;
 
-            let progress = 0;
-            let interval;
-            const fps = 60;
-            let direction = 'right';
+  function updateDirection(e) {
+    const offset = $secondSlider.offset();
+    const x = e.pageX - offset.left;
+    direction = x < $secondSlider.width() / 2 ? 'left' : 'right';
 
-            function setProgress(p) {
-                const offset = circumference - (p / 100) * circumference;
-                $circle.css('strokeDashoffset', offset);
-            }
+    $cursor.find('.arrow-left, .arrow-right').removeClass('active');
+    $cursor.find(direction === 'left' ? '.arrow-left' : '.arrow-right').addClass('active');
 
-            function resetProgress() {
-                clearInterval(interval);
-                progress = 0;
-                setProgress(0);
-            }
+    $cursor.css({
+      left: e.pageX - 35,
+      top: e.pageY - 35
+    });
+  }
 
-            function startProgress() {
-                resetProgress();
-                interval = setInterval(() => {
-                    progress += 100 / (secondSliderTimer / (1000 / fps));
-                    setProgress(progress);
-                    if (progress >= 100) {
-                        clearInterval(interval);
-                        progress = 0;
-                        direction === 'right' ?
-                            $secondSlider.slick('slickNext') :
-                            $secondSlider.slick('slickPrev');
-                        setTimeout(startProgress, 10);
-                    }
-                }, 1000 / fps);
-            }
+  $secondSlider.on('mouseenter', function (e) {
+    if (navDisabled) return;
+    $cursor.show();
+    updateDirection(e);
+  });
 
-            function updateDirection(e) {
-                const offset = $secondSlider.offset();
-                const x = e.pageX - offset.left;
-                const sliderWidth = $secondSlider.width();
-                const newDirection = x < sliderWidth / 2 ? 'left' : 'right';
+  $secondSlider.on('mousemove', function (e) {
+    if (navDisabled) return;
+    updateDirection(e);
+  });
 
-                if (newDirection !== direction) {
-                    direction = newDirection;
+  $secondSlider.on('mouseleave', function () {
+    $cursor.hide();
+  });
 
-                    $cursor.find('.arrow-left').removeClass('active');
-                    $cursor.find('.arrow-right').removeClass('active');
+  $secondSlider.on('mouseenter', '.photo-credit, .trigger-tooltip', function () {
+    navDisabled = true;
+    $cursor.hide();
+  });
 
-                    if (direction === 'left') {
-                        $cursor.find('.arrow-left').addClass('active');
-                    } else {
-                        $cursor.find('.arrow-right').addClass('active');
-                    }
-                }
+  $secondSlider.on('mouseleave', '.photo-credit, .trigger-tooltip', function (e) {
+  navDisabled = false;
+  $cursor.show();
+  updateDirection(e);
+});
 
-                $cursor.css({
-                    left: e.pageX - 35 + 'px',
-                    top: e.pageY - 35 + 'px'
-                });
-            }
+  $secondSlider.on('mousedown mouseup click', '.photo-credit, .photo-credit *, .trigger-tooltip, .trigger-tooltip *', function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  });
 
-            // Events
-            $secondSlider.on('mouseenter', function (e) {
-                $cursor.show();
-                updateDirection(e);
-                startProgress();
-            });
+  $secondSlider.on('click', function () {
+    if (navDisabled) return;
+    direction === 'right'
+      ? $secondSlider.slick('slickNext')
+      : $secondSlider.slick('slickPrev');
+  });
+}
 
-            $secondSlider.on('mousemove', function (e) {
-                updateDirection(e);
-            });
 
-            $secondSlider.on('mouseleave', function () {
-                $cursor.hide();
-                resetProgress();
-            });
-
-            $secondSlider.on('click', function () {
-                resetProgress();
-                direction === 'right' ?
-                    $secondSlider.slick('slickNext') :
-                    $secondSlider.slick('slickPrev');
-                startProgress();
-            });
-
-            // Flag to track if cursor is inside .photo-credit
-            let inPhotoCredit = false;
-
-            // Disable everything when entering .photo-credit
-            $secondSlider.on('mouseenter', '.photo-credit', function () {
-                inPhotoCredit = true;
-                $cursor.hide(); // hide custom cursor
-                resetProgress(); // stop progress circle
-            });
-
-            // Enable again when leaving .photo-credit
-            $secondSlider.on('mouseleave', '.photo-credit', function () {
-                inPhotoCredit = false;
-                $cursor.show(); // show cursor again
-                startProgress(); // resume progress
-            });
-
-            // Block clicks when inside .photo-credit
-            $secondSlider.on('click', function (e) {
-                if (inPhotoCredit || $(e.target).closest('.photo-credit').length) {
-                    return; // prevent navigation inside photo-credit
-                }
-                resetProgress();
-                direction === 'right' ?
-                    $secondSlider.slick('slickNext') :
-                    $secondSlider.slick('slickPrev');
-                startProgress();
-            });
-
-            /** ------------------------
-             * Progress Bar (bottom bar)
-             * ------------------------ */
-            function startSecondProgressBar() {
-                if ($secondProgressBar.length) {
-                    $secondProgressBar.removeClass('active').removeAttr('style');
-                    void $secondProgressBar[0].offsetWidth; // force reflow
-                    $secondProgressBar.css('transition-duration', (secondSliderTimer / 1000) + 's');
-                    $secondProgressBar.addClass('active');
-                }
-            }
-
-            // Start on load
-            startSecondProgressBar();
-            startProgress();
-
-            // Restart on every slide change
-            $secondSlider.on('beforeChange', function () {
-                startSecondProgressBar();
-                resetProgress();
-                setTimeout(startProgress, 50);
-            });
-        }
-
+/*
 const $slider = $('.product-single-slider');
 if ($slider.length) {
   // Slick Init
@@ -326,7 +213,7 @@ if ($slider.length) {
     }
   });
 }
-
+*/
         $('.three-column-slider').slick({
             dots: false,
             arrows: false,
@@ -483,6 +370,8 @@ $('.sample-box-slider').each(function (index, el) {
             $(this).toggleClass("active");
             $(".mobile-menu").toggleClass("active");
             $(".header-area").toggleClass("active");
+            $(".menu-panel").removeClass("active");
+            $(".menu-panel:first-child").addClass("active");
         });
 
         $('.photo-credit').on('click', function () {
@@ -546,7 +435,11 @@ $('.sample-box-slider').each(function (index, el) {
 document.addEventListener("DOMContentLoaded", function () {
     const toggle = document.querySelector(".toggle-password");
     const input = document.querySelector("#password-field");
+
+    if (!toggle || !input) return;
+
     const icon = toggle.querySelector("i");
+    if (!icon) return;
 
     toggle.addEventListener("click", function () {
         const type = input.getAttribute("type") === "password" ? "text" : "password";
@@ -562,7 +455,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-
 // Menu navigation handler
 document.querySelectorAll('[data-target]').forEach(link => {
     link.addEventListener('click', function () {
@@ -604,7 +496,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
 gsap.registerPlugin(ScrollTrigger);
 
 if (document.querySelector(".scroll-pin-image-area.desktop > .inner")) {
@@ -612,7 +503,7 @@ if (document.querySelector(".scroll-pin-image-area.desktop > .inner")) {
   gsap.fromTo(".scroll-pin-image-area.desktop > .inner",
     {
       scale: 0.8,
-      clipPath: "inset(5% 5% 5% 5%)",
+      clipPath: "inset(5% 5% 5% 5%)"
     },
     {
       scale: 1,
@@ -620,28 +511,37 @@ if (document.querySelector(".scroll-pin-image-area.desktop > .inner")) {
       ease: "power1.out",
       scrollTrigger: {
         trigger: ".scroll-pin-image-area.desktop",
-        start: "top top",
-        end: "+=200", 
+        start: "top bottom",     
+        end: "top top",          
         scrub: true,
-      },
+      }
     }
   );
 
   ScrollTrigger.create({
     trigger: ".scroll-pin-image-area.desktop",
-    start: "top+=200 top", 
-    end: "bottom+=100% top", 
+    start: "top top",            
+    end: "+=250%",               
     pin: ".scroll-pin-image-area.desktop",
-    pinSpacing: false, 
+    pinSpacing: false,           
     anticipatePin: 1,
-    onEnter: () => document.querySelector(".scroll-pin-image-area.desktop").classList.add("is-sticky"),
-    onLeave: () => document.querySelector(".scroll-pin-image-area.desktop").classList.remove("is-sticky"),
-    onEnterBack: () => document.querySelector(".scroll-pin-image-area.desktop").classList.add("is-sticky"),
-    onLeaveBack: () => document.querySelector(".scroll-pin-image-area.desktop").classList.remove("is-sticky"),
+
+    onEnter: () =>
+      document.querySelector(".scroll-pin-image-area.desktop").classList.add("is-sticky"),
+
+    onLeave: () =>
+      document.querySelector(".scroll-pin-image-area.desktop").classList.remove("is-sticky"),
+
+    onEnterBack: () =>
+      document.querySelector(".scroll-pin-image-area.desktop").classList.add("is-sticky"),
+
+    onLeaveBack: () =>
+      document.querySelector(".scroll-pin-image-area.desktop").classList.remove("is-sticky"),
   });
 }
 
 if (document.querySelector(".explore-collection-area.desktop .inner")) {
+
   gsap.fromTo(".explore-collection-area.desktop .inner",
     {
       scale: 0.8,
@@ -653,8 +553,8 @@ if (document.querySelector(".explore-collection-area.desktop .inner")) {
       ease: "power1.out",
       scrollTrigger: {
         trigger: ".explore-collection-area.desktop",
-        start: "top top",
-        end: "+=200",     
+        start: "top bottom",     
+        end: "top top",          
         scrub: true,
       },
     }
@@ -662,15 +562,23 @@ if (document.querySelector(".explore-collection-area.desktop .inner")) {
 
   ScrollTrigger.create({
     trigger: ".explore-collection-area.desktop",
-    start: "top+=200 top",    
-    end: "bottom+=100% top",  
+    start: "top top",            
+    end: "+=250%",               
     pin: ".explore-collection-area.desktop",
-    pinSpacing: false,        
+    pinSpacing: false,           
     anticipatePin: 1,
-    onEnter: () => document.querySelector(".explore-collection-area.desktop").classList.add("is-sticky"),
-    onLeave: () => document.querySelector(".explore-collection-area.desktop").classList.remove("is-sticky"),
-    onEnterBack: () => document.querySelector(".explore-collection-area.desktop").classList.add("is-sticky"),
-    onLeaveBack: () => document.querySelector(".explore-collection-area.desktop").classList.remove("is-sticky"),
+
+    onEnter: () =>
+      document.querySelector(".explore-collection-area.desktop").classList.add("is-sticky"),
+
+    onLeave: () =>
+      document.querySelector(".explore-collection-area.desktop").classList.remove("is-sticky"),
+
+    onEnterBack: () =>
+      document.querySelector(".explore-collection-area.desktop").classList.add("is-sticky"),
+
+    onLeaveBack: () =>
+      document.querySelector(".explore-collection-area.desktop").classList.remove("is-sticky"),
   });
 }
 

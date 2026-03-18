@@ -1,49 +1,181 @@
 <section class="content-area bg_dark-green">
   <div class="container-fluid">
     <div class="featured-project-inner">
+
       {% if section.settings.heading != blank %}
         <h2 class="text_white h2 mb-5">{{ section.settings.heading }}</h2>
       {% endif %}
 
-      <div class="three-column-slider">
-        {% for block in section.blocks %}
-          <div class="slide">
-            <a href="{{ block.settings.link }}" class="single-featured-box">
-              <div class="content-image">
-                {% if block.settings.image != blank %}
-                  <img src="{{ block.settings.image | img_url: '800x' }}" alt="{{ block.settings.title | escape }}">
-                {% endif %}
-              </div>
-              <div class="content-text text-white">
-                {% if block.settings.title != blank %}
-                  <h3 class="heading text-white">{{ block.settings.title }}</h3>
-                {% endif %}
-                {% if block.settings.description != blank %}
-                  <p>{{ block.settings.description }}</p>
-                {% endif %}
-                <ul>
-                  {% if block.settings.architect != blank %}<li><span>Architect - {{ block.settings.architect }}</span></li>{% endif %}
-                  {% if block.settings.builder != blank %}<li><span>Builder - {{ block.settings.builder }}</span></li>{% endif %}
-                  {% if block.settings.interior != blank %}<li><span>Interior Design - {{ block.settings.interior }}</span></li>{% endif %}
-                  {% if block.settings.structural != blank %}<li><span>Structural Engineers - {{ block.settings.structural }}</span></li>{% endif %}
-                  {% if block.settings.photography != blank %}<li><span>Photography - {{ block.settings.photography }}</span></li>{% endif %}
-                </ul>
-              </div>
-            </a>
-          </div>
-        {% endfor %}
+      <div class="three-column-slider" id="additional-projects-slider">
+
+        {%- if section.blocks.size > 0 -%}
+          {%- comment -%} Manual mode — show blocks and Slick loads normally {%- endcomment -%}
+
+          {% for block in section.blocks %}
+            <div class="slide">
+              <a href="{{ block.settings.link }}" class="single-featured-box">
+                <div class="content-image">
+                  {% if block.settings.image %}
+                    <img src="{{ block.settings.image | img_url: '800x' }}">
+                  {% endif %}
+                </div>
+
+                <div class="content-text text-white">
+                  {% if block.settings.title %}
+                    <h3 class="heading text-white">{{ block.settings.title }}</h3>
+                  {% endif %}
+                  {% if block.settings.description %}
+                    <p>{{ block.settings.description }}</p>
+                  {% endif %}
+
+                  <ul>
+                    {% if block.settings.architect %}<li><span>Architect - {{ block.settings.architect }}</span></li>{% endif %}
+                    {% if block.settings.builder %}<li><span>Builder - {{ block.settings.builder }}</span></li>{% endif %}
+                    {% if block.settings.interior %}<li><span>Interior Design - {{ block.settings.interior }}</span></li>{% endif %}
+                    {% if block.settings.structural %}<li><span>Structural Engineers - {{ block.settings.structural }}</span></li>{% endif %}
+                    {% if block.settings.photography %}<li><span>Photography - {{ block.settings.photography }}</span></li>{% endif %}
+                  </ul>
+                </div>
+
+              </a>
+            </div>
+          {% endfor %}
+
+        {% endif %}
+
       </div>
 
       {% if section.settings.load_more_link != blank %}
         <div class="blog-all-action text-center">
-          <a href="{{ section.settings.load_more_link }}" class="cta-btn btn_default" style="display:inline-block;">
+          <a href="{{ section.settings.load_more_link }}" class="cta-btn btn_default">
             {{ section.settings.load_more_text }}
           </a>
         </div>
       {% endif %}
+
     </div>
   </div>
 </section>
+
+{% javascript %}
+document.addEventListener("DOMContentLoaded", function () {
+
+  const slider = document.querySelector("#additional-projects-slider");
+
+  // CASE: manual blocks exist → Slick already runs → STOP
+  if (slider.children.length > 0) {
+    console.log("Manual blocks found — fallback disabled.");
+    return;
+  }
+
+  // -------------------------------
+  // AUTO LOAD MODE (NO MANUAL BLOCKS)
+  // -------------------------------
+
+  const currentPage = window.location.pathname;
+
+  fetch("/pages/projects")
+    .then(res => res.text())
+    .then(html => {
+
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      const scriptTag = doc.querySelector("#featured-projects-master");
+      if (!scriptTag) return;
+
+      let projects = JSON.parse(scriptTag.textContent.trim());
+
+      // REMOVE CURRENT PROJECT
+      projects = projects.filter(p => p.link !== currentPage);
+
+      // SHUFFLE (no duplicates)
+      for (let i = projects.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [projects[i], projects[j]] = [projects[j], projects[i]];
+      }
+
+      // GET FIRST 3 UNIQUE PROJECTS
+      let fallback = projects.slice(0, 3);
+
+      // INJECT SLIDES
+      fallback.forEach(p => {
+        slider.insertAdjacentHTML(
+          "beforeend",
+          `
+            <div class="slide">
+              <a href="${p.link}" class="single-featured-box">
+                <div class="content-image">
+                  <img src="${p.image}" alt="${p.title}">
+                </div>
+                <div class="content-text text-white">
+                  <h3 class="heading text-white">${p.title}</h3>
+                  <p>${p.description || ""}</p>
+                  <ul>
+                    ${p.architect ? `<li><span>Architect - ${p.architect}</span></li>` : ""}
+                    ${p.builder ? `<li><span>Builder - ${p.builder}</span></li>` : ""}
+                    ${p.interior ? `<li><span>Interior Design - ${p.interior}</span></li>` : ""}
+                    ${p.structural ? `<li><span>Structural Engineers - ${p.structural}</span></li>` : ""}
+                    ${p.photography ? `<li><span>Photography - ${p.photography}</span></li>` : ""}
+                  </ul>
+                </div>
+              </a>
+            </div>
+          `
+        );
+      });
+
+      if (typeof $ !== "undefined") {
+        setTimeout(() => {
+
+          if ($(".three-column-slider").hasClass("slick-initialized")) {
+            console.log("Refreshing existing slick...");
+            $(".three-column-slider").slick("unslick");
+          }
+
+          console.log("Initializing slick...");
+          $('.three-column-slider').slick({
+              dots: false,
+              arrows: false,
+              infinite: false,
+              speed: 300,
+              slidesToShow: 3,
+              slidesToScroll: 1,
+              centerMode: false,
+              autoplay: false,
+              responsive: [
+
+                  {
+                      breakpoint: 750,
+                      settings: {
+                          slidesToShow: 2,
+                          autoplay: true,
+                          infinite: true
+                      }
+                  },
+                  {
+                      breakpoint: 600,
+                      settings: {
+                          slidesToShow: 2,
+                          autoplay: true,
+                          infinite: true
+                      }
+                  },
+                  {
+                      breakpoint: 480,
+                      settings: {
+                          slidesToShow: 1,
+                          autoplay: true,
+                          infinite: true
+                      }
+                  }
+
+                ]
+          });
+
+        }, 200);
+      }
+    });
+});
+{% endjavascript %}
 
 {% schema %}
 {
