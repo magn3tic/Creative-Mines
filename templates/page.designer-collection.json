@@ -1,1 +1,124 @@
-{"sections":{"page_banner_JwKgjR":{"type":"page-banner","name":"Page Banner","settings":{"style":"style-one","image":"shopify:\/\/shop_images\/page-banner-designer-collection.png","heading":"Designer Collections","text":"","button_label":"","button_link":"","rbutton_label":"","rbutton_link":""}},"richtext_iEHVUB":{"type":"richtext","name":"Richtext","settings":{"title":"Curated Collections from Our Team of Design Professionals","description":"<p>Inspired by timeless architectural vernacular, our Designer Collections explore where history, material, color, and texture converge through thoughtful, design-led applications showcased in exceptional, design-forward projects.<\/p><p><\/p><h3><\/h3>"}},"media_text_DwHKK6":{"type":"media-text","blocks":{"media_text_bg_XDhtT6":{"type":"media_text_bg","settings":{"image":"shopify:\/\/shop_images\/Modern_Farmhouse_Collection.png","heading":"Modern Farmhouse Collection","text":"<p>Our Modern Farmhouse collection blends warmth, texture, and light to create a look that’s both classic and contemporary.\u2028<\/p><p><br\/>Explore this curated collection of timeless stone and brick materials, and color palettes – embodying the evolving charm of modern farmhouse design:  where rustic character meets refined elegance.<\/p>","button_text":"VIEW COLLECTION","button_link":"shopify:\/\/collections\/modern-farmhouse"}}},"block_order":["media_text_bg_XDhtT6"],"name":"Media\/Text","settings":{}},"media_text_DifyGr":{"type":"media-text","blocks":{"media_text_bg_3ACnk3":{"type":"media_text_bg","settings":{"image":"shopify:\/\/shop_images\/Mid_Century_Modern_Collection.png","heading":"Mid Century Modern Collection","text":"<p>Our Mid-Century Modern collection draws from the era’s enduring balance of warmth, structure, and restraint. Rooted in the work of iconic architects, it explores thoughtful applications of stone, brick, and architectural block—materials chosen for their honesty and texture. <\/p><p>Designed for spaces defined by clean lines, open planes, and an intimate connection to light and landscape, the collection reflects the bold geometries, organic surfaces, and measured rhythm of Desert Modernism.<\/p>","button_text":"VIEW COLLECTION","button_link":"shopify:\/\/collections\/mid-century-modern"}}},"block_order":["media_text_bg_3ACnk3"],"name":"Media\/Text","settings":{}},"media_text_bFH8d4":{"type":"media-text","blocks":{"media_text_bg_XgiTQE":{"type":"media_text_bg","settings":{"image":"shopify:\/\/shop_images\/Mountain_Collection.png","heading":"Mountain Collection","text":"<p>Our Modern Farmhouse collection blends warmth, texture, and light to create a look that’s both classic and contemporary.\u2028<\/p><p><br\/>Explore this curated collection of timeless stone and brick materials, and color palettes – embodying the evolving charm of modern farmhouse design:  where rustic character meets refined elegance.<\/p>","button_text":"VIEW COLLECTION","button_link":"shopify:\/\/collections\/modern-farmhouse"}}},"block_order":["media_text_bg_XgiTQE"],"disabled":true,"name":"Media\/Text","settings":{}},"media_text_frGn8j":{"type":"media-text","blocks":{"media_text_bg_dark2_dJrngk":{"type":"media_text_bg_dark2","settings":{"image":"shopify:\/\/shop_images\/resources-contact-bg.webp","heading":"Ready to Partner with\nCreative Mines?","text":"<p>Exclusive perks, trade pricing, project support, & free samples<\/p>","button_text":"Unlock Trade Benefits","button_link":"shopify:\/\/pages\/installers"}}},"block_order":["media_text_bg_dark2_dJrngk"],"name":"Media\/Text","settings":{}}},"order":["page_banner_JwKgjR","richtext_iEHVUB","media_text_DwHKK6","media_text_DifyGr","media_text_bFH8d4","media_text_frGn8j"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "page_banner_JwKgjR": {
+      "type": "page-banner",
+      "name": "Page Banner",
+      "settings": {
+        "style": "style-one",
+        "image": "shopify://shop_images/page-banner-designer-collection.png",
+        "heading": "Designer Collections",
+        "text": "",
+        "button_label": "",
+        "button_link": "",
+        "rbutton_label": "",
+        "rbutton_link": ""
+      }
+    },
+    "richtext_iEHVUB": {
+      "type": "richtext",
+      "name": "Richtext",
+      "settings": {
+        "title": "Curated Collections from Our Team of Design Professionals",
+        "description": "<p>Inspired by timeless architectural vernacular, our Designer Collections explore where history, material, color, and texture converge through thoughtful, design-led applications showcased in exceptional, design-forward projects.</p><p></p><h3></h3>"
+      }
+    },
+    "media_text_DwHKK6": {
+      "type": "media-text",
+      "blocks": {
+        "media_text_bg_XDhtT6": {
+          "type": "media_text_bg",
+          "settings": {
+            "image": "shopify://shop_images/Modern_Farmhouse_Collection.png",
+            "heading": "Modern Farmhouse Collection",
+            "text": "<p>Our Modern Farmhouse collection blends warmth, texture, and light to create a look that’s both classic and contemporary. </p><p><br/>Explore this curated collection of timeless stone and brick materials, and color palettes – embodying the evolving charm of modern farmhouse design:  where rustic character meets refined elegance.</p>",
+            "button_text": "VIEW COLLECTION",
+            "button_link": "shopify://collections/modern-farmhouse"
+          }
+        }
+      },
+      "block_order": [
+        "media_text_bg_XDhtT6"
+      ],
+      "name": "Media/Text",
+      "settings": {}
+    },
+    "media_text_DifyGr": {
+      "type": "media-text",
+      "blocks": {
+        "media_text_bg_3ACnk3": {
+          "type": "media_text_bg",
+          "settings": {
+            "image": "shopify://shop_images/Mid_Century_Modern_Collection.png",
+            "heading": "Mid Century Modern Collection",
+            "text": "<p>Our Mid-Century Modern collection draws from the era’s enduring balance of warmth, structure, and restraint. Rooted in the work of iconic architects, it explores thoughtful applications of stone, brick, and architectural block—materials chosen for their honesty and texture. </p><p>Designed for spaces defined by clean lines, open planes, and an intimate connection to light and landscape, the collection reflects the bold geometries, organic surfaces, and measured rhythm of Desert Modernism.</p>",
+            "button_text": "VIEW COLLECTION",
+            "button_link": "shopify://collections/mid-century-modern"
+          }
+        }
+      },
+      "block_order": [
+        "media_text_bg_3ACnk3"
+      ],
+      "name": "Media/Text",
+      "settings": {}
+    },
+    "media_text_bFH8d4": {
+      "type": "media-text",
+      "blocks": {
+        "media_text_bg_XgiTQE": {
+          "type": "media_text_bg",
+          "settings": {
+            "image": "shopify://shop_images/Mountain_Collection.png",
+            "heading": "Mountain Collection",
+            "text": "<p>Our Modern Farmhouse collection blends warmth, texture, and light to create a look that’s both classic and contemporary. </p><p><br/>Explore this curated collection of timeless stone and brick materials, and color palettes – embodying the evolving charm of modern farmhouse design:  where rustic character meets refined elegance.</p>",
+            "button_text": "VIEW COLLECTION",
+            "button_link": "shopify://collections/modern-farmhouse"
+          }
+        }
+      },
+      "block_order": [
+        "media_text_bg_XgiTQE"
+      ],
+      "disabled": true,
+      "name": "Media/Text",
+      "settings": {}
+    },
+    "media_text_frGn8j": {
+      "type": "media-text",
+      "blocks": {
+        "media_text_bg_dark2_dJrngk": {
+          "type": "media_text_bg_dark2",
+          "settings": {
+            "image": "shopify://shop_images/resources-contact-bg.webp",
+            "heading": "Ready to Partner with\nCreative Mines?",
+            "text": "<p>Exclusive perks, trade pricing, project support, & free samples</p>",
+            "button_text": "Unlock Trade Benefits",
+            "button_link": "shopify://pages/tradepro"
+          }
+        }
+      },
+      "block_order": [
+        "media_text_bg_dark2_dJrngk"
+      ],
+      "name": "Media/Text",
+      "settings": {}
+    }
+  },
+  "order": [
+    "page_banner_JwKgjR",
+    "richtext_iEHVUB",
+    "media_text_DwHKK6",
+    "media_text_DifyGr",
+    "media_text_bFH8d4",
+    "media_text_frGn8j"
+  ]
+}

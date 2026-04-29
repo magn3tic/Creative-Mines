@@ -1,1 +1,442 @@
-{"sections":{"hero_carousel_CmDneU":{"type":"hero-carousel","blocks":{"slide_Q4UPQq":{"type":"slide","settings":{"use_video":false,"image":"shopify:\/\/shop_images\/Homepage_Hero_1_-F.webp","video":"https:\/\/cdn.shopify.com\/videos\/c\/o\/v\/a426551a263c46c3bf007eb58084bfec.mp4","heading":"Stone Perfected.","heading_size":"224","subheading":"Welcome","bottom_text":"Featured Product Orchard Limestone","bottom_text_link":"shopify:\/\/products\/stone-orchard-limestone","button_text":"","button_link":"shopify:\/\/collections\/stone","opacity":0}},"slide_ydt73Y":{"type":"slide","settings":{"use_video":false,"image":"shopify:\/\/shop_images\/Homepage_Hero_2_-_F.webp","video":"","heading":"Quarry Trails","heading_size":"224","subheading":"Welcome","bottom_text":"Explore Commercial Projects","bottom_text_link":"shopify:\/\/pages\/commercial-projects","button_text":"","button_link":"","opacity":0}},"slide_QFhnmh":{"type":"slide","settings":{"use_video":false,"image":"shopify:\/\/shop_images\/Homepage_Hero_3-F.webp","video":"","heading":"Join the Studio","heading_size":"224","subheading":"Welcome","bottom_text":"Join StudioMine Trade Program","bottom_text_link":"shopify:\/\/pages\/installers","button_text":"","button_link":"","opacity":0}}},"block_order":["slide_Q4UPQq","slide_ydt73Y","slide_QFhnmh"],"settings":{}},"custom_collections_RXKyf8":{"type":"custom-collections","blocks":{"collection_item_MXqh3m":{"type":"collection_item","settings":{"image":"shopify:\/\/shop_images\/Wildflower_Orchard-Limestone_061725_e7fc58bd-df80-4cbe-b412-00193f862614.webp","title":"Stone","button_label":"Explore","link":"shopify:\/\/collections\/stone"}},"collection_item_gnHeP6":{"type":"collection_item","settings":{"image":"shopify:\/\/shop_images\/bricks-and-blocks_04f23dcb-55ca-463f-9d58-d1c354f16779.webp","title":"Brick & Block","button_label":"Explore","link":"shopify:\/\/collections\/brick-block"}},"collection_item_8WHy3Q":{"type":"collection_item","settings":{"image":"shopify:\/\/shop_images\/woodcuts_dec6a482-0b55-4f91-bd89-3ca7f4b0b936.webp","title":"Woodcuts","button_label":"Explore","link":"shopify:\/\/collections\/wood"}}},"block_order":["collection_item_MXqh3m","collection_item_gnHeP6","collection_item_8WHy3Q"],"name":"Custom Collections","settings":{"heading":""}},"text_block_icons_KXGjHm":{"type":"text-block-icons","blocks":{"feature_item_b6Jkmb":{"type":"feature_item","settings":{"icon":"shopify:\/\/shop_images\/inspired-by-nature.webp","label":"Aesthetics","title":"Inspired by Nature"}},"feature_item_HNzDJH":{"type":"feature_item","settings":{"icon":"shopify:\/\/shop_images\/quality.webp","label":"Quality","title":"Crafted by Hand"}},"feature_item_EmtKnH":{"type":"feature_item","settings":{"icon":"shopify:\/\/shop_images\/strength.webp","label":"Strength","title":"Built to Endure"}}},"block_order":["feature_item_b6Jkmb","feature_item_HNzDJH","feature_item_EmtKnH"],"name":"Text with Icons","settings":{"heading":"This is Material with Soul. Built for Visionaries.","description":"<p>Creative Mines reimagines masonry—shaped by nature, crafted by hand, and fortified with pozzolanic innovation for lasting strength and beauty.<\/p>"}},"image_with_credits_rL8VQE":{"type":"image-with-credits","blocks":{"tooltip_yQQPeE":{"type":"tooltip","disabled":true,"settings":{"tooltipcontent":"<ul><li>Product: <a href=\"\/products\/stone-orchard-limestone\" target=\"_blank\" title=\"Orchard Limestone\">Orchard Limestone<\/a><\/li><li>Color: Whitegold<\/li><\/ul>","pos_x":11,"pos_y":52}},"tooltip_rDVrah":{"type":"tooltip","settings":{"tooltipcontent":"<ul><li>Product: <a href=\"\/products\/stone-orchard-limestone\" target=\"_blank\" title=\"Orchard Limestone\">Orchard Limestone<\/a><\/li><li>Color: Whitegold<\/li><\/ul>","pos_x":75,"pos_y":40}}},"block_order":["tooltip_yQQPeE","tooltip_rDVrah"],"name":"Image with Credits","settings":{"image":"shopify:\/\/shop_images\/scroll-zoom-pin.webp","architect":"","builder":"","interior":"","engineer":"","design_studio":"Tays & Co.","project":"Shawnee Woods"}},"cta_tUUC3X":{"type":"cta","blocks":{"style_1_yt4MEa":{"type":"style_1","settings":{"background_image":"shopify:\/\/shop_images\/Brochure.webp","logo":"shopify:\/\/shop_images\/logo-dark.webp","heading":"View Product & Inspiration","button_text":"Download Design Brochure","button_link":"https:\/\/cdn.shopify.com\/s\/files\/1\/0634\/0139\/4275\/files\/CM_Product_Brochure_090525.pdf?v=1763056884","enable_dark":true}}},"block_order":["style_1_yt4MEa"],"name":"CTA","settings":{}},"collection_banner_JCkwKc":{"type":"collection-banner","name":"Collection Banner","settings":{"image":"shopify:\/\/shop_images\/farmhouse.webp","subheading":"Explore Collections","heading":"Modern Farmhouse","button_1_text":"Explore Collection","button_1_link":"shopify:\/\/collections\/modern-farmhouse","button_2_text":"View All","button_2_link":"shopify:\/\/pages\/designer-collection"}},"media_text_ekb6eh":{"type":"media-text","blocks":{"media_text_YMby6G":{"type":"media_text","settings":{"image":"shopify:\/\/shop_images\/Final_Trade_Horizontal_Image_1_1.jpg","image_position":"right","heading":"StudioMine — Trade Program","text":"<p>Trade Professionals, this one’s for you.<br\/> Join <strong>StudioMine<\/strong> to access free samples, a dedicated project rep, preferred trade benefits, and early access to new products.<br\/><\/p><p>Sign up today and elevate every masonry project with Creative Mines.<\/p>","show_icons":true,"icon_1":"shopify:\/\/shop_images\/free-samples.webp","label_1":"Free Samples","icon_2":"shopify:\/\/shop_images\/discounted-price.webp","label_2":"Dedicated Project Specialist","icon_3":"shopify:\/\/shop_images\/benefits.webp","label_3":"Preferred Benefits","button_text":"Join StudioMine","button_link":"shopify:\/\/pages\/installers"}}},"block_order":["media_text_YMby6G"],"name":"Media\/Text","settings":{}},"cta_zyMrDg":{"type":"cta","blocks":{"style_2_Bp3JF3":{"type":"style_2","settings":{"image_position":"left","background_image":"shopify:\/\/shop_images\/cta-banner-v2.webp","heading":"Order A Sample","description":"We make it easy. Order a sample online today and see firsthand the difference Creative Mines brings to high-design masonry projects.","button_text":"View Samples","button_link":"shopify:\/\/collections\/samples"}}},"block_order":["style_2_Bp3JF3"],"name":"CTA","settings":{}},"accordion_tabs_7t6pVU":{"type":"accordion-tabs","blocks":{"tab_qqXWNR":{"type":"tab","settings":{"icon":"shopify:\/\/shop_images\/order-sample-white-icon.webp","title":"Order Samples","description":"We make it easy. Order a sample online today and see firsthand the difference Creative Mines brings to high-design masonry projects.","link_text":"Order Samples Online","link_url":"shopify:\/\/collections\/samples"}},"tab_zA6tBN":{"type":"tab","settings":{"icon":"shopify:\/\/shop_images\/product-catalog.webp","title":"Product Catalog","description":"Download our new Source Book showcasing innovative profiles, authentic textures, and hand-crafted artisan color palettes.","link_text":"Download Source Book","link_url":"https:\/\/cdn.shopify.com\/s\/files\/1\/0634\/0139\/4275\/files\/CM_Product_Brochure_090525_720f541f-8a1b-4ed6-83a6-521f708b8871.pdf?v=1763168529"}},"tab_i7Xq77":{"type":"tab","settings":{"icon":"shopify:\/\/shop_images\/textures.webp","title":"Seamless Textures","description":"Access our seamless textures, 3D patterns, and design features through Architextures. Easily adjust grout colors and installation techniques. Download AutoCAD and Revit files to streamline your workflow.","link_text":"Explore Visualizer","link_url":"shopify:\/\/pages\/resources"}},"tab_kd6NWk":{"type":"tab","settings":{"icon":"shopify:\/\/shop_images\/technical.webp","title":"Technical Downloads","description":"Access all technical documents, 3 part specification, testing results, installation guidelines and warranty details.","link_text":"Explore Technical Documents","link_url":"shopify:\/\/pages\/resources"}},"tab_WfNaMd":{"type":"tab","settings":{"icon":"shopify:\/\/shop_images\/installation.webp","title":"Installation Details","description":"Creative Mines is an active member of the CMHA and recommends installers follow the MSV Installation Guide and Detailing Options for Compliance with ASTM C1780 standards and best practices.","link_text":"Download CMHA Installation Instructions","link_url":"https:\/\/cdn.shopify.com\/s\/files\/1\/0634\/0139\/4275\/files\/CMHA-MANUFACTURED-STONE-INSTALL-GUIDELINES-ENGLISH.pdf?v=1760552106"}},"tab_bcLk7c":{"type":"tab","settings":{"icon":"shopify:\/\/shop_images\/ceu.webp","title":"Online CEU Course","description":"Take our online CEU course - The Elegance of Stone in Biophilic Design\n\n\nCourse Description: \nThis course offers architects and design professionals a comprehensive understanding of how the elegance of stone can be harnessed within the framework of biophilic design to create environments that prioritize both sustainability and human well-being. We've partnered with Education Ascent to allow easy online access to this course and 1 learning unit.","link_text":"Take Online Course Now","link_url":"https:\/\/portal.educationascent.com\/login\/index.php"}}},"block_order":["tab_qqXWNR","tab_zA6tBN","tab_i7Xq77","tab_kd6NWk","tab_WfNaMd","tab_bcLk7c"],"name":"Tabbed Accordion","settings":{"sstyle":"left"}},"media_text_YcUbbc":{"type":"media-text","blocks":{"media_text_bg_4mk9kX":{"type":"media_text_bg","settings":{"image":"shopify:\/\/shop_images\/what-makes-us-better.webp","heading":"Details Matter","text":"<p>Settling just isn’t in our DNA. We chase the details that make a difference, from the character-rich stones we select to bricks with story built in. Even our packaging shows up looking like it means business. Everything we do is built to elevate your work, delivering masonry materials that install easily and look stunning. <\/p>","button_text":"","button_link":""}},"media_text_bg_JMHLHY":{"type":"media_text_bg","settings":{"image":"shopify:\/\/shop_images\/Creative_Mines_Team_Picture_1.webp","heading":"A Rock-Solid Crew","text":"<p>At Creative Mines, we are a group of passionate stone enthusiasts on a mission to elevate the art and science of masonry design.<\/p><p>Our masonry stone, brick, and architectural elements are crafted with unwavering attention to detail, blending artisan beauty with cutting-edge innovation.<\/p>","button_text":"","button_link":""}},"media_text_bg_6fjJj8":{"type":"media_text_bg","settings":{"image":"shopify:\/\/shop_images\/whats-sets-us-apart.webp","heading":"What Sets Us Apart","text":"<p>Creative Mines is the <em>only<\/em> masonry veneer company incorporating 100% natural Pozzolan Pumice into its concrete mix design, delivering unmatched performance and longevity. The same material famously used in architectural icons like the Roman Colosseum.  <\/p><p>Pozzolan creates a tighter concrete matrix that eliminates common issues found within inferior manufactured stone, such as color fading, efflorescence, and stone degradation. <\/p><p>Why settle for anything less than legendary.<\/p>","button_text":"","button_link":""}}},"block_order":["media_text_bg_4mk9kX","media_text_bg_JMHLHY","media_text_bg_6fjJj8"],"name":"Media\/Text","settings":{}},"text_block_icons_B9qieN":{"type":"text-block-icons","blocks":{"feature_item_Bza9t4":{"type":"feature_item","settings":{"icon":"shopify:\/\/shop_images\/inspired-by-nature.webp","label":"Innovative","title":"100% Pozzolan Pumice"}},"feature_item_xqjdrL":{"type":"feature_item","settings":{"icon":"shopify:\/\/shop_images\/real-life.webp","label":"Authentic","title":"Colors Inspired by Nature"}},"feature_item_HkLMfJ":{"type":"feature_item","settings":{"icon":"shopify:\/\/shop_images\/warrenty.webp","label":"Durable","title":"50 Years Limited Warranty"}}},"block_order":["feature_item_Bza9t4","feature_item_xqjdrL","feature_item_HkLMfJ"],"name":"Text with Icons","settings":{"heading":"Responsibility, it’s what makes us better. ","description":"<p>Masonry veneer should not only be suitable for deserving architectural styles, but respectful of the environment. We get that. That's why our products are designed with sustainability in mind and can contribute to earning LEED-certified points in several key categories. Our products are completely recyclable, reduce waste, reduce carbon footprint compared to clay brick and contribute to the reduction of natural stone excavation around the world.<\/p>"}}},"order":["hero_carousel_CmDneU","custom_collections_RXKyf8","text_block_icons_KXGjHm","image_with_credits_rL8VQE","cta_tUUC3X","collection_banner_JCkwKc","media_text_ekb6eh","cta_zyMrDg","accordion_tabs_7t6pVU","media_text_YcUbbc","text_block_icons_B9qieN"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero_carousel_CmDneU": {
+      "type": "hero-carousel",
+      "blocks": {
+        "slide_Q4UPQq": {
+          "type": "slide",
+          "settings": {
+            "use_video": false,
+            "image": "shopify://shop_images/Homepage_Hero_1_-F.webp",
+            "video": "https://cdn.shopify.com/videos/c/o/v/a426551a263c46c3bf007eb58084bfec.mp4",
+            "heading": "Stone Perfected.",
+            "heading_size": "224",
+            "subheading": "Welcome",
+            "bottom_text": "Featured Product Orchard Limestone",
+            "bottom_text_link": "shopify://products/stone-orchard-limestone",
+            "button_text": "",
+            "button_link": "shopify://collections/stone",
+            "opacity": 0
+          }
+        },
+        "slide_ydt73Y": {
+          "type": "slide",
+          "settings": {
+            "use_video": false,
+            "image": "shopify://shop_images/Homepage_Hero_2_-_F.webp",
+            "video": "",
+            "heading": "Quarry Trails",
+            "heading_size": "224",
+            "subheading": "Welcome",
+            "bottom_text": "Explore Commercial Projects",
+            "bottom_text_link": "shopify://pages/commercial-projects",
+            "button_text": "",
+            "button_link": "",
+            "opacity": 0
+          }
+        },
+        "slide_QFhnmh": {
+          "type": "slide",
+          "settings": {
+            "use_video": false,
+            "image": "shopify://shop_images/Homepage_Hero_3-F.webp",
+            "video": "",
+            "heading": "Join the Studio",
+            "heading_size": "224",
+            "subheading": "Welcome",
+            "bottom_text": "Join StudioMine Trade Program",
+            "bottom_text_link": "shopify://pages/tradepro",
+            "button_text": "",
+            "button_link": "",
+            "opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "slide_Q4UPQq",
+        "slide_ydt73Y",
+        "slide_QFhnmh"
+      ],
+      "settings": {}
+    },
+    "custom_collections_RXKyf8": {
+      "type": "custom-collections",
+      "blocks": {
+        "collection_item_MXqh3m": {
+          "type": "collection_item",
+          "settings": {
+            "image": "shopify://shop_images/Wildflower_Orchard-Limestone_061725_e7fc58bd-df80-4cbe-b412-00193f862614.webp",
+            "title": "Stone",
+            "button_label": "Explore",
+            "link": "shopify://collections/stone"
+          }
+        },
+        "collection_item_gnHeP6": {
+          "type": "collection_item",
+          "settings": {
+            "image": "shopify://shop_images/bricks-and-blocks_04f23dcb-55ca-463f-9d58-d1c354f16779.webp",
+            "title": "Brick & Block",
+            "button_label": "Explore",
+            "link": "shopify://collections/brick-block"
+          }
+        },
+        "collection_item_8WHy3Q": {
+          "type": "collection_item",
+          "settings": {
+            "image": "shopify://shop_images/woodcuts_dec6a482-0b55-4f91-bd89-3ca7f4b0b936.webp",
+            "title": "Woodcuts",
+            "button_label": "Explore",
+            "link": "shopify://collections/wood"
+          }
+        }
+      },
+      "block_order": [
+        "collection_item_MXqh3m",
+        "collection_item_gnHeP6",
+        "collection_item_8WHy3Q"
+      ],
+      "name": "Custom Collections",
+      "settings": {
+        "heading": ""
+      }
+    },
+    "text_block_icons_KXGjHm": {
+      "type": "text-block-icons",
+      "blocks": {
+        "feature_item_b6Jkmb": {
+          "type": "feature_item",
+          "settings": {
+            "icon": "shopify://shop_images/inspired-by-nature.webp",
+            "label": "Aesthetics",
+            "title": "Inspired by Nature"
+          }
+        },
+        "feature_item_HNzDJH": {
+          "type": "feature_item",
+          "settings": {
+            "icon": "shopify://shop_images/quality.webp",
+            "label": "Quality",
+            "title": "Crafted by Hand"
+          }
+        },
+        "feature_item_EmtKnH": {
+          "type": "feature_item",
+          "settings": {
+            "icon": "shopify://shop_images/strength.webp",
+            "label": "Strength",
+            "title": "Built to Endure"
+          }
+        }
+      },
+      "block_order": [
+        "feature_item_b6Jkmb",
+        "feature_item_HNzDJH",
+        "feature_item_EmtKnH"
+      ],
+      "name": "Text with Icons",
+      "settings": {
+        "heading": "This is Material with Soul. Built for Visionaries.",
+        "description": "<p>Creative Mines reimagines masonry—shaped by nature, crafted by hand, and fortified with pozzolanic innovation for lasting strength and beauty.</p>"
+      }
+    },
+    "image_with_credits_rL8VQE": {
+      "type": "image-with-credits",
+      "blocks": {
+        "tooltip_yQQPeE": {
+          "type": "tooltip",
+          "disabled": true,
+          "settings": {
+            "tooltipcontent": "<ul><li>Product: <a href=\"/products/stone-orchard-limestone\" target=\"_blank\" title=\"Orchard Limestone\">Orchard Limestone</a></li><li>Color: Whitegold</li></ul>",
+            "pos_x": 11,
+            "pos_y": 52
+          }
+        },
+        "tooltip_rDVrah": {
+          "type": "tooltip",
+          "settings": {
+            "tooltipcontent": "<ul><li>Product: <a href=\"/products/stone-orchard-limestone\" target=\"_blank\" title=\"Orchard Limestone\">Orchard Limestone</a></li><li>Color: Whitegold</li></ul>",
+            "pos_x": 75,
+            "pos_y": 40
+          }
+        }
+      },
+      "block_order": [
+        "tooltip_yQQPeE",
+        "tooltip_rDVrah"
+      ],
+      "name": "Image with Credits",
+      "settings": {
+        "image": "shopify://shop_images/scroll-zoom-pin.webp",
+        "architect": "",
+        "builder": "",
+        "interior": "",
+        "engineer": "",
+        "design_studio": "Tays & Co.",
+        "project": "Shawnee Woods"
+      }
+    },
+    "cta_tUUC3X": {
+      "type": "cta",
+      "blocks": {
+        "style_1_yt4MEa": {
+          "type": "style_1",
+          "settings": {
+            "background_image": "shopify://shop_images/Brochure.webp",
+            "logo": "shopify://shop_images/logo-dark.webp",
+            "heading": "View Product & Inspiration",
+            "button_text": "Download Design Brochure",
+            "button_link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/CM_Product_Brochure_090525.pdf?v=1763056884",
+            "enable_dark": true
+          }
+        }
+      },
+      "block_order": [
+        "style_1_yt4MEa"
+      ],
+      "name": "CTA",
+      "settings": {}
+    },
+    "collection_banner_JCkwKc": {
+      "type": "collection-banner",
+      "name": "Collection Banner",
+      "settings": {
+        "image": "shopify://shop_images/farmhouse.webp",
+        "subheading": "Explore Collections",
+        "heading": "Modern Farmhouse",
+        "button_1_text": "Explore Collection",
+        "button_1_link": "shopify://collections/modern-farmhouse",
+        "button_2_text": "View All",
+        "button_2_link": "shopify://pages/designer-collection"
+      }
+    },
+    "media_text_ekb6eh": {
+      "type": "media-text",
+      "blocks": {
+        "media_text_YMby6G": {
+          "type": "media_text",
+          "settings": {
+            "image": "shopify://shop_images/Final_Trade_Horizontal_Image_1_1.jpg",
+            "image_position": "right",
+            "heading": "StudioMine — Trade Program",
+            "text": "<p>Trade Professionals, this one’s for you.<br/> Join <strong>StudioMine</strong> to access free samples, a dedicated project rep, preferred trade benefits, and early access to new products.<br/></p><p>Sign up today and elevate every masonry project with Creative Mines.</p>",
+            "show_icons": true,
+            "icon_1": "shopify://shop_images/free-samples.webp",
+            "label_1": "Free Samples",
+            "icon_2": "shopify://shop_images/discounted-price.webp",
+            "label_2": "Dedicated Project Specialist",
+            "icon_3": "shopify://shop_images/benefits.webp",
+            "label_3": "Preferred Benefits",
+            "button_text": "Join StudioMine",
+            "button_link": "shopify://pages/tradepro"
+          }
+        }
+      },
+      "block_order": [
+        "media_text_YMby6G"
+      ],
+      "name": "Media/Text",
+      "settings": {}
+    },
+    "cta_zyMrDg": {
+      "type": "cta",
+      "blocks": {
+        "style_2_Bp3JF3": {
+          "type": "style_2",
+          "settings": {
+            "image_position": "left",
+            "background_image": "shopify://shop_images/cta-banner-v2.webp",
+            "heading": "Order A Sample",
+            "description": "We make it easy. Order a sample online today and see firsthand the difference Creative Mines brings to high-design masonry projects.",
+            "button_text": "View Samples",
+            "button_link": "shopify://collections/samples"
+          }
+        }
+      },
+      "block_order": [
+        "style_2_Bp3JF3"
+      ],
+      "name": "CTA",
+      "settings": {}
+    },
+    "accordion_tabs_7t6pVU": {
+      "type": "accordion-tabs",
+      "blocks": {
+        "tab_qqXWNR": {
+          "type": "tab",
+          "settings": {
+            "icon": "shopify://shop_images/order-sample-white-icon.webp",
+            "title": "Order Samples",
+            "description": "We make it easy. Order a sample online today and see firsthand the difference Creative Mines brings to high-design masonry projects.",
+            "link_text": "Order Samples Online",
+            "link_url": "shopify://collections/samples"
+          }
+        },
+        "tab_zA6tBN": {
+          "type": "tab",
+          "settings": {
+            "icon": "shopify://shop_images/product-catalog.webp",
+            "title": "Product Catalog",
+            "description": "Download our new Source Book showcasing innovative profiles, authentic textures, and hand-crafted artisan color palettes.",
+            "link_text": "Download Source Book",
+            "link_url": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/CM_Product_Brochure_090525_720f541f-8a1b-4ed6-83a6-521f708b8871.pdf?v=1763168529"
+          }
+        },
+        "tab_i7Xq77": {
+          "type": "tab",
+          "settings": {
+            "icon": "shopify://shop_images/textures.webp",
+            "title": "Seamless Textures",
+            "description": "Access our seamless textures, 3D patterns, and design features through Architextures. Easily adjust grout colors and installation techniques. Download AutoCAD and Revit files to streamline your workflow.",
+            "link_text": "Explore Visualizer",
+            "link_url": "shopify://pages/resources"
+          }
+        },
+        "tab_kd6NWk": {
+          "type": "tab",
+          "settings": {
+            "icon": "shopify://shop_images/technical.webp",
+            "title": "Technical Downloads",
+            "description": "Access all technical documents, 3 part specification, testing results, installation guidelines and warranty details.",
+            "link_text": "Explore Technical Documents",
+            "link_url": "shopify://pages/resources"
+          }
+        },
+        "tab_WfNaMd": {
+          "type": "tab",
+          "settings": {
+            "icon": "shopify://shop_images/installation.webp",
+            "title": "Installation Details",
+            "description": "Creative Mines is an active member of the CMHA and recommends installers follow the MSV Installation Guide and Detailing Options for Compliance with ASTM C1780 standards and best practices.",
+            "link_text": "Download CMHA Installation Instructions",
+            "link_url": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/CMHA-MANUFACTURED-STONE-INSTALL-GUIDELINES-ENGLISH.pdf?v=1760552106"
+          }
+        },
+        "tab_bcLk7c": {
+          "type": "tab",
+          "settings": {
+            "icon": "shopify://shop_images/ceu.webp",
+            "title": "Online CEU Course",
+            "description": "Take our online CEU course - The Elegance of Stone in Biophilic Design\n\n\nCourse Description: \nThis course offers architects and design professionals a comprehensive understanding of how the elegance of stone can be harnessed within the framework of biophilic design to create environments that prioritize both sustainability and human well-being. We've partnered with Education Ascent to allow easy online access to this course and 1 learning unit.",
+            "link_text": "Take Online Course Now",
+            "link_url": "https://portal.educationascent.com/login/index.php"
+          }
+        }
+      },
+      "block_order": [
+        "tab_qqXWNR",
+        "tab_zA6tBN",
+        "tab_i7Xq77",
+        "tab_kd6NWk",
+        "tab_WfNaMd",
+        "tab_bcLk7c"
+      ],
+      "name": "Tabbed Accordion",
+      "settings": {
+        "sstyle": "left"
+      }
+    },
+    "media_text_YcUbbc": {
+      "type": "media-text",
+      "blocks": {
+        "media_text_bg_4mk9kX": {
+          "type": "media_text_bg",
+          "settings": {
+            "image": "shopify://shop_images/what-makes-us-better.webp",
+            "heading": "Details Matter",
+            "text": "<p>Settling just isn’t in our DNA. We chase the details that make a difference, from the character-rich stones we select to bricks with story built in. Even our packaging shows up looking like it means business. Everything we do is built to elevate your work, delivering masonry materials that install easily and look stunning. </p>",
+            "button_text": "",
+            "button_link": ""
+          }
+        },
+        "media_text_bg_JMHLHY": {
+          "type": "media_text_bg",
+          "settings": {
+            "image": "shopify://shop_images/Creative_Mines_Team_Picture_1.webp",
+            "heading": "A Rock-Solid Crew",
+            "text": "<p>At Creative Mines, we are a group of passionate stone enthusiasts on a mission to elevate the art and science of masonry design.</p><p>Our masonry stone, brick, and architectural elements are crafted with unwavering attention to detail, blending artisan beauty with cutting-edge innovation.</p>",
+            "button_text": "",
+            "button_link": ""
+          }
+        },
+        "media_text_bg_6fjJj8": {
+          "type": "media_text_bg",
+          "settings": {
+            "image": "shopify://shop_images/whats-sets-us-apart.webp",
+            "heading": "What Sets Us Apart",
+            "text": "<p>Creative Mines is the <em>only</em> masonry veneer company incorporating 100% natural Pozzolan Pumice into its concrete mix design, delivering unmatched performance and longevity. The same material famously used in architectural icons like the Roman Colosseum.  </p><p>Pozzolan creates a tighter concrete matrix that eliminates common issues found within inferior manufactured stone, such as color fading, efflorescence, and stone degradation. </p><p>Why settle for anything less than legendary.</p>",
+            "button_text": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "media_text_bg_4mk9kX",
+        "media_text_bg_JMHLHY",
+        "media_text_bg_6fjJj8"
+      ],
+      "name": "Media/Text",
+      "settings": {}
+    },
+    "text_block_icons_B9qieN": {
+      "type": "text-block-icons",
+      "blocks": {
+        "feature_item_Bza9t4": {
+          "type": "feature_item",
+          "settings": {
+            "icon": "shopify://shop_images/inspired-by-nature.webp",
+            "label": "Innovative",
+            "title": "100% Pozzolan Pumice"
+          }
+        },
+        "feature_item_xqjdrL": {
+          "type": "feature_item",
+          "settings": {
+            "icon": "shopify://shop_images/real-life.webp",
+            "label": "Authentic",
+            "title": "Colors Inspired by Nature"
+          }
+        },
+        "feature_item_HkLMfJ": {
+          "type": "feature_item",
+          "settings": {
+            "icon": "shopify://shop_images/warrenty.webp",
+            "label": "Durable",
+            "title": "50 Years Limited Warranty"
+          }
+        }
+      },
+      "block_order": [
+        "feature_item_Bza9t4",
+        "feature_item_xqjdrL",
+        "feature_item_HkLMfJ"
+      ],
+      "name": "Text with Icons",
+      "settings": {
+        "heading": "Responsibility, it’s what makes us better. ",
+        "description": "<p>Masonry veneer should not only be suitable for deserving architectural styles, but respectful of the environment. We get that. That's why our products are designed with sustainability in mind and can contribute to earning LEED-certified points in several key categories. Our products are completely recyclable, reduce waste, reduce carbon footprint compared to clay brick and contribute to the reduction of natural stone excavation around the world.</p>"
+      }
+    }
+  },
+  "order": [
+    "hero_carousel_CmDneU",
+    "custom_collections_RXKyf8",
+    "text_block_icons_KXGjHm",
+    "image_with_credits_rL8VQE",
+    "cta_tUUC3X",
+    "collection_banner_JCkwKc",
+    "media_text_ekb6eh",
+    "cta_zyMrDg",
+    "accordion_tabs_7t6pVU",
+    "media_text_YcUbbc",
+    "text_block_icons_B9qieN"
+  ]
+}

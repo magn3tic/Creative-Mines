@@ -1,1 +1,264 @@
-{"sections":{"page_banner_F8Fmab":{"type":"page-banner","name":"Page Banner","settings":{"style":"style-two","image":"shopify:\/\/shop_images\/CM_RanchoMirage_2025-4_Commercial_3.jpg","heading":"Commercial Projects","text":"<p>Bold masonry for standout commercial designs. We work directly with you to bring your visions to life.<\/p>","button_label":"","button_link":"#","rbutton_label":"","rbutton_link":"https:\/\/creativemines-trade.myshopify.com\/account","disable_opacity":true}},"media_text_KjPid4":{"type":"media-text","blocks":{"media_text_bg_dark_zwe8UL":{"type":"media_text_bg_dark","settings":{"image":"shopify:\/\/shop_images\/story-video.webp","heading":"Commercial Project\nCapabilities","text":"<ul><li>Dedicated Commercial Project Rep <\/li><li>Custom Mix and Color Capabilities <\/li><li>On-Site Job Mockups<\/li><li>Special Pricing<\/li><li>Quick Ship Free Samples <\/li><\/ul>","button_text":"Contact Us","button_link":"shopify:\/\/pages\/contact","style":"style1"}}},"block_order":["media_text_bg_dark_zwe8UL"],"name":"Media\/Text","settings":{}},"icon_teaser_JdgYED":{"type":"icon-teaser","blocks":{"icon_teaser_JUPfFK":{"type":"icon_teaser","settings":{"image":"shopify:\/\/shop_images\/usa-map.webp","title":"Made in the U.S.A ","text":"Artisan-crafted in our Utah and Idaho plants with meticulous attention to detail."}},"icon_teaser_DQz3qG":{"type":"icon_teaser","settings":{"image":"shopify:\/\/shop_images\/hand-writing.webp","title":"Custom Capabilities ","text":"Collaborate to design bespoke colors, blends, and forms to suit your project’s vision."}},"icon_teaser_KF8PDP":{"type":"icon_teaser","settings":{"image":"shopify:\/\/shop_images\/superior-batch.webp","title":"Superior Product Performance ","text":"Pozzolan-infused masonry veneer, purposefully engineered for enduring beauty and material integrity."}},"icon_teaser_YTBBrK":{"type":"icon_teaser","settings":{"image":"shopify:\/\/shop_images\/specification-support.webp","title":"Specification & Jobsite Support ","text":"Comprehensive specs, submittals, and jobsite mockups for seamless project execution."}}},"block_order":["icon_teaser_JUPfFK","icon_teaser_DQz3qG","icon_teaser_KF8PDP","icon_teaser_YTBBrK"],"name":"Icon Teaser","settings":{"heading":"Why Creative Mines?"}},"commercial_map_LeeJTG":{"type":"commercial-map","blocks":{"representative_Fb3dBc":{"type":"representative","settings":{"position_class":"location-post1","liquid":"<script charset=\"utf-8\" type=\"text\/javascript\" src=\"\/\/js.hsforms.net\/forms\/embed\/v2.js\"><\/script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"c8da186d-cf21-4227-85a2-74980060373e\",\n    region: \"na1\",\n    css: ''\n  });\n<\/script>"}},"representative_BgH3Ge":{"type":"representative","settings":{"position_class":"location-post2","liquid":"<script charset=\"utf-8\" type=\"text\/javascript\" src=\"\/\/js.hsforms.net\/forms\/embed\/v2.js\"><\/script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"702c8961-e3e8-4749-8b3a-bc673cac78e5\",\n    region: \"na1\",\n    css: ''\n  });\n<\/script>"}},"representative_kgrJe7":{"type":"representative","settings":{"position_class":"location-post3","liquid":"<script charset=\"utf-8\" type=\"text\/javascript\" src=\"\/\/js.hsforms.net\/forms\/embed\/v2.js\"><\/script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"2b107054-1008-4697-8d57-98bcb3bad586\",\n    region: \"na1\",\n    css: ''\n  });\n<\/script>"}},"representative_jYFRph":{"type":"representative","settings":{"position_class":"location-post4","liquid":"<script charset=\"utf-8\" type=\"text\/javascript\" src=\"\/\/js.hsforms.net\/forms\/embed\/v2.js\"><\/script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"a75d93fb-b72e-4be4-ab1d-3dc7894268ad\",\n    region: \"na1\",\n    css: ''\n  });\n<\/script>"}},"representative_PYKrMA":{"type":"representative","settings":{"position_class":"location-post5","liquid":"<script charset=\"utf-8\" type=\"text\/javascript\" src=\"\/\/js.hsforms.net\/forms\/embed\/v2.js\"><\/script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"54e62b20-3c04-40ce-b6c8-37e2d0b3cd4b\",\n    region: \"na1\",\n    css: ''\n  });\n<\/script>"}},"representative_KCQRwU":{"type":"representative","settings":{"position_class":"location-post6","liquid":"<script charset=\"utf-8\" type=\"text\/javascript\" src=\"\/\/js.hsforms.net\/forms\/embed\/v2.js\"><\/script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"54e62b20-3c04-40ce-b6c8-37e2d0b3cd4b\",\n    region: \"na1\",\n    css: ''\n  });\n<\/script>"}},"representative_Y9AcK7":{"type":"representative","settings":{"position_class":"location-post7","liquid":"<script charset=\"utf-8\" type=\"text\/javascript\" src=\"\/\/js.hsforms.net\/forms\/embed\/v2.js\"><\/script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"cb940ea2-d571-4b0f-a76f-25a6895e9cf4\",\n    region: \"na1\",\n    css: ''\n  });\n<\/script>"}}},"block_order":["representative_Fb3dBc","representative_BgH3Ge","representative_kgrJe7","representative_jYFRph","representative_PYKrMA","representative_KCQRwU","representative_Y9AcK7"],"name":"Commercial Map","settings":{"heading":"Connect with a Territory Commercial Representative","subheading":"Find each representative by territory","map_image":"shopify:\/\/shop_images\/small-map.webp"}},"featured_projects_MJMget":{"type":"featured-projects","blocks":{"slide_9LTFg7":{"type":"slide","settings":{"image":"shopify:\/\/shop_images\/Parr_House_Distance_Shot_Web.jpg","description":"A defining landmark within the Cotino community, The Parr House expresses Mid-Century Modern design through its honest use of glass, steel, and stone. With floor-to-ceiling windows overlooking Cotino Bay, the space blurs the line between interior and landscape, a true reflection of modern desert living.\nFor this architectural statement, Creative Mines developed a custom profile inspired by the natural stone formations of Frank Lloyd Wright’s Fallingwater, infusing the structure with texture, warmth, and a handcrafted authenticity that complements its sleek geometry.","designer":"","location":"Palm Desert, CA","products":[],"architect":"Woodley Architectural Group","builder":"","interior_design":"","structural_engineer":"","design_studio":"","project_name":"Parr House | Cotino"}},"slide_WUFmTe":{"type":"slide","settings":{"image":"shopify:\/\/shop_images\/GarrisonApts-26_1.webp","description":"Garrison is a luxury apartment community designed by TCA Architects that embodies modern living in one of Orange County’s most vibrant neighborhoods. With curated amenities and a location near Angel Stadium and the Honda Center, Garrison balances stay-at-home comfort with access to everything the city offers.\n\nCreative Mines partnered with the development and design teams to help define the project’s architectural identity. The multi-story elevations are clad in Raincloud Warehouse Brick, a material selected for its cool tonal range, modern industrial texture, and durability in urban environments. The result...a bold, contemporary façade that reflects both high design and everyday livability.","designer":"","location":"Orange County, CA","products":["brick-warehouse"],"architect":"TCA Architects","builder":"","interior_design":"","structural_engineer":"","design_studio":"","project_name":"Garrison Luxury Apartments"}},"slide_97zWLA":{"type":"slide","settings":{"image":"shopify:\/\/shop_images\/Quarry_Trails_Alpaca_Orchard_Limestone_Multi_Family_Elevation_2_1.webp","description":"Quarry Trails reimagines mixed-use living through the lens of modern design and natural connection. Set against 220 acres of untamed parkland, this vibrant community blends residential and commercial architecture with outdoor recreation — from kayaking and rock climbing to mountain biking and beyond. Creative Mines stone brings a cohesive warmth and authenticity to every structure, reinforcing the enduring character of place.","designer":"","location":"Columbus, OH","products":["stone-peak-ledge","stone-urban-rectangular","stone-split-modular-large","stone-orchard-limestone"],"architect":"","builder":"Thrive Communities","interior_design":"","structural_engineer":"","design_studio":"","project_name":"Quarry Trails"}}},"block_order":["slide_9LTFg7","slide_WUFmTe","slide_97zWLA"],"name":"Featured Projects","settings":{"heading":"Featured Projects","cta_text":"Interested in Featuring Your Project?","cta_link":"shopify:\/\/pages\/projects"}},"media_text_9LLNma":{"type":"media-text","blocks":{"media_text_bg_dark2_CExAkE":{"type":"media_text_bg_dark2","settings":{"image":"shopify:\/\/shop_images\/resources-contact-bg.webp","heading":"Ready to Partner with\nCreative Mines?","text":"<p>Exclusive perks, trade pricing, project support, & free samples.<\/p>","button_text":"Get Started","button_link":"shopify:\/\/pages\/installers"}}},"block_order":["media_text_bg_dark2_CExAkE"],"name":"Media\/Text","settings":{}}},"order":["page_banner_F8Fmab","media_text_KjPid4","icon_teaser_JdgYED","commercial_map_LeeJTG","featured_projects_MJMget","media_text_9LLNma"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "page_banner_F8Fmab": {
+      "type": "page-banner",
+      "name": "Page Banner",
+      "settings": {
+        "style": "style-two",
+        "image": "shopify://shop_images/CM_RanchoMirage_2025-4_Commercial_3.jpg",
+        "heading": "Commercial Projects",
+        "text": "<p>Bold masonry for standout commercial designs. We work directly with you to bring your visions to life.</p>",
+        "button_label": "",
+        "button_link": "#",
+        "rbutton_label": "",
+        "rbutton_link": "https://creativemines-trade.myshopify.com/account",
+        "disable_opacity": true
+      }
+    },
+    "media_text_KjPid4": {
+      "type": "media-text",
+      "blocks": {
+        "media_text_bg_dark_zwe8UL": {
+          "type": "media_text_bg_dark",
+          "settings": {
+            "image": "shopify://shop_images/story-video.webp",
+            "heading": "Commercial Project\nCapabilities",
+            "text": "<ul><li>Dedicated Commercial Project Rep </li><li>Custom Mix and Color Capabilities </li><li>On-Site Job Mockups</li><li>Special Pricing</li><li>Quick Ship Free Samples </li></ul>",
+            "button_text": "Contact Us",
+            "button_link": "shopify://pages/contact",
+            "style": "style1"
+          }
+        }
+      },
+      "block_order": [
+        "media_text_bg_dark_zwe8UL"
+      ],
+      "name": "Media/Text",
+      "settings": {}
+    },
+    "icon_teaser_JdgYED": {
+      "type": "icon-teaser",
+      "blocks": {
+        "icon_teaser_JUPfFK": {
+          "type": "icon_teaser",
+          "settings": {
+            "image": "shopify://shop_images/usa-map.webp",
+            "title": "Made in the U.S.A ",
+            "text": "Artisan-crafted in our Utah and Idaho plants with meticulous attention to detail."
+          }
+        },
+        "icon_teaser_DQz3qG": {
+          "type": "icon_teaser",
+          "settings": {
+            "image": "shopify://shop_images/hand-writing.webp",
+            "title": "Custom Capabilities ",
+            "text": "Collaborate to design bespoke colors, blends, and forms to suit your project’s vision."
+          }
+        },
+        "icon_teaser_KF8PDP": {
+          "type": "icon_teaser",
+          "settings": {
+            "image": "shopify://shop_images/superior-batch.webp",
+            "title": "Superior Product Performance ",
+            "text": "Pozzolan-infused masonry veneer, purposefully engineered for enduring beauty and material integrity."
+          }
+        },
+        "icon_teaser_YTBBrK": {
+          "type": "icon_teaser",
+          "settings": {
+            "image": "shopify://shop_images/specification-support.webp",
+            "title": "Specification & Jobsite Support ",
+            "text": "Comprehensive specs, submittals, and jobsite mockups for seamless project execution."
+          }
+        }
+      },
+      "block_order": [
+        "icon_teaser_JUPfFK",
+        "icon_teaser_DQz3qG",
+        "icon_teaser_KF8PDP",
+        "icon_teaser_YTBBrK"
+      ],
+      "name": "Icon Teaser",
+      "settings": {
+        "heading": "Why Creative Mines?"
+      }
+    },
+    "commercial_map_LeeJTG": {
+      "type": "commercial-map",
+      "blocks": {
+        "representative_Fb3dBc": {
+          "type": "representative",
+          "settings": {
+            "position_class": "location-post1",
+            "liquid": "<script charset=\"utf-8\" type=\"text/javascript\" src=\"//js.hsforms.net/forms/embed/v2.js\"></script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"c8da186d-cf21-4227-85a2-74980060373e\",\n    region: \"na1\",\n    css: ''\n  });\n</script>"
+          }
+        },
+        "representative_BgH3Ge": {
+          "type": "representative",
+          "settings": {
+            "position_class": "location-post2",
+            "liquid": "<script charset=\"utf-8\" type=\"text/javascript\" src=\"//js.hsforms.net/forms/embed/v2.js\"></script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"702c8961-e3e8-4749-8b3a-bc673cac78e5\",\n    region: \"na1\",\n    css: ''\n  });\n</script>"
+          }
+        },
+        "representative_kgrJe7": {
+          "type": "representative",
+          "settings": {
+            "position_class": "location-post3",
+            "liquid": "<script charset=\"utf-8\" type=\"text/javascript\" src=\"//js.hsforms.net/forms/embed/v2.js\"></script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"2b107054-1008-4697-8d57-98bcb3bad586\",\n    region: \"na1\",\n    css: ''\n  });\n</script>"
+          }
+        },
+        "representative_jYFRph": {
+          "type": "representative",
+          "settings": {
+            "position_class": "location-post4",
+            "liquid": "<script charset=\"utf-8\" type=\"text/javascript\" src=\"//js.hsforms.net/forms/embed/v2.js\"></script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"a75d93fb-b72e-4be4-ab1d-3dc7894268ad\",\n    region: \"na1\",\n    css: ''\n  });\n</script>"
+          }
+        },
+        "representative_PYKrMA": {
+          "type": "representative",
+          "settings": {
+            "position_class": "location-post5",
+            "liquid": "<script charset=\"utf-8\" type=\"text/javascript\" src=\"//js.hsforms.net/forms/embed/v2.js\"></script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"54e62b20-3c04-40ce-b6c8-37e2d0b3cd4b\",\n    region: \"na1\",\n    css: ''\n  });\n</script>"
+          }
+        },
+        "representative_KCQRwU": {
+          "type": "representative",
+          "settings": {
+            "position_class": "location-post6",
+            "liquid": "<script charset=\"utf-8\" type=\"text/javascript\" src=\"//js.hsforms.net/forms/embed/v2.js\"></script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"54e62b20-3c04-40ce-b6c8-37e2d0b3cd4b\",\n    region: \"na1\",\n    css: ''\n  });\n</script>"
+          }
+        },
+        "representative_Y9AcK7": {
+          "type": "representative",
+          "settings": {
+            "position_class": "location-post7",
+            "liquid": "<script charset=\"utf-8\" type=\"text/javascript\" src=\"//js.hsforms.net/forms/embed/v2.js\"></script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"cb940ea2-d571-4b0f-a76f-25a6895e9cf4\",\n    region: \"na1\",\n    css: ''\n  });\n</script>"
+          }
+        }
+      },
+      "block_order": [
+        "representative_Fb3dBc",
+        "representative_BgH3Ge",
+        "representative_kgrJe7",
+        "representative_jYFRph",
+        "representative_PYKrMA",
+        "representative_KCQRwU",
+        "representative_Y9AcK7"
+      ],
+      "name": "Commercial Map",
+      "settings": {
+        "heading": "Connect with a Territory Commercial Representative",
+        "subheading": "Find each representative by territory",
+        "map_image": "shopify://shop_images/small-map.webp"
+      }
+    },
+    "featured_projects_MJMget": {
+      "type": "featured-projects",
+      "blocks": {
+        "slide_9LTFg7": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Parr_House_Distance_Shot_Web.jpg",
+            "description": "A defining landmark within the Cotino community, The Parr House expresses Mid-Century Modern design through its honest use of glass, steel, and stone. With floor-to-ceiling windows overlooking Cotino Bay, the space blurs the line between interior and landscape, a true reflection of modern desert living.\nFor this architectural statement, Creative Mines developed a custom profile inspired by the natural stone formations of Frank Lloyd Wright’s Fallingwater, infusing the structure with texture, warmth, and a handcrafted authenticity that complements its sleek geometry.",
+            "designer": "",
+            "location": "Palm Desert, CA",
+            "products": [],
+            "architect": "Woodley Architectural Group",
+            "builder": "",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": "Parr House | Cotino"
+          }
+        },
+        "slide_WUFmTe": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/GarrisonApts-26_1.webp",
+            "description": "Garrison is a luxury apartment community designed by TCA Architects that embodies modern living in one of Orange County’s most vibrant neighborhoods. With curated amenities and a location near Angel Stadium and the Honda Center, Garrison balances stay-at-home comfort with access to everything the city offers.\n\nCreative Mines partnered with the development and design teams to help define the project’s architectural identity. The multi-story elevations are clad in Raincloud Warehouse Brick, a material selected for its cool tonal range, modern industrial texture, and durability in urban environments. The result...a bold, contemporary façade that reflects both high design and everyday livability.",
+            "designer": "",
+            "location": "Orange County, CA",
+            "products": [
+              "brick-warehouse"
+            ],
+            "architect": "TCA Architects",
+            "builder": "",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": "Garrison Luxury Apartments"
+          }
+        },
+        "slide_97zWLA": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Quarry_Trails_Alpaca_Orchard_Limestone_Multi_Family_Elevation_2_1.webp",
+            "description": "Quarry Trails reimagines mixed-use living through the lens of modern design and natural connection. Set against 220 acres of untamed parkland, this vibrant community blends residential and commercial architecture with outdoor recreation — from kayaking and rock climbing to mountain biking and beyond. Creative Mines stone brings a cohesive warmth and authenticity to every structure, reinforcing the enduring character of place.",
+            "designer": "",
+            "location": "Columbus, OH",
+            "products": [
+              "stone-peak-ledge",
+              "stone-urban-rectangular",
+              "stone-split-modular-large",
+              "stone-orchard-limestone"
+            ],
+            "architect": "",
+            "builder": "Thrive Communities",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": "Quarry Trails"
+          }
+        }
+      },
+      "block_order": [
+        "slide_9LTFg7",
+        "slide_WUFmTe",
+        "slide_97zWLA"
+      ],
+      "name": "Featured Projects",
+      "settings": {
+        "heading": "Featured Projects",
+        "cta_text": "Interested in Featuring Your Project?",
+        "cta_link": "shopify://pages/projects"
+      }
+    },
+    "media_text_9LLNma": {
+      "type": "media-text",
+      "blocks": {
+        "media_text_bg_dark2_CExAkE": {
+          "type": "media_text_bg_dark2",
+          "settings": {
+            "image": "shopify://shop_images/resources-contact-bg.webp",
+            "heading": "Ready to Partner with\nCreative Mines?",
+            "text": "<p>Exclusive perks, trade pricing, project support, & free samples.</p>",
+            "button_text": "Get Started",
+            "button_link": "shopify://pages/tradepro"
+          }
+        }
+      },
+      "block_order": [
+        "media_text_bg_dark2_CExAkE"
+      ],
+      "name": "Media/Text",
+      "settings": {}
+    }
+  },
+  "order": [
+    "page_banner_F8Fmab",
+    "media_text_KjPid4",
+    "icon_teaser_JdgYED",
+    "commercial_map_LeeJTG",
+    "featured_projects_MJMget",
+    "media_text_9LLNma"
+  ]
+}
