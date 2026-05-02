@@ -1,0 +1,14 @@
+{
+  "name": "creativemines-theme",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "themes": "shopify theme list --store=$SHOPIFY_STORE --password=$SHOPIFY_PASSWORD",
+    "pull": "shopify theme pull --store=$SHOPIFY_STORE --password=$SHOPIFY_PASSWORD --theme=$LIVE_THEME_ID",
+    "pull:gs-v1": "shopify theme pull --store=$SHOPIFY_STORE --password=$SHOPIFY_PASSWORD --theme=$GS_V1_THEME_ID",
+    "pull:apr2026": "shopify theme pull --store=$SHOPIFY_STORE --password=$SHOPIFY_PASSWORD --theme=$APR2026_THEME_ID",
+    "push:live": "bash scripts/deploy-live.sh",
+    "push:gs-v1": "bash scripts/deploy-gs-v1.sh",
+    "push:apr2026": "bash scripts/deploy-apr2026.sh"
+  }
+}
