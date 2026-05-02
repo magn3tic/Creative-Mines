@@ -9,6 +9,10 @@
  */
 {
   "current": {
+    "geo_location": "Tamil Nadu, Texas, Florida",
+    "geo_location_b2b": "Tamil Nadu, Texas, Florida",
+    "geo_location_red": "California, Arizona, Nevada, Idaho, Utah, Montana, Ohio, Iowa",
+    "checkout_terms_description": "<p>Please review the following before proceeding:</p><ul><li>All sales are final. No returns or exchanges.</li><li>Shipping times may vary based on location.</li><li>By proceeding, you agree to our terms. </li></ul>",
     "color_primary": "#0d6efd",
     "color_secondary": "#455a64",
     "color_body_bg": "#ffffff",

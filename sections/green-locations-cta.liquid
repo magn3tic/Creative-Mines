@@ -1,0 +1,182 @@
+<div data-geo-show>
+<div class="locations-cta">
+    <div class="container-fluid px-0">
+        <div class="row">
+            {% for block in section.blocks %}
+                {% if block.type == 'hero' %}
+                <div class="col-sm-6">
+                <div class="lc-card">
+                    <div
+                    class="lc-card-bg"
+                    style="background-image: url('{{ block.settings.bg_image | image_url: width: 1600 }}');"
+                    >
+                    <div class="lc-card-overlay">
+                        <div class="lc-card-content">
+                        {% if block.settings.eyebrow != blank %}
+                            <small>{{ block.settings.eyebrow }}</small>
+                        {% endif %}
+
+                        {% if block.settings.heading != blank %}
+                            <h2>{{ block.settings.heading }}</h2>
+                        {% endif %}
+
+                        {% if block.settings.subheading != blank %}
+                            <p>{{ block.settings.subheading }}</p>
+                        {% endif %}
+
+                        {% if block.settings.bullets != blank %}
+                            <ul>
+                            {% assign bullet_items = block.settings.bullets | newline_to_br | split: '<br />' %}
+                            {% for item in bullet_items %}
+                                {% assign clean_item = item | strip %}
+                                {% if clean_item != blank %}
+                                <li>{{ clean_item }}</li>
+                                {% endif %}
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        {% if block.settings.button_text != blank %}
+                            <a href="{{ block.settings.button_link }}" class="cta-btn btn_default">
+                            {{ block.settings.button_text }}
+                            </a>
+                        {% endif %}
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</div>
+
+<div data-geo-show-b2b>
+<div class="locations-cta">
+    <div class="container-fluid px-0">
+        <div class="row">
+            {% for block in section.blocks %}
+                {% if block.type == 'hero' %}
+                <div class="col-sm-6">
+                <div class="lc-card">
+                    <div
+                    class="lc-card-bg"
+                    style="background-image: url('{{ block.settings.bg_image | image_url: width: 1600 }}');"
+                    >
+                    <div class="lc-card-overlay">
+                        <div class="lc-card-content">
+                        {% if block.settings.eyebrow != blank %}
+                            <small>{{ block.settings.eyebrow }}</small>
+                        {% endif %}
+
+                        {% if block.settings.heading != blank %}
+                            <h2>{{ block.settings.heading }}</h2>
+                        {% endif %}
+
+                        {% if block.settings.subheading != blank %}
+                            <p>{{ block.settings.subheading }}</p>
+                        {% endif %}
+
+                        {% if block.settings.bullets != blank %}
+                            <ul>
+                            {% assign bullet_items = block.settings.bullets | newline_to_br | split: '<br />' %}
+                            {% for item in bullet_items %}
+                                {% assign clean_item = item | strip %}
+                                {% if clean_item != blank %}
+                                <li>{{ clean_item }}</li>
+                                {% endif %}
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        {% if block.settings.button_text != blank %}
+                            <a href="{{ block.settings.button_link }}" class="cta-btn btn_default">
+                            {{ block.settings.button_text }}
+                            </a>
+                        {% endif %}
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</div>
+
+{% schema %}
+{
+  "name": "Locations - CTA",
+  "tag": "section",
+  "class": "section-gl-cta",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "hero",
+      "name": "CTA",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "image_picker",
+          "id": "bg_image",
+          "label": "Background Image"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Tagline",
+          "default": "Homeowners"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Building Your Dream Home?"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Browse, sample, and buy direct at full MSRP"
+        },
+        {
+          "type": "textarea",
+          "id": "bullets",
+          "label": "Bullet Points (one per line)",
+          "default": "Transparent Pricing\nFree Samples\nDirect Shipping"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Explore Products"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Locations - CTA",
+      "blocks": [
+        {
+          "type": "hero",
+          "settings": {
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

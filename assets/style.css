@@ -2039,7 +2039,7 @@ body .trigger-tooltip.active:before {
     color: rgba(28, 33, 32, 0.5);
     font-weight: 400;
     border-bottom: 1px solid rgba(28, 33, 32, 0.28);
-    margin-top: 20px;
+    margin-top: 5px;
     padding-bottom: 20px
 }
 
@@ -6996,3 +6996,368 @@ body:not(.valid-b2b) .cs-actions .cta-btn span {
     object-fit: unset;
 }
 
+#csPrices[style*=block] {
+    display: flex !important;
+}
+
+.locations-cta {
+    background: url(/cdn/shop/files/experience-bg.png) repeat scroll 0 0 / cover;
+    padding: 30px 30px 0 30px;
+}
+
+.locations-cta .container-fluid {
+  max-width: 100%;
+}
+
+.locations-cta .lc-card {
+  margin-bottom: 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.locations-cta .lc-card a {
+    overflow: visible;
+}
+
+.locations-cta .lc-card a::before{
+    content: "";
+    position: absolute;
+    top: -800%;
+    left: -500%;
+    width: 1000%;
+    height: 1500%;
+}
+
+.locations-cta .lc-card small {
+    display: block;
+    margin-bottom: 12px;
+}
+
+.locations-cta .lc-card ul {
+    margin-bottom: 20px;
+}
+
+.locations-cta .lc-card .lc-card-bg {
+  background-size: cover;
+}
+
+.locations-cta .lc-card .lc-card-overlay {
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 30px;
+}
+
+@media(min-width: 1500px) {
+
+.locations-cta .lc-card .lc-card-overlay {
+  padding: 50px;
+}
+    
+}
+
+@media(min-width: 2000px) {
+
+.locations-cta .lc-card .lc-card-overlay {
+  padding: 70px;
+}
+    
+}
+
+.locations-cta .lc-card .lc-card-overlay h2 {
+  color: #fff;
+}
+
+[data-geo-show-b2b],
+[data-geo-show] {
+    display: none;
+}
+
+[data-geo-show][style*="block"] + [data-geo-show-b2b][style*="block"] {
+    display: none !important;
+}
+
+.geo-active + [data-geo-show-b2b] {
+    display: none;
+}
+
+.geo-b2b-green-wrap {
+  display: none;
+}
+
+.is-green-state-b2b .geo-b2b-green-wrap {
+  display: block;
+}
+
+.is-green-state .geo-b2c-green-wrap {
+  display: block;
+}
+
+.geo-b2b-green-btn + .geo-b2b-non-green-btn {
+    display: none;
+}
+
+.geo-b2c-green-wrap .cs-prices .price del {
+    display: none !important;
+}
+
+.custom-checkbox {
+    margin-bottom: 15px;
+}
+
+.checkout-terms-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+.checkout-terms-overlay.active {
+  display: flex;
+}
+.checkout-terms-box {
+  background: #fff;
+  border-radius: 8px;
+  padding: 30px;
+  max-width: 480px;
+  width: 90%;
+  position: relative;
+}
+.checkout-terms-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+}
+.checkout-terms-content {
+  margin: 16px 0 24px;
+}
+.checkout-terms-content ul {
+  padding-left: 20px;
+}
+.checkout-terms-content ul li {
+  margin-bottom: 8px;
+}
+.checkout-terms-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkout-terms-box {
+    font-size: 15px;
+}
+
+.checkout-terms-box h4 {
+    font-size: 28px;
+}
+
+.box.style2 .text-inner {
+    display: flex;
+    justify-content: space-between
+}
+
+.box.style2 .text-inner .price-label {
+    display: block;
+}
+
+.box.style2 .text-inner .price-value {
+    font-size: 20px;
+    line-height: 23px;
+    color: #1C2120;
+}
+
+
+.trade-program-section {
+  padding: 80px 0;
+}
+.trade-left-content h1 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+.trade-left-content p {
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 480px;
+}
+.trade-form-wrap {
+    max-width: 700px;
+    margin-left: auto;
+}
+.trade-steps {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 0;
+}
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.step-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.step.active .step-circle,
+.step.completed .step-circle {
+  background: #5a7a6e;
+  color: #fff;
+}
+.step span {
+    font-size: 14px;
+    color: #999;
+    white-space: nowrap;
+}
+.step.active span,
+.step.completed span {
+  color: #5a7a6e;
+}
+.step-line {
+  flex: 1;
+  height: 1px;
+  background: #e0e0e0;
+  margin-bottom: 18px;
+}
+.form-group label {
+    display: block;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+    color: #000000;
+    opacity: 0.48;
+    line-height: 1;
+}
+#state_select, .trade-form-fields input, .trade-form-fields select {
+    width: 100%;
+    border: 1px solid #1C2120;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 14px;
+    outline: none;
+    transition: border .2s;
+    height: 51px;
+    font-weight: 300;
+}
+#state_select:focus,
+.trade-form-fields input:focus,
+.trade-form-fields select:focus {
+  border-color: #1C2120;
+}
+.state-hint {
+    font-size: 17px;
+    color: #888;
+    margin-top: 8px;
+}
+.trade-form-fields {
+    list-style: none;
+    padding: 0;
+    margin: 0 -8px !important;
+}
+.trade-form-fields li {
+    padding: 0 8px;
+    margin-bottom: 25px;
+}
+.trade-form-fields label {
+    display: block;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+    color: #000000;
+    opacity: 0.48;
+    line-height: 1;
+}
+.trade-form-fields label small {
+    font-size: 100%;
+    color: #DC6C34;
+}
+.step2-intro {
+    font-size: 19px;
+    font-weight: 300;
+    margin-bottom: 25px;
+    color: #1c2120;
+}
+.step2-sub {
+  font-size: 13px;
+  color: #666;
+  margin-top: -14px;
+  margin-bottom: 20px;
+}
+.trade-form-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+    padding-top: 30px;
+    border-top: 1px solid #000;
+}
+.concent.cl-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+/* Thank You */
+.trade-thankyou-section {
+  background: #7a9e91;
+  padding: 80px 0;
+  color: #fff;
+}
+.trade-thankyou-section h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  margin-bottom: 20px;
+  color: #fff;
+}
+.trade-thankyou-section p {
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 480px;
+  color: rgba(255,255,255,0.85);
+}
+.thankyou-benefits {
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 8px;
+  padding: 32px;
+}
+.thankyou-benefits ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.thankyou-benefits ul li {
+  padding: 8px 0;
+  font-size: 14px;
+  color: rgba(255,255,255,0.9);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.thankyou-benefits ul li:last-child {
+  border-bottom: none;
+}
+
+.trade-program-section {
+    background: #fff;
+}
+
+[id*="trade_pro_form"] + section {
+background: #f2f0ef    
+}

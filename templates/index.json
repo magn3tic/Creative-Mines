@@ -114,6 +114,41 @@
       ],
       "settings": {}
     },
+    "green_locations_cta_rUFWWr": {
+      "type": "green-locations-cta",
+      "blocks": {
+        "hero_MNzX3H": {
+          "type": "hero",
+          "settings": {
+            "bg_image": "shopify://shop_images/lc-homeowners.webp",
+            "eyebrow": "Homeowners",
+            "heading": "Building Your Dream Home?",
+            "subheading": "Browse, sample, and buy direct at full MSRP",
+            "bullets": "Transparent Pricing\nFree Samples\nDirect Shipping",
+            "button_text": "Explore Products",
+            "button_link": "shopify://collections/all"
+          }
+        },
+        "hero_dPy8Wq": {
+          "type": "hero",
+          "settings": {
+            "bg_image": "shopify://shop_images/lc-trade-professionals.webp",
+            "eyebrow": "Trade Professionals",
+            "heading": "Specify with Confidence",
+            "subheading": "Free samples, trade pricing, and direct delivery",
+            "bullets": "15-20% off\nFree Samples\nCAD files",
+            "button_text": "Join StudioMine",
+            "button_link": "shopify://pages/tradepro"
+          }
+        }
+      },
+      "block_order": [
+        "hero_MNzX3H",
+        "hero_dPy8Wq"
+      ],
+      "name": "Locations - CTA",
+      "settings": {}
+    },
     "custom_collections_RXKyf8": {
       "type": "custom-collections",
       "blocks": {
@@ -474,6 +509,7 @@
   },
   "order": [
     "hero_carousel_CmDneU",
+    "green_locations_cta_rUFWWr",
     "custom_collections_RXKyf8",
     "text_block_icons_KXGjHm",
     "image_with_credits_rL8VQE",
