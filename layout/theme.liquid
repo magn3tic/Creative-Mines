@@ -3,13 +3,6 @@
   lang="{{ request.locale.iso_code }}"
   class="{% if request.design_mode %}design-mode{% endif %}">
 <head>
-  <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-5MQLTFX6');</script>
-<!-- End Google Tag Manager -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="{{ settings.color_primary }}">
@@ -55,10 +48,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </head>
 
 <body class="{{ request.page_type | prepend: 'page-type-' }}">
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5MQLTFX6"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
   <a class="visually-hidden-focusable" href="#main">
     {{ 'general.accessibility.skip_content' | t }}
   </a>
@@ -93,21 +82,62 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 {% endif %}
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  if (window.location.pathname !== "/account") return;
-  if (sessionStorage.getItem("shopify_login_redirect_done") === "1") {
-    return;
-  }
+  window.greenStates = {{ settings.geo_location | default: '' | json }};
+  window.greenStatesB2B = {{ settings.geo_location_b2b | default: '' | json }};
 
-  sessionStorage.setItem("shopify_login_redirect_done", "1");
+  window.userGeo = null;
+  window.isGreenState = false;
+  window.isGreenStateB2B = false;
 
-  window.location.replace("/");
-});
+  window.userGeoReady = fetch('https://geoapi.dkumar-18studios.workers.dev/')
+    .then(r => r.json())
+    .then(geo => {
+      window.userGeo = geo;
+      const region = (geo.region || '').trim();
+
+      const greenListB2C = (window.greenStates || '')
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      const greenListB2B = (window.greenStatesB2B || '')
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      window.isGreenState    = greenListB2C.includes(region);
+      window.isGreenStateB2B = greenListB2B.includes(region);
+
+      document.body.classList.add(window.isGreenState ? 'is-green-state' : 'is-non-green-state');
+      document.body.classList.add(window.isGreenStateB2B ? 'is-green-state-b2b' : 'is-non-green-state-b2b');
+
+      document.querySelectorAll('[data-geo-show]').forEach(el => {
+        const raw = el.dataset.geoShow.trim();
+        const targets = raw === '' ? greenListB2C : raw.split(',').map(s => s.trim());
+        if (!targets.includes(region)) {
+          el.remove();
+        } else {
+          el.style.display = 'block'; 
+        }
+      });
+
+      document.querySelectorAll('[data-geo-show-b2b]').forEach(el => {
+        const raw = el.dataset.geoShowB2b.trim();
+        const targets = raw === '' ? greenListB2B : raw.split(',').map(s => s.trim());
+        if (!targets.includes(region)) {
+          el.remove();
+        } else {
+          el.style.display = 'block'; 
+        }
+      });
+
+      document.dispatchEvent(new CustomEvent('geoReady', { detail: geo }));
+      return geo;
+    })
+    .catch(err => console.log('Geo failed:', err));
 </script>
+
   
-<!-- Start of HubSpot Embed Code -->
-<script type="text/javascript" id="hs-script-loader" async defer src="//js-na2.hs-scripts.com/23809417.js"></script>
-<!-- End of HubSpot Embed Code -->
 </body>
 </html>
     

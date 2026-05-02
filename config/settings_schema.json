@@ -1,1 +1,41 @@
-[]
+[
+  {
+    "name": "Geo Targeting",
+    "settings": [
+      {
+        "type": "text",
+        "id": "geo_location",
+        "label": "Green States (B2C)",
+        "info": "Texas, Florida"
+      },
+      {
+        "type": "text",
+        "id": "geo_location_b2b",
+        "label": "Green States (B2B)",
+        "info": "Texas, Florida"
+      },
+      {
+        "type": "text",
+        "id": "geo_location_red",
+        "label": "Red States",
+        "info": "California, Arizona, Nevada, Idaho, Utah, Montana, Ohio, Iowa"
+      }      
+    ]
+  },
+  {
+    "name": "Checkout Popup",
+    "settings": [
+      {
+        "type": "text",
+        "id": "checkout_terms_title",
+        "label": "Popup Title",
+        "default": "Before You Checkout"
+      },
+      {
+        "type": "richtext",
+        "id": "checkout_terms_description",
+        "label": "Popup Description"
+      }
+    ]
+  }  
+]

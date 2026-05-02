@@ -28,18 +28,42 @@
         </b>
       </span>
     </p>
-    {% form 'cart', cart %}
-      <button 
-        class="btn btn-checkout cta-btn btn_default" 
-        name="checkout" 
-        type="submit"
-        onclick="this.classList.add('loading')">
-        {% render 'svg-icons', icon: 'lock', size: 18, class: 'me-2' %}
-        {{ 'cart.checkout' | t }}
-      </button>
-    {% endform %}
+    <button 
+      class="btn btn-checkout cta-btn btn_default w-100" 
+      type="button"
+      id="checkoutTriggerBtn"
+      onclick="document.getElementById('checkoutTermsPopup').classList.add('active')">
+      {% render 'svg-icons', icon: 'lock', size: 18, class: 'me-2' %}
+      {{ 'cart.checkout' | t }}
+    </button>
     <p class="small text-center mt-3 mb-n2 fst-italic">
       {{ 'cart.taxes_shipping_at_checkout_html' | t }}
     </p>
   </div>
+
+<div id="checkoutTermsPopup" class="checkout-terms-overlay">
+    <div class="checkout-terms-box">
+      <button class="checkout-terms-close" onclick="document.getElementById('checkoutTermsPopup').classList.remove('active')">&times;</button>
+      
+      <h4>{{ settings.checkout_terms_title }}</h4>
+
+      <div class="checkout-terms-content">
+        {{ settings.checkout_terms_description }}
+      </div>
+
+      <div class="checkout-terms-actions">
+        {% form 'cart', cart %}
+          <button 
+            class="btn btn-checkout cta-btn btn_default w-100" 
+            name="checkout" 
+            type="submit"
+            onclick="this.classList.add('loading')">
+            {% render 'svg-icons', icon: 'lock', size: 18, class: 'me-2' %}
+            Proceed to Checkout
+          </button>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+
 {% endif %}

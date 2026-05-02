@@ -213,7 +213,7 @@
                               <a 
                                 class="{% if template.name == 'login' or template.name == 'account' %}active{% endif %}" 
                                 aria-current="{% if template.name == 'login' or template.name == 'account' %}page{% endif %}" 
-                                href="{{ routes.account_url }}"
+                                href="/customer_authentication/login?return_to=%2F"
                                 aria-label="{{ 'general.accessibility.account' | t }}">
                                 <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/user-dark.webp" alt="User">
                               </a>
@@ -236,7 +236,7 @@
                               <a 
                                 class="{% if template.name == 'login' or template.name == 'account' %}active{% endif %}" 
                                 aria-current="{% if template.name == 'login' or template.name == 'account' %}page{% endif %}" 
-                                href="{{ routes.account_url }}"
+                                href="/customer_authentication/login?return_to=%2F"
                                 aria-label="{{ 'general.accessibility.account' | t }}">
                                 <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/user-icon.webp" alt="User">
                               </a>

@@ -105,31 +105,70 @@
         {% endfor %}
       
       {% else %}
-        {% comment %}================ DEFAULT COLLECTION STRUCTURE ================ {% endcomment %}
-        {% for product in products %}
-          {% assign color_count = 0 %}
-          {% for option in product.options_with_values %}
-            {% if option.name == 'Color' %}
-              {% assign color_count = option.values.size %}
+{% for product in products %}
+  {% assign color_count = 0 %}
+  {% for option in product.options_with_values %}
+    {% if option.name == 'Color' %}
+      {% assign color_count = option.values.size %}
+    {% endif %}
+  {% endfor %}
+
+  {% assign sf_variant = nil %}
+  {% for variant in product.variants %}
+    {% if variant.title contains 'Flat' and variant.title contains 'Large' %}
+      {% assign sf_variant = variant %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  <div class="col-sm-4">
+    <a href="{{ product.url }}" class="box style2">
+      <img src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.title | escape }}">
+      <div class="text">
+        <div class="text-inner">
+          <div class="text-left">
+            <h3 class="title">{{ product.title }}</h3>
+            {% if color_count > 0 %}
+              <p>{{ color_count }} Color{% if color_count > 1 %}s{% endif %}</p>
             {% endif %}
-          {% endfor %}
-      
-          <div class="col-sm-4">
-            <a href="{{ product.url }}" class="box style2">
-              <img src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.title | escape }}">
-              <div class="text">
-                <h3 class="title">{{ product.title }}</h3>
-                {% if color_count > 0 %}
-                  <p>{{ color_count }} Color{% if color_count > 1 %}s{% endif %}</p>
-                {% endif %}
-              </div>
-            </a>
           </div>
-        {% endfor %}
+
+          {% if customer.tags contains 'B2C' %}
+          <div class="text-right geo-b2c-price">
+            {% if sf_variant %}
+              {% assign sf_coverage = sf_variant.metafields.custom.coverage-square-feet | plus: 0 %}
+              {% if sf_coverage > 0 %}
+                {% assign sf_msrp = sf_variant.price | divided_by: 0.85 | divided_by: sf_coverage %}
+                <span class="price-label">Price Per Square Ft.</span>
+                <span class="price-value">{{ sf_msrp | money }}</span>
+              {% endif %}
+            {% endif %}
+          </div>
+          {% endif %}
+
+        </div>
+      </div>
+    </a>
+  </div>
+{% endfor %}
       {% endif %}
     </div>
   </div>
 </section>
+
+<script>
+document.addEventListener('geoReady', function () {
+  if (window.isGreenState) {
+    document.querySelectorAll('.geo-b2c-price').forEach(el => {
+      el.style.display = 'block';
+    });
+  } else {
+    document.querySelectorAll('.geo-b2c-price').forEach(el => {
+      el.remove();
+    });
+  }
+});
+</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

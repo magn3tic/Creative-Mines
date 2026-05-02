@@ -1,48 +1,101 @@
-<section class="content-area bg_white pb-0">
-  <div class="container-fluid">
-    <div class="content-text">
-      <h2>{{ section.settings.heading }}</h2>
-      <p>{{ section.settings.subheading }}</p>
-    </div>
+{% assign green_states = settings.geo_location_b2b | split: ',' %}
+{% assign red_states = settings.geo_location_red | split: ',' %}
 
-    <div class="trade-form-inner">
-      <form id="b2b-signup-form" class="trade-signup-form">
-        <div class="row">
-          <!-- Column 1 -->
-          <div class="col-lg-5">
-            <div class="trade-form style1">
-              <ul class="row">
-                <li class="col-lg-6 col-sm-6">
-                  <label for="first_name">FIRST NAME</label>
-                  <input type="text" name="customer[first_name]" id="first_name" required>
+<section class="trade-program-section">
+  <div class="container-fluid">
+    <div class="row">
+
+      <!-- Left Content -->
+      <div class="col-lg-6">
+        <div class="trade-left-content">
+          <h1 id="trade-main-heading">{{ section.settings.heading }}</h1>
+          <p id="trade-main-subheading">{{ section.settings.subheading }}</p>
+        </div>
+      </div>
+
+      <!-- Right Form -->
+      <div class="col-lg-6">
+        <div class="trade-form-wrap">
+
+          <!-- Step Indicators -->
+          <div class="trade-steps">
+            <div class="step active" id="step-indicator-1">
+              <div class="step-circle">1</div>
+              <span>Select Location</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" id="step-indicator-2">
+              <div class="step-circle">2</div>
+              <span>Trade Info</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" id="step-indicator-3">
+              <div class="step-circle">3</div>
+              <span>Submission</span>
+            </div>
+          </div>
+
+          <!-- Step 1: Select State -->
+          <div class="trade-step" id="trade-step-1">
+            <div class="form-group">
+              <label for="state_select">YOUR STATE</label>
+              <select id="state_select">
+                <option value="">Select State</option>
+                {% for state in green_states %}
+                  {% assign s = state | strip %}
+                  {% if s != blank %}
+                    <option value="{{ s }}" data-type="green">{{ s }}</option>
+                  {% endif %}
+                {% endfor %}
+                {% for state in red_states %}
+                  {% assign s = state | strip %}
+                  {% if s != blank %}
+                    <option value="{{ s }}" data-type="red">{{ s }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <p class="state-hint">We'll match you with the right trade experience for your region.</p>
+            </div>
+            <button class="cta-btn btn_default mt-4" id="step1-next" type="button">Next</button>
+          </div>
+
+          <!-- Step 2: Green State Form -->
+          <div class="trade-step" id="trade-step-2-green" style="display:none;">
+            <p class="step2-intro">Get exclusive trade pricing, samples, and direct ordering access.</p>
+            <form id="b2b-signup-form-green">
+              <input type="hidden" name="selected_state" id="green-selected-state">
+              <ul class="row trade-form-fields">
+                <li class="col-sm-6">
+                  <label>FIRST NAME<small>*</small></label>
+                  <input type="text" name="first_name" required>
                 </li>
-                <li class="col-lg-6 col-sm-6">
-                  <label for="last_name">LAST NAME</label>
-                  <input type="text" name="customer[last_name]" id="last_name" required>
+                <li class="col-sm-6">
+                  <label>LAST NAME<small>*</small></label>
+                  <input type="text" name="last_name" required>
                 </li>
-                <li class="col-lg-6 col-sm-6">
-                  <label for="company">COMPANY NAME</label>
-                  <input type="text" name="customer[note][company]" id="company" required>
+                <li class="col-sm-6">
+                  <label>COMPANY NAME<small>*</small></label>
+                  <input type="text" name="company" required>
                 </li>
-                <li class="col-lg-6 col-sm-6">
-                  <label for="tax_id">TAX ID</label>
-                  <input type="text" name="customer[note][tax_id]" id="tax_id" required>
+                <li class="col-sm-6">
+                  <label>JOB TITLE<small>*</small></label>
+                  <input type="text" name="job_title" required>
                 </li>
-                <li class="col-lg-6 col-sm-6">
-                  <label for="email">EMAIL</label>
-                  <input type="email" name="customer[email]" id="email" required>
+                <li class="col-sm-6">
+                  <label>EMAIL<small>*</small></label>
+                  <input type="email" name="email" required>
                 </li>
-                <li class="col-lg-6 col-sm-6">
-                  <label for="job_title">JOB TITLE</label>
-                  <input type="text" name="customer[note][job_title]" id="job_title" required>
+                <li class="col-sm-6">
+                  <label>PHONE NUMBER<small>*</small></label>
+                  <input type="tel" name="phone" placeholder="(800) 4537040" required>
                 </li>
-                <li class="col-lg-6 col-sm-6">
-                  <label for="phone">PHONE NUMBER*</label>
-                  <input type="tel" name="customer[phone]" placeholder="(800) 4537040" pattern="^\(\d{3}\)\s?\d{7}$" id="phone" required>
+                <li class="col-sm-6">
+                  <label>TAX ID / EIN</label>
+                  <input type="text" name="tax_id">
                 </li>
-                <li class="col-lg-6 col-sm-6">
-                  <label for="trade_type">WHAT’S YOUR TRADE*</label>
-                  <select name="customer[note][trade_type]" id="trade_type" required>
+                <li class="col-sm-6">
+                  <label>WHAT'S YOUR TRADE<small>*</small></label>
+                  <select name="trade_type" required>
                     <option value="">Select</option>
                     <option value="Architect">Architect</option>
                     <option value="Interior Designer">Interior Designer</option>
@@ -51,324 +104,282 @@
                     <option value="Installer">Installer</option>
                   </select>
                 </li>
-                <li class="col-lg-6 col-sm-6">
-                  <label for="website">WEBSITE</label>
-                  <input type="text" name="customer[website]" id="website" required>
-                </li>
-                <li class="col-lg-6 col-sm-6">
-                  <label for="insta">INSTAGRAM</label>
-                  <input type="text" name="customer[insta]" id="insta" required>
-                </li>                
               </ul>
-            </div>
+              <div class="trade-form-action">
+                <div class="concent cl-action">
+                  <input type="checkbox" name="accepts_marketing" id="newsletter-green" checked>
+                  <label for="newsletter-green">Subscribe to our newsletter</label>
+                </div>
+                <button type="submit" class="cta-btn btn_default" id="green-submit-btn">Join StudioMine</button>
+              </div>
+            </form>
           </div>
 
-          <!-- Column 2 -->
-          <div class="col-lg-4">
-            <div class="trade-form style2">
-              <ul class="row">
-                <li class="col-lg-12 col-sm-6">
-                  <label for="address1">STREET ADDRESS</label>
-                  <input type="text" name="customer[addresses][0][address1]" id="address1">
+          <!-- Step 2: Red State Form -->
+          <div class="trade-step" id="trade-step-2-red" style="display:none;">
+            <p class="step2-intro">Free samples, design tools & direct access to your local Creative Mines rep</p>
+            <p class="step2-sub">Ordering in your state goes through our preferred local distributors. Your area rep will reach out within 1–2 business days to get you set up.</p>
+            <form id="b2b-signup-form-red">
+              <input type="hidden" name="selected_state" id="red-selected-state">
+              <ul class="row trade-form-fields">
+                <li class="col-sm-6">
+                  <label>FIRST NAME<small>*</small></label>
+                  <input type="text" name="first_name" required>
                 </li>
-                <li class="col-lg-12 col-sm-6">
-                  <label for="address1">STREET ADDRESS 2</label>
-                  <input type="text" name="customer[addresses][0][address2]" id="address2">
-                </li>                
-                <li class="col-lg-12 col-sm-6">
-                  <label for="city">CITY</label>
-                  <input type="text" name="customer[addresses][0][city]" id="city">
+                <li class="col-sm-6">
+                  <label>LAST NAME<small>*</small></label>
+                  <input type="text" name="last_name" required>
                 </li>
-                <li class="col-lg-12 col-sm-6">
-                  <label for="country">COUNTRY</label>
-                  <input 
-                    type="text" 
-                    name="customer[addresses][0][country]" 
-                    value="US" 
-                    id="country" 
-                    readonly 
-                  >
+                <li class="col-sm-6">
+                  <label>COMPANY NAME<small>*</small></label>
+                  <input type="text" name="company" required>
                 </li>
-
-                <li class="col-lg-8 col-sm-6 margin">
-                  <label for="province">STATE</label>
-                  <select name="customer[addresses][0][province]" id="province" required>
-                    <option value="">Select State</option>
-                    <option value="AL">Alabama</option>
-                    <option value="AK">Alaska</option>
-                    <option value="AZ">Arizona</option>
-                    <option value="AR">Arkansas</option>
-                    <option value="CA">California</option>
-                    <option value="CO">Colorado</option>
-                    <option value="CT">Connecticut</option>
-                    <option value="DE">Delaware</option>
-                    <option value="FL">Florida</option>
-                    <option value="GA">Georgia</option>
-                    <option value="HI">Hawaii</option>
-                    <option value="ID">Idaho</option>
-                    <option value="IL">Illinois</option>
-                    <option value="IN">Indiana</option>
-                    <option value="IA">Iowa</option>
-                    <option value="KS">Kansas</option>
-                    <option value="KY">Kentucky</option>
-                    <option value="LA">Louisiana</option>
-                    <option value="ME">Maine</option>
-                    <option value="MD">Maryland</option>
-                    <option value="MA">Massachusetts</option>
-                    <option value="MI">Michigan</option>
-                    <option value="MN">Minnesota</option>
-                    <option value="MS">Mississippi</option>
-                    <option value="MO">Missouri</option>
-                    <option value="MT">Montana</option>
-                    <option value="NE">Nebraska</option>
-                    <option value="NV">Nevada</option>
-                    <option value="NH">New Hampshire</option>
-                    <option value="NJ">New Jersey</option>
-                    <option value="NM">New Mexico</option>
-                    <option value="NY">New York</option>
-                    <option value="NC">North Carolina</option>
-                    <option value="ND">North Dakota</option>
-                    <option value="OH">Ohio</option>
-                    <option value="OK">Oklahoma</option>
-                    <option value="OR">Oregon</option>
-                    <option value="PA">Pennsylvania</option>
-                    <option value="RI">Rhode Island</option>
-                    <option value="SC">South Carolina</option>
-                    <option value="SD">South Dakota</option>
-                    <option value="TN">Tennessee</option>
-                    <option value="TX">Texas</option>
-                    <option value="UT">Utah</option>
-                    <option value="VT">Vermont</option>
-                    <option value="VA">Virginia</option>
-                    <option value="WA">Washington</option>
-                    <option value="WV">West Virginia</option>
-                    <option value="WI">Wisconsin</option>
-                    <option value="WY">Wyoming</option>
-                  </select>
+                <li class="col-sm-6">
+                  <label>EMAIL<small>*</small></label>
+                  <input type="email" name="email" required>
                 </li>
-                <li class="col-lg-4 col-sm-6">
-                  <label for="zip">ZIP</label>
-                  <input type="text" name="customer[addresses][0][zip]" id="zip">
+                <li class="col-sm-12">
+                  <label>PHONE NUMBER<small>*</small></label>
+                  <input type="tel" name="phone" placeholder="(800) 4537040" required>
                 </li>
               </ul>
-            </div>
+              <div class="trade-form-action">
+                <div class="concent cl-action">
+                  <input type="checkbox" name="accepts_marketing" id="newsletter-red" checked>
+                  <label for="newsletter-red">Subscribe to our newsletter</label>
+                </div>
+                <button type="submit" class="cta-btn btn_default" id="red-submit-btn">Join StudioMine</button>
+              </div>
+            </form>
           </div>
 
-          <!-- Column 3 -->
-          <div class="col-lg-3">
-            <div class="trade-form style3">
-              <ul class="row">
-                <li class="col-lg-12 col-sm-6 password-wrapper">
-                  <label for="einlicense">UPLOAD EIN/BUSINESS LICENSE</label>
-                  <input id="einlicense" type="file" name="customer[license]" required>
-                </li>                
-                <li class="col-lg-12 col-sm-6 password-wrapper">
-                  <label for="password">PASSWORD</label>
-                  <div class="password-container">
-                    <input id="password" type="password" name="customer[password]" required>
-                    <span toggle="#password" class="toggle-password">
-                      <i class="fa-solid fa-eye-slash"></i>
-                    </span>
-                  </div>
-                </li>
-                <li class="col-lg-12 col-sm-6">
-                  <label for="tax_exempt">TAX EXEMPT</label>
-                  <select name="customer[note][tax_exempt]" id="tax_exempt">
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
-                  </select>
-                </li>
+          <div class="trade-step" id="trade-step-3-green" style="display:none;"></div>
 
-                <li class="col-lg-12 col-sm-6 tax-exempt-upload" style="display:none;">
-                  <p>If you intend to purchase merchandise for resale, and wish to waive sales tax on your qualifying orders, please provide your tax exempt documentation.</p>
-                  <label for="tax_exempt_file">UPLOAD TAX EXEMPT DOCUMENT</label>
-                  <input id="tax_exempt_file" type="file" name="customer[tax_exempt_doc]">
-                </li>
+          <div class="trade-step" id="trade-step-3-red" style="display:none;"></div>
 
-              </ul>
-            </div>
-          </div>
         </div>
-
-        <!-- Submit + Consents -->
-        <div class="trade-form-action">
-          <div class="trade-form-btn text-sm-end text-sm-start">
-            <button type="submit" class="cta-btn btn_default">Submit</button>
-            <div class="concent cl-action">
-              <input type="checkbox" name="customer[accepts_marketing]" id="newsletter" checked>
-              <label for="newsletter">Subscribe to our newsletter</label>
-            </div>
-          </div>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- Step 3 Green Thank You (full width) -->
+<div id="thankyou-green" style="display:none;">
+  <section class="trade-thankyou-section green">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <h2>Welcome <span id="green-first-name"></span><br>to StudioMine.</h2>
+          <p>Please allow us 1-2 days to confirm your Trade Pro application. Once approved your account will have all Trade Pro benefits including online ordering.</p>
+        </div>
+        <div class="col-lg-6">
+          <div class="thankyou-benefits">
+            <ul>
+              <li>✓ Free direct-ship samples — order online now</li>
+              <li>✓ Access to design tools, 3D files & seamless textures</li>
+              <li>✓ Direct connection to your local area rep</li>
+              <li>✓ Preferred distributor partners in your region</li>
+              <li>✓ Trade pricing unlocked for online ordering</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Step 3 Red Thank You (full width) -->
+<div id="thankyou-red" style="display:none;">
+  <section class="trade-thankyou-section red">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <h2>Welcome <span id="red-first-name"></span><br>to StudioMine.</h2>
+          <p>Your account is under review. You'll receive a confirmation email within 24 hours with your login and trade pricing access.</p>
+        </div>
+        <div class="col-lg-6">
+          <div class="thankyou-benefits">
+            <ul>
+              <li>✓ Exclusive trade pricing</li>
+              <li>✓ Complimentary samples</li>
+              <li>✓ Direct online ordering</li>
+              <li>✓ 3D files, textures & design tools</li>
+              <li>✓ Dedicated account specialist</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const taxSelect = document.getElementById("tax_exempt");
-  const uploadField = document.querySelector(".tax-exempt-upload");
+document.addEventListener('DOMContentLoaded', function () {
 
-  if (!taxSelect || !uploadField) return;
+  const step1 = document.getElementById('trade-step-1');
+  const step2Green = document.getElementById('trade-step-2-green');
+  const step2Red = document.getElementById('trade-step-2-red');
+  const stateSelect = document.getElementById('state_select');
 
-  taxSelect.addEventListener("change", function () {
-    if (this.value === "Yes") {
-      uploadField.style.display = "block";
+  const indicators = {
+    1: document.getElementById('step-indicator-1'),
+    2: document.getElementById('step-indicator-2'),
+    3: document.getElementById('step-indicator-3'),
+  };
+
+  function setStep(num) {
+    for (let i = 1; i <= 3; i++) {
+      indicators[i].classList.remove('active', 'completed');
+      if (i < num) indicators[i].classList.add('completed');
+      if (i === num) indicators[i].classList.add('active');
+    }
+  }
+
+  // Step 1 → Next
+  document.getElementById('step1-next').addEventListener('click', function () {
+    const selected = stateSelect.options[stateSelect.selectedIndex];
+    if (!selected.value) {
+      alert('Please select a state.');
+      return;
+    }
+
+    const type = selected.getAttribute('data-type');
+    const stateName = selected.value;
+
+    step1.style.display = 'none';
+    setStep(2);
+
+    if (type === 'green') {
+      document.getElementById('green-selected-state').value = stateName;
+      step2Green.style.display = 'block';
     } else {
-      uploadField.style.display = "none";
-      const input = document.getElementById("tax_exempt_file");
-      if (input) input.value = ""; // reset
+      document.getElementById('red-selected-state').value = stateName;
+      step2Red.style.display = 'block';
     }
   });
-});
 
-document.addEventListener("DOMContentLoaded", () => {
-  const phoneInput = document.getElementById("phone");
-  phoneInput.addEventListener("input", (e) => {
-    let value = e.target.value.replace(/\D/g, ""); // remove non-digits
-    if (value.length > 3 && value.length <= 6)
-      value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
-    else if (value.length > 6)
-      value = `(${value.slice(0, 3)}) ${value.slice(3, 10)}`;
-    e.target.value = value;
+  // Phone formatting
+  document.querySelectorAll('input[type="tel"]').forEach(input => {
+    input.addEventListener('input', function (e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 3 && value.length <= 6)
+        value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+      else if (value.length > 6)
+        value = `(${value.slice(0, 3)}) ${value.slice(3, 10)}`;
+      e.target.value = value;
+    });
   });
-});
 
-document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.querySelector(".toggle-password");
-  const icon = toggle.querySelector("i");
-  const passwordField = document.querySelector(toggle.getAttribute("toggle"));
-
-  toggle.addEventListener("click", () => {
-    const isHidden = passwordField.getAttribute("type") === "password";
-    passwordField.setAttribute("type", isHidden ? "text" : "password");
-    icon.classList.toggle("fa-eye");
-    icon.classList.toggle("fa-eye-slash");
-  });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("b2b-signup-form");
-
-  form.addEventListener("submit", async (e) => {
+  // Green Form Submit
+  document.getElementById('b2b-signup-form-green').addEventListener('submit', async function (e) {
     e.preventDefault();
+    const btn = document.getElementById('green-submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
 
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-
-    const fileInput = form.querySelector("#einlicense");
-    let base64File = "";
-    let fileName = "";
-    if (fileInput && fileInput.files.length) {
-      const file = fileInput.files[0];
-      fileName = file.name;
-      base64File = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result.split(",")[1]);
-        reader.readAsDataURL(file);
-      });
-    }
-
-    const taxExemptInput = form.querySelector("#tax_exempt_file");
-    let taxExemptBase64 = "";
-    let taxExemptName = "";
-
-    if (taxExemptInput && taxExemptInput.files.length) {
-      const taxFile = taxExemptInput.files[0];
-      taxExemptName = taxFile.name;
-
-      taxExemptBase64 = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result.split(",")[1]);
-        reader.readAsDataURL(taxFile);
-      });
-    }    
+    const form = e.target;
+    const data = Object.fromEntries(new FormData(form).entries());
 
     const payload = {
-      // Basic info
-      first_name: data["customer[first_name]"] || "",
-      last_name: data["customer[last_name]"] || "",
-      email: data["customer[email]"] || "",
-      password: data["customer[password]"] || "",
-      phone: data["customer[phone]"] || "",
-
-      // Company info
-      company: data["customer[note][company]"] || "",
-      tax_id: data["customer[note][tax_id]"] || "",
-      job_title: data["customer[note][job_title]"] || "",
-      trade_type: data["customer[note][trade_type]"] || "",
-      tax_exempt: data["customer[note][tax_exempt]"] || "",
-
-      // Web presence
-      website: data["customer[website]"] || "",
-      instagram: data["customer[insta]"] || "",
-
-      // Address info
-      address1: data["customer[addresses][0][address1]"] || "",
-      address2: data["customer[addresses][0][address2]"] || "",
-      city: data["customer[addresses][0][city]"] || "",
-      province: data["customer[addresses][0][province]"] || "",
-      country: data["customer[addresses][0][country]"] || "",
-      zip: data["customer[addresses][0][zip]"] || "",
-
-      // Marketing + file
-      accepts_marketing: !!data["customer[accepts_marketing]"],
-      license_file: base64File,
-      license_filename: fileName,
-      tax_exempt_doc_file: taxExemptBase64,
-      tax_exempt_doc_filename: taxExemptName,      
+      first_name: data.first_name || '',
+      last_name: data.last_name || '',
+      email: data.email || '',
+      phone: data.phone || '',
+      company: data.company || '',
+      job_title: data.job_title || '',
+      tax_id: data.tax_id || '',
+      trade_type: data.trade_type || '',
+      selected_state: data.selected_state || '',
+      state_type: 'green',
+      accepts_marketing: !!data.accepts_marketing,
+      password: Math.random().toString(36).slice(-10) + 'A1!',
+      license_file: '',
+      license_filename: '',
+      tax_exempt_doc_file: '',
+      tax_exempt_doc_filename: '',
     };
 
-    console.log("Submitting payload:", payload);
-
-    const btn = form.querySelector("button[type='submit']");
-    btn.disabled = true;
-    btn.textContent = "Submitting...";
-
     try {
-      const res = await fetch("https://b2b-api.dkumar-18studios.workers.dev", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('https://b2b-api.dkumar-18studios.workers.dev', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
       const json = await res.json();
 
-      if (res.ok && json.message === "Processed") {
-        form.style.display = "none";
-
-        const successBox = document.createElement("div");
-        successBox.className =
-          "alert alert-success shadow p-4 rounded text-center mt-4";
-        successBox.innerHTML = `
-          <p class="mb-0">Thank you! Your application has been submitted for approval.</p>
-        `;
-        form.parentNode.appendChild(successBox);
+      if (res.ok && json.message === 'Processed') {
+        step2Green.style.display = 'none';
+        setStep(3);
+        document.getElementById('green-first-name').textContent = data.first_name;
+        document.getElementById('thankyou-green').style.display = 'block';
+        document.querySelector('.trade-program-section').style.display = 'none';
       } else {
-        const errorMessage =
-          json.error_message ||
-          (Array.isArray(json.errors) ? json.errors.join("\n") : null) ||
-          (json.errors && typeof json.errors === "object"
-              ? Object.entries(json.errors)
-                  .map(([key, val]) => `${key}: ${val}`)
-                  .join("\n")
-              : null) ||
-          json.error ||
-          json.message ||
-          "Submission failed. Please try again.";
-
-        alert("⚠️ " + errorMessage);
-        console.error("API Error:", json);
+        alert('⚠️ ' + (json.error_message || json.error || 'Submission failed.'));
       }
     } catch (err) {
-      console.error(err);
-      alert("❌ Network error — please try again.");
+      alert('❌ Network error — please try again.');
     } finally {
       btn.disabled = false;
-      btn.textContent = "Submit";
+      btn.textContent = 'Join StudioMine';
     }
   });
+
+  // Red Form Submit
+  document.getElementById('b2b-signup-form-red').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const btn = document.getElementById('red-submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    const form = e.target;
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    const payload = {
+      first_name: data.first_name || '',
+      last_name: data.last_name || '',
+      email: data.email || '',
+      phone: data.phone || '',
+      company: data.company || '',
+      job_title: '',
+      tax_id: '',
+      trade_type: '',
+      selected_state: data.selected_state || '',
+      state_type: 'red',
+      accepts_marketing: !!data.accepts_marketing,
+      password: Math.random().toString(36).slice(-10) + 'A1!',
+      license_file: '',
+      license_filename: '',
+      tax_exempt_doc_file: '',
+      tax_exempt_doc_filename: '',
+    };
+
+    try {
+      const res = await fetch('https://b2b-api.dkumar-18studios.workers.dev', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const json = await res.json();
+
+      if (res.ok && json.message === 'Processed') {
+        step2Red.style.display = 'none';
+        setStep(3);
+        document.getElementById('red-first-name').textContent = data.first_name;
+        document.getElementById('thankyou-red').style.display = 'block';
+        document.querySelector('.trade-program-section').style.display = 'none';
+      } else {
+        alert('⚠️ ' + (json.error_message || json.error || 'Submission failed.'));
+      }
+    } catch (err) {
+      alert('❌ Network error — please try again.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Join StudioMine';
+    }
+  });
+
 });
 </script>
 
@@ -379,14 +390,14 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       "type": "text",
       "id": "heading",
-      "label": "Form Heading",
+      "label": "Heading",
       "default": "Join the Creative Mines Trade Program"
     },
     {
       "type": "textarea",
       "id": "subheading",
-      "label": "Form Subheading",
-      "default": "Enjoy exclusive trade pricing, complimentary samples, and personalized support—all designed to help you bring your boldest visions to life."
+      "label": "Subheading",
+      "default": "Order free quick ship samples online, access new CAD design tools, connect directly with your local area Creative Mines rep and unlock discounted pricing."
     }
   ],
   "presets": [
