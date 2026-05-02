@@ -1,1 +1,307 @@
-{"sections":{"page_banner_DF9Xqh":{"type":"page-banner","name":"Page Banner","settings":{"style":"style-two","image":"shopify:\/\/shop_images\/trade-pro-banner.webp","heading":"Join StudioMine","text":"<p>An exclusive membership for Design & Build Professionals.\u2028<br\/><br\/>Enjoy complimentary samples, exclusive trade pricing, early access to new products, and design tools to help bring your boldest masonry visions to life.<\/p>","button_label":"Sign Up","button_link":"#b2b-signup-form","rbutton_label":"Already a member? Sign In","rbutton_link":"https:\/\/creativemines-trade.myshopify.com\/account"}},"media_text_eVRpMN":{"type":"media-text","blocks":{"media_text_bg_dark_FaVHYQ":{"type":"media_text_bg_dark","settings":{"image":"shopify:\/\/shop_images\/enjoy-exclusive-access.webp","heading":"Enjoy Exclusive Access","text":"<ul><li>Free Quick Ship Samples<\/li><li>Access to Design Tools - 3D files &  Seamless Textures<\/li><li>First Access to New Products<\/li><li>Unlock Trade Pricing & Project Ordering<\/li><li>Dedicated Account Specialists<\/li><li>Designer Spotlights <\/li><\/ul>","button_text":"","button_link":"","style":"style1"}}},"block_order":["media_text_bg_dark_FaVHYQ"],"name":"Media\/Text","settings":{}},"trade_pro_form_YLmKtb":{"type":"trade-pro-form","name":"Trade Program Form","settings":{"heading":"Join the Creative Mines Trade Program","subheading":"Enjoy exclusive trade pricing, complimentary samples, and personalized support—all designed to help you bring your boldest visions to life."}},"custom_collections_wcWgVA":{"type":"custom-collections","blocks":{"collection_item_PJBYGb":{"type":"collection_item","settings":{"image":"shopify:\/\/shop_images\/stone.webp","title":"Stone","button_label":"Explore","link":"shopify:\/\/collections\/stone"}},"collection_item_e9k9dP":{"type":"collection_item","settings":{"image":"shopify:\/\/shop_images\/bricks-and-blocks.webp","title":"Brick & Block","button_label":"Explore","link":"shopify:\/\/collections\/brick-block"}},"collection_item_GKtUwB":{"type":"collection_item","settings":{"image":"shopify:\/\/shop_images\/woodcuts.webp","title":"Woodcuts","button_label":"Explore","link":"shopify:\/\/collections\/wood"}}},"block_order":["collection_item_PJBYGb","collection_item_e9k9dP","collection_item_GKtUwB"],"name":"Custom Collections","settings":{"heading":"Explore Our Materials"}},"accordion_tabs_7t6pVU":{"type":"accordion-tabs","blocks":{"tab_qqXWNR":{"type":"tab","settings":{"icon":"shopify:\/\/shop_images\/order-sample-white-icon.webp","title":"Order Samples","description":"We make it easy. Order a sample online today and see firsthand the difference Creative Mines brings to high-design masonry projects.","link_text":"Order Samples Online","link_url":"shopify:\/\/collections\/samples"}},"tab_zA6tBN":{"type":"tab","settings":{"icon":"shopify:\/\/shop_images\/product-catalog.webp","title":"Product Catalog","description":"Download our new Source Book showcasing innovative profiles, authentic textures, and hand-crafted artisan color palettes.","link_text":"Download Source Book","link_url":"https:\/\/cdn.shopify.com\/s\/files\/1\/0634\/0139\/4275\/files\/CM_Product_Brochure_090525_720f541f-8a1b-4ed6-83a6-521f708b8871.pdf?v=1763168529"}},"tab_i7Xq77":{"type":"tab","settings":{"icon":"shopify:\/\/shop_images\/textures.webp","title":"Seamless Textures","description":"Access our seamless textures, 3D patterns, and design features through Architextures. Easily adjust grout colors and installation techniques. Download AutoCAD and Revit files to streamline your workflow.","link_text":"Explore Visualizer","link_url":"shopify:\/\/pages\/seamless-textures-hatch-patterns"}},"tab_kd6NWk":{"type":"tab","settings":{"icon":"shopify:\/\/shop_images\/technical.webp","title":"Technical Downloads","description":"Access all technical documents, 3 part specification, testing results, installation guidelines and warranty details.","link_text":"Explore Technical Documents","link_url":"shopify:\/\/pages\/resources"}},"tab_WfNaMd":{"type":"tab","settings":{"icon":"shopify:\/\/shop_images\/installation.webp","title":"Installation Details","description":"Creative Mines is an active member of the CMHA and recommends installers follow the MSV Installation Guide and Detailing Options for Compliance with ASTM C1780 standards and best practices.","link_text":"Download CMHA Installation Instructions","link_url":"https:\/\/cdn.shopify.com\/s\/files\/1\/0634\/0139\/4275\/files\/CMHA-MANUFACTURED-STONE-INSTALL-GUIDELINES-ENGLISH.pdf?v=1760552106"}},"tab_bcLk7c":{"type":"tab","settings":{"icon":"shopify:\/\/shop_images\/ceu.webp","title":"Online CEU Course","description":"Take our online CEU course - The Elegance of Stone in Biophilic Design\n\n\nCourse Description: \nThis course offers architects and design professionals a comprehensive understanding of how the elegance of stone can be harnessed within the framework of biophilic design to create environments that prioritize both sustainability and human well-being. We've partnered with Education Ascent to allow easy online access to this course and 1 learning unit.","link_text":"Take Online Course Now","link_url":"https:\/\/portal.educationascent.com\/login\/index.php"}}},"block_order":["tab_qqXWNR","tab_zA6tBN","tab_i7Xq77","tab_kd6NWk","tab_WfNaMd","tab_bcLk7c"],"name":"Tabbed Accordion","settings":{"sstyle":"center"}},"media_text_XGyqxX":{"type":"media-text","blocks":{"media_text_bg_4fMa4g":{"type":"media_text_bg","settings":{"image":"shopify:\/\/shop_images\/commercial.webp","heading":"Commercial","text":"<p>We’re all in on commercial work—big, small, complex, or completely one-of-a-kind. From jobsite mock-ups to custom color creation, we help dial in the perfect mix of stone, brick, and masonry materials for your design. If you’re building something unique, we’re the team you want in your corner.<\/p>","button_text":"Get in Touch","button_link":"shopify:\/\/pages\/contact"}},"media_text_bg_Wfh9zm":{"type":"media_text_bg","settings":{"image":"shopify:\/\/shop_images\/residential.webp","heading":"Residential","text":"<p>We help you create the moments that make a home unforgettable, from standout fireplaces to feature walls and exteriors that speak to your architectural vernacular. Creative Mines guides you in selecting materials that become the true focal point of your home.<\/p>","button_text":"Get in Touch","button_link":"shopify:\/\/pages\/contact"}}},"block_order":["media_text_bg_4fMa4g","media_text_bg_Wfh9zm"],"name":"Media\/Text","settings":{}},"featured_projects_wF68Pb":{"type":"featured-projects","blocks":{"slide_LEHLjP":{"type":"slide","settings":{"image":"shopify:\/\/shop_images\/Greypearl_Foothill_Rubble_-_JRP_Design.jpg","description":"Located in the exclusive North Ranch neighborhood of Westlake Village, this 6,000+ square-foot residence showcases JRP’s Design & Remodel refined approach to modern luxury.\n\nDesigned as a single-story retreat, the home blends a mountain-inspired aesthetic with a modern rustic sensibility. Creative Mines Greypearl Foothill Rubble, finished with an overgrout technique, brings texture, depth, and a timeless masonry presence that grounds the architecture and elevates the overall design.","designer":"JRP Design & Remodel","location":"Westlake Village, CA","products":["stone-foothill-rubble"],"architect":"","builder":"JRP Design & Remodel","interior_design":"JRP Design & Remodel","structural_engineer":"","design_studio":"","project_name":"Rustic North Ranch"}},"slide_7wYMLM":{"type":"slide","settings":{"image":"shopify:\/\/shop_images\/CM_PalmDesert-65.png","description":"Mid-Century Modern design is a celebration of simplicity, function, and connection where architecture and landscape exist in quiet harmony.  One of Mid-Century Modern’s signature elements is the use of clean, modular masonry. Modern Paintgrade\nBlock™ captures this essence with its smooth, uniform face and structured rectangular form. Stacked bond installations reinforce the movement’s emphasis on repetition, proportion, and visual rhythm.","designer":"Woodley Architectural Group","location":"Rancho Mirage","products":["block-paintgrade"],"architect":"Woodley Architectural Group","builder":"Davidson Communities","interior_design":"","structural_engineer":"","design_studio":"Woodley Architectural Group","project_name":"Cotino"}},"slide_jJr74e":{"type":"slide","settings":{"image":"shopify:\/\/shop_images\/featured-project.webp","description":"Tays & Co Design Studio was awarded 9 different awards from Midwest Home Magazine, including 1st for Interior Use of Stone and 2nd for Exterior Use of Stone.   This project featured a Creative Mines Mixology of Coyote Farmhouse Ledge and Coyote Foothill Rubble.","designer":"Tays & Co Design Studios","location":"Minneapolis, MN","products":["stone-foothill-rubble","stone-farmhouse-ledge"],"architect":"","builder":"","interior_design":"Tays & Co Design Studios","structural_engineer":"","design_studio":"Tays & Co Design Studio","project_name":"D.O.G. House Pub"}}},"block_order":["slide_LEHLjP","slide_7wYMLM","slide_jJr74e"],"name":"Featured Projects","settings":{"heading":"Featured Projects","cta_text":"Interested in Featuring Your Project?","cta_link":"#"}},"media_text_Ubhc8g":{"type":"media-text","blocks":{"media_text_bg_dark2_DjrmTH":{"type":"media_text_bg_dark2","settings":{"image":"shopify:\/\/shop_images\/what-makes-us-better.webp","heading":"Ready to Partner with Creative Mines?","text":"<p>Exclusive access, trade-preferred pricing, project support, and complimentary samples<\/p>","button_text":"Unlock Trade Benefits","button_link":"#b2b-signup-form"}}},"block_order":["media_text_bg_dark2_DjrmTH"],"name":"Media\/Text","settings":{}}},"order":["page_banner_DF9Xqh","media_text_eVRpMN","trade_pro_form_YLmKtb","custom_collections_wcWgVA","accordion_tabs_7t6pVU","media_text_XGyqxX","featured_projects_wF68Pb","media_text_Ubhc8g"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "page_banner_DF9Xqh": {
+      "type": "page-banner",
+      "name": "Page Banner",
+      "settings": {
+        "style": "style-two",
+        "image": "shopify://shop_images/Tays_Co_-_Interlachen_-_Web-1_9d825491-14d1-45e0-92e4-85fc193c5488.jpg",
+        "heading": "Join StudioMine",
+        "text": "<p>An exclusive membership for Design & Build Professionals. <br/><br/>Enjoy complimentary samples, exclusive trade pricing, early access to new products, and design tools to help bring your boldest masonry visions to life.</p>",
+        "button_label": "Sign Up",
+        "button_link": "#b2b-signup-form",
+        "rbutton_label": "Already a member? Sign In",
+        "rbutton_link": "https://creativemines-trade.myshopify.com/account",
+        "disable_opacity": true
+      }
+    },
+    "media_text_eVRpMN": {
+      "type": "media-text",
+      "blocks": {
+        "media_text_bg_dark_FaVHYQ": {
+          "type": "media_text_bg_dark",
+          "settings": {
+            "image": "shopify://shop_images/enjoy-exclusive-access.webp",
+            "heading": "Enjoy Exclusive Access",
+            "text": "<ul><li>Free Quick Ship Samples</li><li>Access to Design Tools - 3D files &  Seamless Textures</li><li>First Access to New Products</li><li>Unlock Trade Pricing & Quoting (depending on region)</li><li>Dedicated Account Specialists</li><li>Designer Spotlights </li></ul>",
+            "button_text": "",
+            "button_link": "",
+            "style": "style1"
+          }
+        }
+      },
+      "block_order": [
+        "media_text_bg_dark_FaVHYQ"
+      ],
+      "name": "Media/Text",
+      "settings": {}
+    },
+    "trade_pro_form_YLmKtb": {
+      "type": "trade-pro-form",
+      "name": "Trade Program Form",
+      "settings": {
+        "heading": "Join the Creative Mines Trade Program",
+        "subheading": "Enjoy exclusive trade pricing, complimentary samples, and personalized support—all designed to help you bring your boldest visions to life."
+      }
+    },
+    "custom_collections_wcWgVA": {
+      "type": "custom-collections",
+      "blocks": {
+        "collection_item_PJBYGb": {
+          "type": "collection_item",
+          "settings": {
+            "image": "shopify://shop_images/stone.webp",
+            "title": "Stone",
+            "button_label": "Explore",
+            "link": "shopify://collections/stone"
+          }
+        },
+        "collection_item_e9k9dP": {
+          "type": "collection_item",
+          "settings": {
+            "image": "shopify://shop_images/bricks-and-blocks.webp",
+            "title": "Brick & Block",
+            "button_label": "Explore",
+            "link": "shopify://collections/brick-block"
+          }
+        },
+        "collection_item_GKtUwB": {
+          "type": "collection_item",
+          "settings": {
+            "image": "shopify://shop_images/woodcuts.webp",
+            "title": "Woodcuts",
+            "button_label": "Explore",
+            "link": "shopify://collections/wood"
+          }
+        }
+      },
+      "block_order": [
+        "collection_item_PJBYGb",
+        "collection_item_e9k9dP",
+        "collection_item_GKtUwB"
+      ],
+      "name": "Custom Collections",
+      "settings": {
+        "heading": "Explore Our Materials"
+      }
+    },
+    "accordion_tabs_7t6pVU": {
+      "type": "accordion-tabs",
+      "blocks": {
+        "tab_qqXWNR": {
+          "type": "tab",
+          "settings": {
+            "icon": "shopify://shop_images/order-sample-white-icon.webp",
+            "title": "Order Samples",
+            "description": "We make it easy. Order a sample online today and see firsthand the difference Creative Mines brings to high-design masonry projects.",
+            "link_text": "Order Samples Online",
+            "link_url": "shopify://collections/samples"
+          }
+        },
+        "tab_zA6tBN": {
+          "type": "tab",
+          "settings": {
+            "icon": "shopify://shop_images/product-catalog.webp",
+            "title": "Product Catalog",
+            "description": "Download our new Source Book showcasing innovative profiles, authentic textures, and hand-crafted artisan color palettes.",
+            "link_text": "Download Source Book",
+            "link_url": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/CM_Product_Brochure_090525_720f541f-8a1b-4ed6-83a6-521f708b8871.pdf?v=1763168529"
+          }
+        },
+        "tab_i7Xq77": {
+          "type": "tab",
+          "settings": {
+            "icon": "shopify://shop_images/textures.webp",
+            "title": "Seamless Textures",
+            "description": "Access our seamless textures, 3D patterns, and design features through Architextures. Easily adjust grout colors and installation techniques. Download AutoCAD and Revit files to streamline your workflow.",
+            "link_text": "Explore Visualizer",
+            "link_url": "shopify://pages/seamless-textures-hatch-patterns"
+          }
+        },
+        "tab_kd6NWk": {
+          "type": "tab",
+          "settings": {
+            "icon": "shopify://shop_images/technical.webp",
+            "title": "Technical Downloads",
+            "description": "Access all technical documents, 3 part specification, testing results, installation guidelines and warranty details.",
+            "link_text": "Explore Technical Documents",
+            "link_url": "shopify://pages/resources"
+          }
+        },
+        "tab_WfNaMd": {
+          "type": "tab",
+          "settings": {
+            "icon": "shopify://shop_images/installation.webp",
+            "title": "Installation Details",
+            "description": "Creative Mines is an active member of the CMHA and recommends installers follow the MSV Installation Guide and Detailing Options for Compliance with ASTM C1780 standards and best practices.",
+            "link_text": "Download CMHA Installation Instructions",
+            "link_url": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/CMHA-MANUFACTURED-STONE-INSTALL-GUIDELINES-ENGLISH.pdf?v=1760552106"
+          }
+        },
+        "tab_bcLk7c": {
+          "type": "tab",
+          "settings": {
+            "icon": "shopify://shop_images/ceu.webp",
+            "title": "Online CEU Course",
+            "description": "Take our online CEU course - The Elegance of Stone in Biophilic Design\n\n\nCourse Description: \nThis course offers architects and design professionals a comprehensive understanding of how the elegance of stone can be harnessed within the framework of biophilic design to create environments that prioritize both sustainability and human well-being. We've partnered with Education Ascent to allow easy online access to this course and 1 learning unit.",
+            "link_text": "Take Online Course Now",
+            "link_url": "https://portal.educationascent.com/login/index.php"
+          }
+        }
+      },
+      "block_order": [
+        "tab_qqXWNR",
+        "tab_zA6tBN",
+        "tab_i7Xq77",
+        "tab_kd6NWk",
+        "tab_WfNaMd",
+        "tab_bcLk7c"
+      ],
+      "name": "Tabbed Accordion",
+      "settings": {
+        "sstyle": "center"
+      }
+    },
+    "media_text_XGyqxX": {
+      "type": "media-text",
+      "blocks": {
+        "media_text_bg_4fMa4g": {
+          "type": "media_text_bg",
+          "settings": {
+            "image": "shopify://shop_images/commercial.webp",
+            "heading": "Commercial",
+            "text": "<p>We’re all in on commercial work—big, small, complex, or completely one-of-a-kind. From jobsite mock-ups to custom color creation, we help dial in the perfect mix of stone, brick, and masonry materials for your design. If you’re building something unique, we’re the team you want in your corner.</p>",
+            "button_text": "Get in Touch",
+            "button_link": "shopify://pages/contact"
+          }
+        },
+        "media_text_bg_Wfh9zm": {
+          "type": "media_text_bg",
+          "settings": {
+            "image": "shopify://shop_images/residential.webp",
+            "heading": "Residential",
+            "text": "<p>We help you create the moments that make a home unforgettable, from standout fireplaces to feature walls and exteriors that speak to your architectural vernacular. Creative Mines guides you in selecting materials that become the true focal point of your home.</p>",
+            "button_text": "Get in Touch",
+            "button_link": "shopify://pages/contact"
+          }
+        }
+      },
+      "block_order": [
+        "media_text_bg_4fMa4g",
+        "media_text_bg_Wfh9zm"
+      ],
+      "name": "Media/Text",
+      "settings": {}
+    },
+    "featured_projects_wF68Pb": {
+      "type": "featured-projects",
+      "blocks": {
+        "slide_LEHLjP": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Greypearl_Foothill_Rubble_-_JRP_Design.jpg",
+            "description": "Located in the exclusive North Ranch neighborhood of Westlake Village, this 6,000+ square-foot residence showcases JRP’s Design & Remodel refined approach to modern luxury.\n\nDesigned as a single-story retreat, the home blends a mountain-inspired aesthetic with a modern rustic sensibility. Creative Mines Greypearl Foothill Rubble, finished with an overgrout technique, brings texture, depth, and a timeless masonry presence that grounds the architecture and elevates the overall design.",
+            "designer": "JRP Design & Remodel",
+            "location": "Westlake Village, CA",
+            "products": [
+              "stone-foothill-rubble"
+            ],
+            "architect": "",
+            "builder": "JRP Design & Remodel",
+            "interior_design": "JRP Design & Remodel",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": "Rustic North Ranch"
+          }
+        },
+        "slide_7wYMLM": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/CM_PalmDesert-65.png",
+            "description": "Mid-Century Modern design is a celebration of simplicity, function, and connection where architecture and landscape exist in quiet harmony.  One of Mid-Century Modern’s signature elements is the use of clean, modular masonry. Modern Paintgrade\nBlock™ captures this essence with its smooth, uniform face and structured rectangular form. Stacked bond installations reinforce the movement’s emphasis on repetition, proportion, and visual rhythm.",
+            "designer": "Woodley Architectural Group",
+            "location": "Rancho Mirage",
+            "products": [
+              "block-paintgrade"
+            ],
+            "architect": "Woodley Architectural Group",
+            "builder": "Davidson Communities",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "Woodley Architectural Group",
+            "project_name": "Cotino"
+          }
+        },
+        "slide_jJr74e": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/featured-project.webp",
+            "description": "Tays & Co Design Studio was awarded 9 different awards from Midwest Home Magazine, including 1st for Interior Use of Stone and 2nd for Exterior Use of Stone.   This project featured a Creative Mines Mixology of Coyote Farmhouse Ledge and Coyote Foothill Rubble.",
+            "designer": "Tays & Co Design Studios",
+            "location": "Minneapolis, MN",
+            "products": [
+              "stone-foothill-rubble",
+              "stone-farmhouse-ledge"
+            ],
+            "architect": "",
+            "builder": "",
+            "interior_design": "Tays & Co Design Studios",
+            "structural_engineer": "",
+            "design_studio": "Tays & Co Design Studio",
+            "project_name": "D.O.G. House Pub"
+          }
+        }
+      },
+      "block_order": [
+        "slide_LEHLjP",
+        "slide_7wYMLM",
+        "slide_jJr74e"
+      ],
+      "name": "Featured Projects",
+      "settings": {
+        "heading": "Featured Projects",
+        "cta_text": "Interested in Featuring Your Project?",
+        "cta_link": "#"
+      }
+    },
+    "media_text_Ubhc8g": {
+      "type": "media-text",
+      "blocks": {
+        "media_text_bg_dark2_DjrmTH": {
+          "type": "media_text_bg_dark2",
+          "settings": {
+            "image": "shopify://shop_images/what-makes-us-better.webp",
+            "heading": "Ready to Partner with Creative Mines?",
+            "text": "<p>Exclusive access, trade-preferred pricing, project support, and complimentary samples</p>",
+            "button_text": "Unlock Trade Benefits",
+            "button_link": "#b2b-signup-form"
+          }
+        }
+      },
+      "block_order": [
+        "media_text_bg_dark2_DjrmTH"
+      ],
+      "name": "Media/Text",
+      "settings": {}
+    }
+  },
+  "order": [
+    "page_banner_DF9Xqh",
+    "media_text_eVRpMN",
+    "trade_pro_form_YLmKtb",
+    "custom_collections_wcWgVA",
+    "accordion_tabs_7t6pVU",
+    "media_text_XGyqxX",
+    "featured_projects_wF68Pb",
+    "media_text_Ubhc8g"
+  ]
+}

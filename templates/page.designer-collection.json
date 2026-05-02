@@ -20,7 +20,8 @@
         "button_label": "",
         "button_link": "",
         "rbutton_label": "",
-        "rbutton_link": ""
+        "rbutton_link": "",
+        "disable_opacity": false
       }
     },
     "richtext_iEHVUB": {
@@ -58,7 +59,7 @@
           "type": "media_text_bg",
           "settings": {
             "image": "shopify://shop_images/Mid_Century_Modern_Collection.png",
-            "heading": "Mid Century Modern Collection",
+            "heading": "Mid-Century Modern Collection",
             "text": "<p>Our Mid-Century Modern collection draws from the era’s enduring balance of warmth, structure, and restraint. Rooted in the work of iconic architects, it explores thoughtful applications of stone, brick, and architectural block—materials chosen for their honesty and texture. </p><p>Designed for spaces defined by clean lines, open planes, and an intimate connection to light and landscape, the collection reflects the bold geometries, organic surfaces, and measured rhythm of Desert Modernism.</p>",
             "button_text": "VIEW COLLECTION",
             "button_link": "shopify://collections/mid-century-modern"

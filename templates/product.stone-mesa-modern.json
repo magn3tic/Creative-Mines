@@ -9,335 +9,119 @@
  */
 {
   "sections": {
-    "page_banner_DGhgan": {
-      "type": "page-banner",
-      "name": "Page Banner",
+    "8f4f1b58-133b-491a-a7b2-8bf2e6fbc583": {
+      "type": "product-main",
       "settings": {
-        "style": "style-one",
-        "image": "shopify://shop_images/trade-pro-banner.webp",
-        "heading": "{{ page.title }}",
-        "text": "",
-        "button_label": "",
-        "button_link": "",
-        "rbutton_label": "",
-        "rbutton_link": "",
-        "disable_opacity": false
+        "box_dimension_image": "shopify://shop_images/shipping-box-dimensions.png",
+        "custom_heading": "Contact To Order",
+        "custom_liquid": "<script charset=\"utf-8\" type=\"text/javascript\" src=\"//js.hsforms.net/forms/embed/v2.js\"></script>\n<script>\n  hbspt.forms.create({\n    portalId: \"23809417\",\n    formId: \"e821ab01-28a5-4047-86c6-4851cced8121\",\n    region: \"na1\",\n      css: ''\n  });\n</script>"
       }
     },
-    "resources_PxtDcw": {
-      "type": "resources",
+    "slider_tooltips_8nwpQm": {
+      "type": "slider-tooltips",
       "blocks": {
-        "download_dUjfbz": {
-          "type": "download",
+        "slide_iMeKGk": {
+          "type": "slide",
           "settings": {
-            "title": "3 Part Specification",
-            "icon": "shopify://shop_images/pdf-logo.webp",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/2025-01-29-Creative-Mines-04-70-00-Manufactured-Masonry.pdf?v=1760551554"
+            "image": "shopify://shop_images/CM_PalmDesert-24-OP.jpg",
+            "tooltip1_content": "<h6>Product: Mesa Modern</h6><h6>Color: Solterra<br/></h6>",
+            "tooltip1_pos_x": 36,
+            "tooltip1_pos_y": 56,
+            "tooltip2_content": "",
+            "tooltip2_pos_x": 86,
+            "tooltip2_pos_y": 50,
+            "tooltip3_content": "",
+            "tooltip3_pos_x": 50,
+            "tooltip3_pos_y": 50,
+            "architect": "",
+            "builder": "",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": ""
           }
         },
-        "download_LtACUg": {
-          "type": "download",
+        "slide_eAFdhX": {
+          "type": "slide",
           "settings": {
-            "title": "ESR 3685 Report",
-            "icon": "shopify://shop_images/icc-logo.webp",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/ESR-3685.pdf?v=1764858480"
-          }
-        },
-        "download_K4HNVy": {
-          "type": "download",
-          "settings": {
-            "title": "LEED Points Contribution",
-            "icon": "shopify://shop_images/pdf-logo.webp",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/LEED-points-contribution.pdf?v=1760551554"
-          }
-        },
-        "download_fUCF6A": {
-          "type": "download",
-          "settings": {
-            "title": "Safety Data Sheets",
-            "icon": "shopify://shop_images/alert.webp",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/safety-data-sheets.pdf?v=1760551554"
-          }
-        },
-        "download_mPgyET": {
-          "type": "download",
-          "settings": {
-            "title": "Technical Data Sheet",
-            "icon": "shopify://shop_images/pdf-logo.webp",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/technical-data.pdf?v=1760551554"
-          }
-        },
-        "download_DhJ4bK": {
-          "type": "download",
-          "settings": {
-            "title": "Creative Mines Test Results Overview",
-            "icon": "shopify://shop_images/pdf-logo.webp",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/test-results-overview.pdf?v=1760551554"
-          }
-        },
-        "download_D9CBVX": {
-          "type": "download",
-          "settings": {
-            "title": "Creative Mines Care and Maintenance",
-            "icon": "shopify://shop_images/pdf-logo.webp",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/care-and-maintenance.pdf?v=1760551554"
-          }
-        },
-        "download_7CAXNc": {
-          "type": "download",
-          "settings": {
-            "title": "Warranty",
-            "icon": "shopify://shop_images/warranty_dark.webp",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/Creative_Mines-Warranty-010124.pdf?v=1760551554"
+            "image": "shopify://shop_images/CM_PalmDesert-35-OP.jpg",
+            "tooltip1_content": "<h6>Product: Mesa Modern</h6><h6>Color: Solterra<br/></h6>",
+            "tooltip1_pos_x": 27,
+            "tooltip1_pos_y": 41,
+            "tooltip2_content": "",
+            "tooltip2_pos_x": 50,
+            "tooltip2_pos_y": 50,
+            "tooltip3_content": "",
+            "tooltip3_pos_x": 50,
+            "tooltip3_pos_y": 50,
+            "architect": "",
+            "builder": "",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": ""
           }
         }
       },
       "block_order": [
-        "download_dUjfbz",
-        "download_LtACUg",
-        "download_K4HNVy",
-        "download_fUCF6A",
-        "download_mPgyET",
-        "download_DhJ4bK",
-        "download_D9CBVX",
-        "download_7CAXNc"
+        "slide_iMeKGk",
+        "slide_eAFdhX"
       ],
-      "name": "Resources",
-      "settings": {
-        "heading": "Tech Downloads",
-        "style": "style1",
-        "anchor": "technical"
-      }
-    },
-    "media_text_AGgFj3": {
-      "type": "media-text",
-      "blocks": {
-        "media_text_bg_dark3_q9FT9A": {
-          "type": "media_text_bg_dark3",
-          "settings": {
-            "image": "shopify://shop_images/bricks-details.webp",
-            "heading": "Seamless Textures & Hatch Patterns",
-            "text": "<p>Access our seamless textures, 3D patterns, and design features through Architextures. Easily adjust grout colors and installation techniques. Download AutoCAD and Revit files to streamline your workflow.</p>",
-            "button_text": "Launch Our Visualizer",
-            "button_link": "shopify://pages/seamless-textures-hatch-patterns"
-          }
-        }
-      },
-      "block_order": [
-        "media_text_bg_dark3_q9FT9A"
-      ],
-      "name": "Media/Text",
+      "name": "Slider with Tooltips",
       "settings": {}
     },
-    "videos_hmL43M": {
-      "type": "videos",
+    "text_block_icons_zYFDxi": {
+      "type": "text-block-icons",
       "blocks": {
-        "video_pUFmHK": {
-          "type": "video",
+        "feature_item_LRqfLw": {
+          "type": "feature_item",
           "settings": {
-            "thumb": "shopify://shop_images/video-house.webp",
-            "video_url": "https://vimeo.com/1059947359?fl=pl&fe=sh",
-            "title": "Installations for Creative Mines Large Format Stone & Masonry Veneer"
+            "icon": "shopify://shop_images/strength.webp",
+            "label": "Compressive Strength",
+            "title": "3,800 PSI."
           }
         },
-        "video_6FnhEG": {
-          "type": "video",
+        "feature_item_3jP9Wz": {
+          "type": "feature_item",
           "settings": {
-            "thumb": "shopify://shop_images/video-work.webp",
-            "video_url": "https://vimeo.com/914582786?fl=pl&fe=sh",
-            "title": "How to Install Creative Mines Thin Brick Veneer “Interior Application”"
+            "icon": "shopify://shop_images/freeze.webp",
+            "label": "Freeze-Thaw Durability",
+            "title": "0% Degradation"
           }
         },
-        "video_AELVx3": {
-          "type": "video",
+        "feature_item_rm8dWR": {
+          "type": "feature_item",
           "settings": {
-            "thumb": "shopify://shop_images/video-exterior.webp",
-            "video_url": "https://vimeo.com/1059830792?fl=pl&fe=sh",
-            "title": "Pozzolan - “The Secret Ingredient for Superior Masonry Veneer"
+            "icon": "shopify://shop_images/color-retention.webp",
+            "label": "Color Retention",
+            "title": "No Fade Mix Design"
           }
         }
       },
       "block_order": [
-        "video_pUFmHK",
-        "video_6FnhEG",
-        "video_AELVx3"
+        "feature_item_LRqfLw",
+        "feature_item_3jP9Wz",
+        "feature_item_rm8dWR"
       ],
-      "name": "Videos Section",
+      "name": "Text with Icons",
       "settings": {
-        "heading": "Videos"
+        "heading": "Process.\nIt’s what makes us better.",
+        "description": "<p>What's in your stone veneer? Ours is a superior mix made up of 70% post-industrial content, which means we eliminate the need for the smokestack-produced fly ash used by other manufacturers. Instead, we use 100% natural pozzolan pumice that enhances natural color and strength, minimizes efflorescence, resists sulfate attack, reduces permeability and improves durability.</p>"
       }
     },
-    "resources_YViQxy": {
-      "type": "resources",
-      "blocks": {
-        "download_Uk4mLT": {
-          "type": "download",
-          "settings": {
-            "title": "CMHA Manufactured Stone Install Guidelines - English",
-            "icon": "shopify://shop_images/install-guide.webp",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/CMHA-MANUFACTURED-STONE-INSTALL-GUIDELINES-ENGLISH.pdf?v=1760552106"
-          }
-        },
-        "download_rkkhex": {
-          "type": "download",
-          "settings": {
-            "title": "CMHA Manufactured Stone Install Guidelines - Spanish",
-            "icon": "shopify://shop_images/install-guide.webp",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/CMHA-MANUFACTURED-STONE-INSTALL-GUIDELINES-SPANISH.pdf?v=1760552106"
-          }
-        },
-        "download_qhYwna": {
-          "type": "download",
-          "settings": {
-            "title": "Important Additional Installation Instructions",
-            "icon": "shopify://shop_images/instruction.webp",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/important-additional-instructions.pdf?v=1760552101"
-          }
-        },
-        "download_pcBP7M": {
-          "type": "download",
-          "settings": {
-            "title": "Attachment of Exterior Masonry Veneer",
-            "icon": "shopify://shop_images/exterior-masonry.webp",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/attachment-through-eps-to-wood.pdf?v=1760552101"
-          }
-        },
-        "download_Pc8wmA": {
-          "type": "download",
-          "settings": {
-            "title": "Installation - Board Form Weathered Plank rRecs Strip Kings",
-            "icon": "shopify://shop_images/weathered.webp",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/board-form-weathered-plank-recs-squares-strip-kings-installation-instructions.pdf?v=1760552101"
-          }
-        },
-        "download_MHVbhq": {
-          "type": "download",
-          "settings": {
-            "title": "Creative Mines Brick Installation Instructions 121824",
-            "icon": "shopify://shop_images/instruction.webp",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/Creative-Mines-Brick-Installation-Instructions-121824.pdf?v=1760552101"
-          }
-        }
-      },
-      "block_order": [
-        "download_Uk4mLT",
-        "download_rkkhex",
-        "download_qhYwna",
-        "download_pcBP7M",
-        "download_Pc8wmA",
-        "download_MHVbhq"
-      ],
-      "name": "Resources",
+    "separator_Q3JBXQ": {
+      "type": "separator",
+      "name": "Separator",
+      "settings": {}
+    },
+    "8b8acb35-e69e-4471-a6cb-d0a09485fb41": {
+      "type": "featured-products",
       "settings": {
-        "heading": "Installation Downloads",
-        "style": "style2",
-        "anchor": "installation"
+        "header_title": "You may also like"
       }
     },
-    "resources_Li3yaK": {
-      "type": "resources",
-      "blocks": {
-        "download_Tr8bwm": {
-          "type": "download",
-          "settings": {
-            "title": "2025 Creative Mines Full Source Book",
-            "icon": "shopify://shop_images/Brochure_Icon_44a562ce-c040-494b-bb5b-503c52f66669.jpg",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/CM_Product_Brochure_090525.pdf?v=1763056884"
-          }
-        },
-        "download_JmJ66U": {
-          "type": "download",
-          "settings": {
-            "title": "Novarra Brick Brochure",
-            "icon": "shopify://shop_images/brochure-7.png",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/Novarra-Brick-Brochure-011125.pdf?v=1760552424"
-          }
-        },
-        "download_jHVXff": {
-          "type": "download",
-          "settings": {
-            "title": "Brick Line Brochure",
-            "icon": "shopify://shop_images/brochure-2.png",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/CM-Brick_Brochure_053023.pdf?v=1760552404"
-          }
-        },
-        "download_FrP7rc": {
-          "type": "download",
-          "settings": {
-            "title": "Modern Farmhouse Collection Brochure",
-            "icon": "shopify://shop_images/brochure-8.png",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/Farmhouse-Collection-Brochure-022725.pdf?v=1760552411"
-          }
-        },
-        "download_epEYAP": {
-          "type": "download",
-          "settings": {
-            "title": "Mid-Century Modern Collection Brochure",
-            "icon": "shopify://shop_images/Screenshot_2026-04-29_at_9.04.56_AM.png",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/042826_Mid_Century_Modern_Brochure.pdf?v=1777478510"
-          }
-        },
-        "download_i4NVJV": {
-          "type": "download",
-          "settings": {
-            "title": "Creative Mines Idea Book",
-            "icon": "shopify://shop_images/brochure-4.png",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/Creative-Mines-Architectural-Trim-Final-050823.pdf?v=1760552425"
-          }
-        },
-        "download_gWtNDt": {
-          "type": "download",
-          "settings": {
-            "title": "Wildflower Color Palette Brochure",
-            "icon": "shopify://shop_images/brochure-6.png",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/Wildflower_Brochure_2024.pdf?v=1760552420"
-          }
-        },
-        "download_KFQG7h": {
-          "type": "download",
-          "settings": {
-            "title": "Creative Mines Architectural Trim Brochure",
-            "icon": "shopify://shop_images/brochure-5.png",
-            "link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/Creative-Mines-Architectural-Trim-Final-050823.pdf?v=1760552425"
-          }
-        }
-      },
-      "block_order": [
-        "download_Tr8bwm",
-        "download_JmJ66U",
-        "download_jHVXff",
-        "download_FrP7rc",
-        "download_epEYAP",
-        "download_i4NVJV",
-        "download_gWtNDt",
-        "download_KFQG7h"
-      ],
-      "name": "Resources",
-      "settings": {
-        "heading": "Brochure Downloads",
-        "style": "style3",
-        "anchor": "brochure"
-      }
-    },
-    "media_text_MKwWXy": {
-      "type": "media-text",
-      "blocks": {
-        "media_text_bg_dark_4mFkLN": {
-          "type": "media_text_bg_dark",
-          "settings": {
-            "image": "shopify://shop_images/resources-contact-bg.webp",
-            "heading": "Want to Start a Project?",
-            "text": "<p>Your vision deserves the right materials, and the right partner. </p><p>From dialing in the perfect stone or brick to fast samples and installation guidance, we’re here to make your project smoother, smarter, and beautifully built. Whatever you’re creating, let’s get started.</p>",
-            "button_text": "Start a Project",
-            "button_link": "shopify://pages/start-project",
-            "style": "style2"
-          }
-        }
-      },
-      "block_order": [
-        "media_text_bg_dark_4mFkLN"
-      ],
-      "name": "Media/Text",
+    "20426219-2b04-4ec4-9f23-1ed81a76c181": {
+      "type": "separator",
       "settings": {}
     },
     "faq_inWnGh": {
@@ -1421,13 +1205,12 @@
     }
   },
   "order": [
-    "page_banner_DGhgan",
-    "resources_PxtDcw",
-    "media_text_AGgFj3",
-    "videos_hmL43M",
-    "resources_YViQxy",
-    "resources_Li3yaK",
-    "media_text_MKwWXy",
+    "8f4f1b58-133b-491a-a7b2-8bf2e6fbc583",
+    "slider_tooltips_8nwpQm",
+    "text_block_icons_zYFDxi",
+    "separator_Q3JBXQ",
+    "8b8acb35-e69e-4471-a6cb-d0a09485fb41",
+    "20426219-2b04-4ec4-9f23-1ed81a76c181",
     "faq_inWnGh"
   ]
 }

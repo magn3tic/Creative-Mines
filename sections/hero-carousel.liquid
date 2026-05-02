@@ -1,8 +1,32 @@
 <!-- Hero Start -->
+{% for block in section.blocks %}
+<style>
+  {% if block.settings.heading_size_xlarge != blank %}
+  @media(min-width: 1601px) {
+    .slide-{{ block.id }} .hero-heading { font-size: {{ block.settings.heading_size_xlarge }}px !important; }
+  }
+  {% endif %}
+  {% if block.settings.heading_size_desktop != blank %}
+  @media(min-width: 1201px) and (max-width: 1600px) {
+    .slide-{{ block.id }} .hero-heading { font-size: {{ block.settings.heading_size_desktop }}px !important; }
+  }
+  {% endif %}
+  {% if block.settings.heading_size_laptop != blank %}
+  @media(max-width: 1200px) {
+    .slide-{{ block.id }} .hero-heading { font-size: {{ block.settings.heading_size_laptop }}px !important; }
+  }
+  {% endif %}
+  {% if block.settings.heading_size_mobile != blank %}
+  @media(max-width: 767px) {
+    .slide-{{ block.id }} .hero-heading { font-size: {{ block.settings.heading_size_mobile }}px !important; }
+  }
+  {% endif %}
+</style>
+{% endfor %}
 <section class="hero-area">
   <div class="hero-slider">
     {% for block in section.blocks %}
-      <div class="slide">
+      <div class="slide slide-{{ block.id }}">
         <div class="overlay" style="opacity: {{ block.settings.opacity }};"></div>
         <div class="hero-img">
           {% if block.settings.use_video and block.settings.video != blank %}
@@ -15,11 +39,17 @@
           <div class="hero-text">
             <div class="container-fluid">
               <div class="row align-items-end">
-                <div class="col-sm-6 order-sm-1 order-2">
+                <div class="col-sm-8 order-sm-1 order-2">
+                  {% if block.settings.pre_heading != blank %}
+                    <span class="hero-pre-heading" style="font-size: {{ block.settings.pre_heading_size }}px;">{{ block.settings.pre_heading }}</span>
+                  {% endif %}
                   {% if block.settings.heading != blank %}
-                    <h1 class="hero-heading" style="font-size: {{ block.settings.heading_size }}px;">
+                    <h1 class="hero-heading">
                       {{ block.settings.heading }}
-                    </h1>                  
+                    </h1>
+                  {% endif %}
+                  {% if block.settings.subtitle != blank %}
+                    <p class="hero-subtitle" style="font-size: {{ block.settings.subtitle_size }}px;">{{ block.settings.subtitle }}</p>
                   {% endif %}
 
                   {% if block.settings.button_text != blank and block.settings.button_link != blank %}
@@ -30,7 +60,7 @@
                   {% endif %}
 
                 </div>
-                <div class="col-sm-6 order-sm-2 order-1">
+                <div class="col-sm-4 order-sm-2 order-1">
                   {% if block.settings.subheading != blank %}
                     <div class="text-sm-end text-start">
                         <span class="d-block title">
@@ -114,21 +144,64 @@
         },
         {
           "type": "text",
+          "id": "pre_heading",
+          "label": "Pre-Heading (above title)"
+        },
+        {
+          "type": "text",
+          "id": "pre_heading_size",
+          "label": "Pre-Heading Font Size (px)",
+          "default": "18"
+        },
+        {
+          "type": "text",
           "id": "heading",
           "label": "Heading",
           "default": "Stone Perfected"
         },
         {
           "type": "text",
-          "id": "heading_size",
-          "label": "Heading Font Size (px)",
-          "default": "224"
+          "id": "subtitle",
+          "label": "Subtitle (below title)"
+        },
+        {
+          "type": "text",
+          "id": "subtitle_size",
+          "label": "Subtitle Font Size (px)",
+          "default": "18"
+        },
+        {
+          "type": "header",
+          "content": "Heading Font Sizes"
+        },
+        {
+          "type": "text",
+          "id": "heading_size_xlarge",
+          "label": "Large screen font size (px)",
+          "info": "Screens > 1600px. Leave blank to use the default style."
+        },
+        {
+          "type": "text",
+          "id": "heading_size_desktop",
+          "label": "Desktop font size (px)",
+          "info": "Screens 1201px – 1600px. Leave blank to use the default style."
+        },
+        {
+          "type": "text",
+          "id": "heading_size_laptop",
+          "label": "Laptop font size (px)",
+          "info": "Screens \u2264 1200px. Leave blank to use the default style."
+        },
+        {
+          "type": "text",
+          "id": "heading_size_mobile",
+          "label": "Mobile font size (px)",
+          "info": "Screens \u2264 767px. Leave blank to use the default style."
         },
         {
           "type": "text",
           "id": "subheading",
-          "label": "Subheading / Welcome Text",
-          "default": "Welcome, Brent"
+          "label": "Subheading / Welcome Text"
         },
         {
           "type": "text",

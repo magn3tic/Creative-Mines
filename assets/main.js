@@ -29,7 +29,7 @@
         });
         });        
 
-        var sliderTimer = 5000; // autoplaySpeed in ms
+        var sliderTimer = 6000; // autoplaySpeed in ms
         var $imageSlider = $('.hero-slider');
         var $progressBar = $('.slider-progress').find('span');
 

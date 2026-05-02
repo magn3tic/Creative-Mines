@@ -1,1 +1,99 @@
-{"sections":{"featured_project_details_RC7WGM":{"type":"featured-project-details","blocks":{"banner_qT67mD":{"type":"banner","settings":{"image":"shopify:\/\/shop_images\/31-R5_09432.png","video":"","alt_text":"","heading":"Exterior"}},"banner_yrUcf3":{"type":"banner","settings":{"image":"shopify:\/\/shop_images\/32-R5_09433.png","video":"","alt_text":"","heading":"Exterior"}},"banner_6gUWkY":{"type":"banner","settings":{"image":"shopify:\/\/shop_images\/33-R5_09434-_1.png","video":"","alt_text":"","heading":"Exterior"}},"banner_dhTEnP":{"type":"banner","settings":{"image":"shopify:\/\/shop_images\/36-R5_09437.png","video":"","alt_text":"","heading":"Exterior"}},"banner_FE7bkf":{"type":"banner","settings":{"image":"shopify:\/\/shop_images\/34-R5_09435.png","video":"","alt_text":"","heading":"Exterior"}}},"block_order":["banner_qT67mD","banner_yrUcf3","banner_6gUWkY","banner_dhTEnP","banner_FE7bkf"],"name":"Featured Project Details","settings":{"bcrumb_title":"Featured Projects","bcrumb_link":"shopify:\/\/pages\/projects","project_name":"Honey Built Home","description":"Custom home designed by Christine from Honey Built Home features a unique 50\/50 mixology of Alpaca and Timberwolf Orchard Limestone, grouted with Spec Mix White Mortar in an overgrout application.  The home exterior also features an extensive use of Creative Mines Loft Paintgrade Brick which was painted with Romabia Masonry Paint.","firm":"Honey Built Home","installer":"","location":"Utah","product_title":"Alpaca and Timberwolf Orchard Limestone 50\/50 Mixology","product_link":"shopify:\/\/products\/stone-orchard-limestone"}},"additional_projects_EewLDT":{"type":"additional-projects","name":"Additional Projects","settings":{"heading":"Additional Projects","load_more_text":"Load More","load_more_link":"shopify:\/\/pages\/projects"}}},"order":["featured_project_details_RC7WGM","additional_projects_EewLDT"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "featured_project_details_RC7WGM": {
+      "type": "featured-project-details",
+      "blocks": {
+        "banner_qT67mD": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/CM_PalmDesert-36.jpg",
+            "video": "",
+            "alt_text": "",
+            "heading": "Exterior"
+          }
+        },
+        "banner_yrUcf3": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/CM_PalmDesert-47.jpg",
+            "video": "",
+            "alt_text": "",
+            "heading": "Exterior"
+          }
+        },
+        "banner_6gUWkY": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/CM_PalmDesert-74.jpg",
+            "video": "",
+            "alt_text": "",
+            "heading": "Exterior"
+          }
+        },
+        "banner_dhTEnP": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/CM_PalmDesert-80.jpg",
+            "video": "",
+            "alt_text": "",
+            "heading": "Exterior"
+          }
+        },
+        "banner_FE7bkf": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/CM_PalmDesert-40.jpg",
+            "video": "",
+            "alt_text": "",
+            "heading": "Exterior"
+          }
+        }
+      },
+      "block_order": [
+        "banner_qT67mD",
+        "banner_yrUcf3",
+        "banner_6gUWkY",
+        "banner_dhTEnP",
+        "banner_FE7bkf"
+      ],
+      "name": "Featured Project Details",
+      "settings": {
+        "bcrumb_title": "Featured Projects",
+        "bcrumb_link": "shopify://pages/projects",
+        "project_name": "Honey Built Home",
+        "description": "Custom home designed by Christine from Honey Built Home features a unique 50/50 mixology of Alpaca and Timberwolf Orchard Limestone, grouted with Spec Mix White Mortar in an overgrout application.  The home exterior also features an extensive use of Creative Mines Loft Paintgrade Brick which was painted with Romabia Masonry Paint.",
+        "firm": "Honey Built Home",
+        "photography": "",
+        "location": "Utah",
+        "product_title": "Alpaca and Timberwolf Orchard Limestone 50/50 Mixology",
+        "product_link": "shopify://products/stone-orchard-limestone",
+        "installer": "",
+        "architect": "",
+        "interior_design": "",
+        "builder": ""
+      }
+    },
+    "additional_projects_EewLDT": {
+      "type": "additional-projects",
+      "name": "Additional Projects",
+      "settings": {
+        "heading": "Additional Projects",
+        "load_more_text": "Load More",
+        "load_more_link": "shopify://pages/projects"
+      }
+    }
+  },
+  "order": [
+    "featured_project_details_RC7WGM",
+    "additional_projects_EewLDT"
+  ]
+}

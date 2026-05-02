@@ -12,14 +12,44 @@
     "hero_carousel_CmDneU": {
       "type": "hero-carousel",
       "blocks": {
+        "slide_mbFNim": {
+          "type": "slide",
+          "settings": {
+            "use_video": true,
+            "image": "shopify://shop_images/Screenshot_2026-03-30_131321.png",
+            "video": "https://cdn.shopify.com/videos/c/o/v/feb7b307e2594d67b48fe26d52019d9e.mp4",
+            "pre_heading": "Introducing...",
+            "pre_heading_size": "40",
+            "heading": "Ridgewater Ledge",
+            "subtitle": "Inspired by the layered stonework of Frank Lloyd Wright's Fallingwater",
+            "subtitle_size": "22",
+            "heading_size_xlarge": "120",
+            "heading_size_desktop": "80",
+            "heading_size_laptop": "90",
+            "heading_size_mobile": "60",
+            "subheading": "Welcome",
+            "bottom_text": "Featured Product Ridgewater Ledge",
+            "bottom_text_link": "shopify://products/stone-ridgewater-ledge",
+            "button_text": "",
+            "button_link": "",
+            "opacity": 0.1
+          }
+        },
         "slide_Q4UPQq": {
           "type": "slide",
           "settings": {
             "use_video": false,
             "image": "shopify://shop_images/Homepage_Hero_1_-F.webp",
             "video": "https://cdn.shopify.com/videos/c/o/v/a426551a263c46c3bf007eb58084bfec.mp4",
+            "pre_heading": "",
+            "pre_heading_size": "18",
             "heading": "Stone Perfected.",
-            "heading_size": "224",
+            "subtitle": "",
+            "subtitle_size": "18",
+            "heading_size_xlarge": "",
+            "heading_size_desktop": "",
+            "heading_size_laptop": "",
+            "heading_size_mobile": "",
             "subheading": "Welcome",
             "bottom_text": "Featured Product Orchard Limestone",
             "bottom_text_link": "shopify://products/stone-orchard-limestone",
@@ -30,12 +60,20 @@
         },
         "slide_ydt73Y": {
           "type": "slide",
+          "disabled": true,
           "settings": {
             "use_video": false,
             "image": "shopify://shop_images/Homepage_Hero_2_-_F.webp",
             "video": "",
+            "pre_heading": "",
+            "pre_heading_size": "18",
             "heading": "Quarry Trails",
-            "heading_size": "224",
+            "subtitle": "",
+            "subtitle_size": "18",
+            "heading_size_xlarge": "",
+            "heading_size_desktop": "",
+            "heading_size_laptop": "",
+            "heading_size_mobile": "",
             "subheading": "Welcome",
             "bottom_text": "Explore Commercial Projects",
             "bottom_text_link": "shopify://pages/commercial-projects",
@@ -50,8 +88,15 @@
             "use_video": false,
             "image": "shopify://shop_images/Homepage_Hero_3-F.webp",
             "video": "",
+            "pre_heading": "",
+            "pre_heading_size": "18",
             "heading": "Join the Studio",
-            "heading_size": "224",
+            "subtitle": "",
+            "subtitle_size": "18",
+            "heading_size_xlarge": "",
+            "heading_size_desktop": "",
+            "heading_size_laptop": "",
+            "heading_size_mobile": "",
             "subheading": "Welcome",
             "bottom_text": "Join StudioMine Trade Program",
             "bottom_text_link": "shopify://pages/tradepro",
@@ -62,6 +107,7 @@
         }
       },
       "block_order": [
+        "slide_mbFNim",
         "slide_Q4UPQq",
         "slide_ydt73Y",
         "slide_QFhnmh"
@@ -209,11 +255,11 @@
       "type": "collection-banner",
       "name": "Collection Banner",
       "settings": {
-        "image": "shopify://shop_images/farmhouse.webp",
+        "image": "shopify://shop_images/Beachfoam_Novarra_Brick_2.png",
         "subheading": "Explore Collections",
-        "heading": "Modern Farmhouse",
+        "heading": "Mid-Century Modern",
         "button_1_text": "Explore Collection",
-        "button_1_link": "shopify://collections/modern-farmhouse",
+        "button_1_link": "shopify://collections/mid-century-modern",
         "button_2_text": "View All",
         "button_2_link": "shopify://pages/designer-collection"
       }

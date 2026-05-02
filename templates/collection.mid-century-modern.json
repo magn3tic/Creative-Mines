@@ -20,7 +20,8 @@
         "button_label": "",
         "button_link": "",
         "rbutton_label": "",
-        "rbutton_link": ""
+        "rbutton_link": "",
+        "disable_opacity": false
       }
     },
     "simple_header_HHpEJp": {
@@ -29,7 +30,7 @@
       "settings": {
         "heading": "Mid-Century Modern",
         "button_text": "DOWNLOAD BROCHURE",
-        "button_link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/Mid-Century-Modern-Collections-Brochure_032825.pdf?v=1760552426"
+        "button_link": "https://cdn.shopify.com/s/files/1/0634/0139/4275/files/042826_Mid_Century_Modern_Brochure.pdf?v=1777478510"
       }
     },
     "slider_tooltips_KJ9iYq": {
@@ -38,7 +39,7 @@
         "slide_jxzQbW": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/CM_PalmDesert-10.png",
+            "image": "shopify://shop_images/CM_RanchoMirage_2025-4-OP.jpg",
             "tooltip1_content": "",
             "tooltip1_pos_x": 50,
             "tooltip1_pos_y": 50,
@@ -47,13 +48,19 @@
             "tooltip2_pos_y": 50,
             "tooltip3_content": "",
             "tooltip3_pos_x": 50,
-            "tooltip3_pos_y": 50
+            "tooltip3_pos_y": 50,
+            "architect": "",
+            "builder": "",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": ""
           }
         },
         "slide_PBejXz": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/CM_PalmDesert-4_2614896e-0fef-4c08-8216-c63090b3b39d.png",
+            "image": "shopify://shop_images/CM_RanchoMirage_2025-11-OP.jpg",
             "tooltip1_content": "",
             "tooltip1_pos_x": 50,
             "tooltip1_pos_y": 50,
@@ -62,7 +69,34 @@
             "tooltip2_pos_y": 50,
             "tooltip3_content": "",
             "tooltip3_pos_x": 50,
-            "tooltip3_pos_y": 50
+            "tooltip3_pos_y": 50,
+            "architect": "",
+            "builder": "",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": ""
+          }
+        },
+        "slide_gwzYWG": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Beachfoam_Novarra_Brick_2.png",
+            "tooltip1_content": "",
+            "tooltip1_pos_x": 50,
+            "tooltip1_pos_y": 50,
+            "tooltip2_content": "",
+            "tooltip2_pos_x": 50,
+            "tooltip2_pos_y": 50,
+            "tooltip3_content": "",
+            "tooltip3_pos_x": 50,
+            "tooltip3_pos_y": 50,
+            "architect": "",
+            "builder": "",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": ""
           }
         },
         "slide_keic9x": {
@@ -77,7 +111,13 @@
             "tooltip2_pos_y": 50,
             "tooltip3_content": "",
             "tooltip3_pos_x": 50,
-            "tooltip3_pos_y": 50
+            "tooltip3_pos_y": 50,
+            "architect": "",
+            "builder": "",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": ""
           }
         },
         "slide_6DNFME": {
@@ -92,7 +132,13 @@
             "tooltip2_pos_y": 50,
             "tooltip3_content": "",
             "tooltip3_pos_x": 50,
-            "tooltip3_pos_y": 50
+            "tooltip3_pos_y": 50,
+            "architect": "",
+            "builder": "",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": ""
           }
         },
         "slide_HtndGh": {
@@ -107,7 +153,13 @@
             "tooltip2_pos_y": 50,
             "tooltip3_content": "",
             "tooltip3_pos_x": 50,
-            "tooltip3_pos_y": 50
+            "tooltip3_pos_y": 50,
+            "architect": "",
+            "builder": "",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": ""
           }
         },
         "slide_fNMyGj": {
@@ -122,7 +174,13 @@
             "tooltip2_pos_y": 50,
             "tooltip3_content": "",
             "tooltip3_pos_x": 50,
-            "tooltip3_pos_y": 50
+            "tooltip3_pos_y": 50,
+            "architect": "",
+            "builder": "",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": ""
           }
         },
         "slide_n4raYy": {
@@ -137,7 +195,13 @@
             "tooltip2_pos_y": 50,
             "tooltip3_content": "",
             "tooltip3_pos_x": 50,
-            "tooltip3_pos_y": 50
+            "tooltip3_pos_y": 50,
+            "architect": "",
+            "builder": "",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": ""
           }
         },
         "slide_9GGKk9": {
@@ -152,13 +216,20 @@
             "tooltip2_pos_y": 50,
             "tooltip3_content": "",
             "tooltip3_pos_x": 50,
-            "tooltip3_pos_y": 50
+            "tooltip3_pos_y": 50,
+            "architect": "",
+            "builder": "",
+            "interior_design": "",
+            "structural_engineer": "",
+            "design_studio": "",
+            "project_name": ""
           }
         }
       },
       "block_order": [
         "slide_jxzQbW",
         "slide_PBejXz",
+        "slide_gwzYWG",
         "slide_keic9x",
         "slide_6DNFME",
         "slide_HtndGh",

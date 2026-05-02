@@ -1,1 +1,129 @@
-{"sections":{"featured_project_details_RC7WGM":{"type":"featured-project-details","blocks":{"banner_qT67mD":{"type":"banner","settings":{"image":"shopify:\/\/shop_images\/669-Shawnee-Woods-Road_003.png","video":"","alt_text":"","heading":"Exterior"}},"banner_yrUcf3":{"type":"banner","settings":{"image":"shopify:\/\/shop_images\/669-Shawnee-Woods-Road_001.png","video":"","alt_text":"","heading":"Exterior"}},"banner_6gUWkY":{"type":"banner","settings":{"image":"shopify:\/\/shop_images\/669-Shawnee-Woods-Road_025.png","video":"","alt_text":"","heading":"Interior"}},"banner_dhTEnP":{"type":"banner","settings":{"image":"shopify:\/\/shop_images\/669-Shawnee-Woods-Road_033.png","video":"","alt_text":"","heading":"Interior"}},"banner_FE7bkf":{"type":"banner","settings":{"image":"shopify:\/\/shop_images\/669-Shawnee-Woods-Road_032.png","video":"","alt_text":"","heading":"Interior"}},"banner_MbEazy":{"type":"banner","settings":{"image":"shopify:\/\/shop_images\/669-Shawnee-Woods-Road_038.png","video":"","alt_text":"","heading":"Interior"}},"banner_eiwCNM":{"type":"banner","settings":{"image":"shopify:\/\/shop_images\/669-Shawnee-Woods-Road_061.png","video":"","alt_text":"","heading":"Interior"}},"banner_P4MTjQ":{"type":"banner","settings":{"image":"shopify:\/\/shop_images\/669-Shawnee-Woods-Road_050.png","video":"","alt_text":"","heading":"Interior"}},"banner_DX8Xnr":{"type":"banner","settings":{"image":"shopify:\/\/shop_images\/669-Shawnee-Woods-Road_063.png","video":"","alt_text":"","heading":"Interior"}}},"block_order":["banner_qT67mD","banner_yrUcf3","banner_6gUWkY","banner_dhTEnP","banner_FE7bkf","banner_MbEazy","banner_eiwCNM","banner_P4MTjQ","banner_DX8Xnr"],"name":"Featured Project Details","settings":{"bcrumb_title":"Featured Projects","bcrumb_link":"shopify:\/\/pages\/projects","project_name":"Shawnee Rambler on the Green","description":"Modern Farmhouse design has evolved beyond the traditional rustic aesthetic into something more refined, sophisticated, and enduring. Tays & Co Design Studio created this inviting home rooted in organic textures, natural materials, and a palette that is both warm and contemporary.","firm":"","installer":"","location":"Minnesota","product_title":"Wildflower, Orchard Limestone","product_link":"shopify:\/\/products\/stone-orchard-limestone"}},"additional_projects_EewLDT":{"type":"additional-projects","name":"Additional Projects","settings":{"heading":"Additional Projects","load_more_text":"Load More","load_more_link":"shopify:\/\/pages\/projects"}}},"order":["featured_project_details_RC7WGM","additional_projects_EewLDT"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "featured_project_details_RC7WGM": {
+      "type": "featured-project-details",
+      "blocks": {
+        "banner_qT67mD": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/Tays_Co_-_Interlachen_-_Web-1_9d825491-14d1-45e0-92e4-85fc193c5488.jpg",
+            "video": "",
+            "alt_text": "",
+            "heading": "Exterior"
+          }
+        },
+        "banner_yrUcf3": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/Tays_Co_-_Interlachen_-_Web-102.jpg",
+            "video": "",
+            "alt_text": "",
+            "heading": "Exterior"
+          }
+        },
+        "banner_6gUWkY": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/Tays_Co_-_Interlachen_-_Web-20_2084c594-57e8-4ddc-988e-f686f3a5b8b5.jpg",
+            "video": "",
+            "alt_text": "",
+            "heading": "Interior"
+          }
+        },
+        "banner_dhTEnP": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/Tays_Co_-_Interlachen_-_Web-17.jpg",
+            "video": "",
+            "alt_text": "",
+            "heading": "Interior"
+          }
+        },
+        "banner_MbEazy": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/Tays_Co_-_Interlachen_-_Web-65.jpg",
+            "video": "",
+            "alt_text": "",
+            "heading": "Interior"
+          }
+        },
+        "banner_eiwCNM": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/Tays_Co_-_Interlachen_-_Web-19.jpg",
+            "video": "",
+            "alt_text": "",
+            "heading": "Interior"
+          }
+        },
+        "banner_P4MTjQ": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/Tays_Co_-_Interlachen_-_Web-106.jpg",
+            "video": "",
+            "alt_text": "",
+            "heading": "Interior"
+          }
+        },
+        "banner_DX8Xnr": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/Tays_Co_-_Interlachen_-_Web-109.jpg",
+            "video": "",
+            "alt_text": "",
+            "heading": "Interior"
+          }
+        }
+      },
+      "block_order": [
+        "banner_qT67mD",
+        "banner_yrUcf3",
+        "banner_6gUWkY",
+        "banner_dhTEnP",
+        "banner_MbEazy",
+        "banner_eiwCNM",
+        "banner_P4MTjQ",
+        "banner_DX8Xnr"
+      ],
+      "name": "Featured Project Details",
+      "settings": {
+        "bcrumb_title": "Featured Projects",
+        "bcrumb_link": "shopify://pages/projects",
+        "project_name": "Interlachen Modern Lake House",
+        "description": "On the shores of Gull Lake, stone and wood worked in quiet conversation. \n\nThe Interlachen Modern Lakehouse designed by Tays & Co Design Studios features an extensive use of Wildflower Orchard Limestone alongside warm wood tones and natural textures to create spaces that feel settled, cohesive, and deeply connected to their surroundings.\n\nThe most compelling spaces aren’t built on contrast alone, but on balance, material harmony, and restraint.",
+        "firm": "",
+        "photography": "",
+        "location": "Minnesota",
+        "product_title": "Wildflower, Orchard Limestone",
+        "product_link": "shopify://products/stone-orchard-limestone",
+        "installer": "",
+        "architect": "",
+        "interior_design": "Tays & Co Design Studio",
+        "builder": ""
+      }
+    },
+    "additional_projects_EewLDT": {
+      "type": "additional-projects",
+      "name": "Additional Projects",
+      "settings": {
+        "heading": "Additional Projects",
+        "load_more_text": "Load More",
+        "load_more_link": "shopify://pages/projects"
+      }
+    }
+  },
+  "order": [
+    "featured_project_details_RC7WGM",
+    "additional_projects_EewLDT"
+  ]
+}

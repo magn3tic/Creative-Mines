@@ -13,22 +13,26 @@
                         <ul class="product-tools">
                           {% assign guides = product.metafields.custom["installation-guides"].value %}
 
-                          {% if guides != blank %}
-                            {% if guides.size > 1 %}
+                         {% if guides != blank %}
+                          {% if guides.size > 1 %}
                               <li class="guide-dropdown">
-                                <a href="javascript:;">
-                                  <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/download-dark.webp" alt="icon">
-                                  Installation Guides
-                                </a>
-                                <ul>
-                                  {% for file in guides %}
-                                    <li>
-                                      <a href="{{ file.url }}" download>
-                                        Download Guide {{ forloop.index }}
-                                      </a>
-                                    </li>
-                                  {% endfor %}
-                                </ul>
+                                  <a href="javascript:;">
+                                      <img src="https://cdn.shopify.com/s/files/1/0634/0139/4275/files/download-dark.webp" alt="icon">
+                                      Installation Guides
+                                  </a>
+                                  <ul>
+                                      {% for file in guides %}
+                                          <li>
+                                              <a href="{{ file.url }}" download>
+                                                  {% if file.alt != blank %}
+                                                      {{ file.alt }}
+                                                  {% else %}
+                                                      Download Guide {{ forloop.index }}
+                                                  {% endif %}
+                                              </a>
+                                          </li>
+                                      {% endfor %}
+                                  </ul>
                               </li>
 
                             {% else %}
